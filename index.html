@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Review Assistant | Boost Your Business</title>
+    <style>
+        :root { --primary: #4285f4; --bg: #f8f9fa; --card: #ffffff; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 500px; margin: auto; background: var(--card); padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { color: var(--primary); margin-bottom: 5px; }
+        p.subtitle { color: #666; margin-bottom: 25px; font-size: 14px; }
+        
+        .setup-info { background: #e8f0fe; padding: 10px; border-radius: 10px; margin-bottom: 20px; font-size: 13px; text-align: left; }
+        
+        label { display: block; text-align: left; font-weight: bold; margin: 15px 0 5px; font-size: 14px; }
+        select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; background: white; }
+        
+        .review-card { border: 2px solid #eee; padding: 15px; margin: 15px 0; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; text-align: left; position: relative; }
+        .review-card:hover { border-color: var(--primary); background: #f0f7ff; }
+        .review-card.selected { border-color: var(--primary); background: #e8f0fe; font-weight: 500; }
+        .review-card.selected::after { content: '✓ Selected'; position: absolute; top: 10px; right: 10px; font-size: 10px; color: var(--primary); font-weight: bold; }
+
+        .btn-container { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        button { padding: 15px; border-radius: 10px; border: none; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-generate { background: #34a853; color: white; }
+        .btn-copy { background: var(--primary); color: white; display: none; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        
+        #loader { display: none; color: var(--primary); font-weight: bold; margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="initView">
+        <h2>Review Assistant</h2>
+        <p class="subtitle">AI-powered suggestions for your feedback</p>
+        
+        <div class="setup-info">
+            <strong>Business:</strong> <span id="displayBizName">Loading...</span><br>
+            <strong>Category:</strong> <span id="displayCategory">Loading...</span>
+        </div>
+
+        <label for="langSelect">Step 1: Select Language</label>
+        <select id="langSelect">
+            <option value="English">English</option>
+            <option value="Marathi">Marathi (मराठी)</option>
+            <option value="Hindi">Hindi (हिन्दी)</option>
+            <option value="Gujarati">Gujarati (ગુજરાતી)</option>
+            <option value="Tamil">Tamil (தமிழ்)</option>
+            <option value="Telugu">Telugu (తెలుగు)</option>
+            <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+            <option value="Bengali">Bengali (বাংলা)</option>
+            <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+            <option value="Malayalam">Malayalam (മലയാളം)</option>
+        </select>
+
+        <div id="loader">Generating AI Reviews...</div>
+        <div id="reviewContainer"></div>
+
+        <div class="btn-container">
+            <button class="btn-generate" id="genBtn" onclick="fetchAIReviews()">Generate Reviews</button>
+            <button class="btn-copy" id="copyBtn" onclick="copyAndRedirect()">Copy & Continue to Google</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Configuration
+    const API_KEY = "AIzaSyBMCpQmRLtsGcaqVSO2Czvc_gEvWLrhLdk"; 
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Dynamic Business Data from URL
+    const bizName = urlParams.get('biz_name') || "This Business";
+    const bizCat = urlParams.get('category') || "Services";
+    const googleLink = urlParams.get('google_url') || "https://maps.google.com";
+
+    document.getElementById('displayBizName').innerText = bizName;
+    document.getElementById('displayCategory').innerText = bizCat;
+
+    let selectedReview = "";
+
+    async function fetchAIReviews() {
+        const lang = document.getElementById('langSelect').value;
+        const loader = document.getElementById('loader');
+        const container = document.getElementById('reviewContainer');
+        const genBtn = document.getElementById('genBtn');
+        const copyBtn = document.getElementById('copyBtn');
+
+        loader.style.display = "block";
+        container.innerHTML = "";
+        copyBtn.style.display = "none";
+        genBtn.innerText = "Regenerate Reviews";
+
+        const prompt = `Act as a happy customer of "${bizName}", which is a "${bizCat}". Write 3 different short, positive Google reviews (max 20 words each) in ${lang} language. Separate them with a symbol #. Do not include numbers or titles.`;
+
+        try {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            });
+
+            const data = await response.json();
+            const text = data.candidates[0].content.parts[0].text;
+            const reviews = text.split('#').filter(r => r.trim().length > 5);
+
+            loader.style.display = "none";
+            
+            reviews.forEach((revText, index) => {
+                if(index < 3) {
+                    const div = document.createElement('div');
+                    div.className = 'review-card';
+                    div.innerText = revText.trim();
+                    div.onclick = function() {
+                        document.querySelectorAll('.review-card').forEach(c => c.classList.remove('selected'));
+                        this.classList.add('selected');
+                        selectedReview = revText.trim();
+                        copyBtn.style.display = "block";
+                    };
+                    container.appendChild(div);
+                }
+            });
+        } catch (error) {
+            loader.innerText = "Error generating reviews. Please check API Key.";
+            console.error(error);
+        }
+    }
+
+    function copyAndRedirect() {
+        if (!selectedReview) return;
+        
+        navigator.clipboard.writeText(selectedReview).then(() => {
+            alert("Review Copied! Paste it on the next page.");
+            window.location.href = googleLink;
+        });
+    }
+</script>
+
+</body>
+</html>
