@@ -3,117 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Smart Reviewer</title>
+    <title>Groq AI Review Assistant</title>
     <style>
-        :root { --p: #4285f4; --bg: #f8f9fa; }
+        :root { --p: #f55036; --bg: #f8f9fa; } /* Groq Theme Color */
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; text-align: center; }
         .card { max-width: 450px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .setup-info { background: #e8f0fe; padding: 12px; border-radius: 10px; margin-bottom: 15px; text-align: left; font-size: 14px; color: #1967d2; }
+        .setup-info { background: #fff5f2; padding: 12px; border-radius: 10px; margin-bottom: 15px; text-align: left; font-size: 14px; border-left: 4px solid var(--p); }
         select, button { width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; }
-        button { background: var(--p); color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:active { transform: scale(0.98); }
-        .review-box { border: 2px solid #eee; padding: 15px; margin: 10px 0; border-radius: 12px; text-align: left; background: #fff; animation: fadeIn 0.5s; cursor: pointer; font-size: 15px; line-height: 1.5; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .selected { border-color: var(--p); background: #f1f6ff; box-shadow: 0 0 10px rgba(66,133,244,0.2); }
-        #loader { margin: 15px; color: var(--p); display: none; font-weight: bold; font-style: italic; }
+        button { background: var(--p); color: white; border: none; font-weight: bold; cursor: pointer; }
+        .review-box { border: 2px solid #eee; padding: 12px; margin: 10px 0; border-radius: 10px; cursor: pointer; text-align: left; background: #fff; }
+        .selected { border-color: var(--p); background: #fff5f2; }
+        #loader { margin: 15px; color: var(--p); display: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2 style="margin-bottom: 5px;">AI Review Assistant</h2>
-    <p style="color: #666; font-size: 13px; margin-bottom: 15px;">Powered by Smart AI Logic</p>
-
+    <h2 style="color:var(--p)">Smart AI Reviews</h2>
     <div class="setup-info">
         <strong>🏢 Business:</strong> <span id="bName">Loading...</span><br>
         <strong>📂 Category:</strong> <span id="bCat">Loading...</span>
     </div>
 
-    <label style="display:block; text-align:left; font-size:14px; font-weight:bold; margin-top:10px;">Select Language:</label>
     <select id="lang">
         <option value="Marathi">Marathi (मराठी)</option>
         <option value="Hindi">Hindi (हिन्दी)</option>
         <option value="English">English</option>
+        <option value="Gujarati">Gujarati (ગુજરાતી)</option>
     </select>
 
-    <div id="loader">AI is analyzing business profile...</div>
+    <div id="loader">Groq AI is writing unique reviews...</div>
     <div id="container"></div>
 
-    <button id="genBtn" onclick="generateSmartAI()">Generate AI Reviews</button>
+    <button id="genBtn" onclick="generateWithGroq()">Generate Real AI Reviews</button>
     <button id="copyBtn" style="display:none; margin-top:10px; background:#34a853;" onclick="copyGo()">Copy & Open Google Maps</button>
 </div>
 
 <script>
+    // १. तुमचा Groq API Key इथे टाका
+    const GROQ_API_KEY = "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"; 
+
     const urlParams = new URLSearchParams(window.location.search);
     const bizName = urlParams.get('biz_name') || "Sai Cafe";
     const bizCat = urlParams.get('category') || "Restaurant";
-    const googleLink = urlParams.get('google_url') || "https://www.google.com/maps";
+    const googleLink = urlParams.get('google_url') || "https://google.com";
 
     document.getElementById('bName').innerText = bizName;
     document.getElementById('bCat').innerText = bizCat;
 
     let selectedText = "";
 
-    // ही सिस्टिम 'Pattern-Based AI' वापरते जी प्रत्येक वेळी नवीन वाक्यरचना तयार करते
-    const aiBrain = {
-        Marathi: {
-            opening: ["खूपच छान अनुभव!", "उत्तम सर्व्हिस आणि क्वालिटी!", "नक्की भेट देण्यासारखे ठिकाण.", "खरोखर समाधान वाटले."],
-            middle: [`${bizName} मध्ये ${bizCat} ची क्वालिटी अप्रतिम आहे.`, `इथला स्टाफ खूप प्रेमळ आहे आणि ${bizCat} ची सेवा जलद आहे.`, `स्वच्छता आणि नीटनेटकेपणाच्या बाबतीत ${bizName} बेस्ट आहे.`, `${bizCat} साठी यापेक्षा दुसरी चांगली जागा नाही.`],
-            closing: ["५ स्टार अनुभव!", "पुन्हा नक्की येणार.", "सर्वांना शिफारस करतो.", "खूप खूप धन्यवाद!"]
-        },
-        Hindi: {
-            opening: ["बेहतरीन अनुभव!", "शानदार सर्विस!", "एक बार जरूर आएं।", "बहुत अच्छा लगा।"],
-            middle: [`${bizName} में ${bizCat} की क्वालिटी लाजवाब है।`, `${bizCat} के लिए ${bizName} सबसे सही जगह है।`, `यहाँ का वातावरण और ${bizCat} की सर्विस बहुत अच्छी है।`, `स्टाफ का व्यवहार बहुत ही विनम्र है।`],
-            closing: ["५ स्टार!", "पैसा वसूल अनुभव।", "सबको यहाँ आना चाहिए।", "शुक्रिया!"]
-        },
-        English: {
-            opening: ["Amazing experience!", "Great service and quality!", "Must visit place.", "Highly recommended!"],
-            middle: [`The quality of ${bizCat} at ${bizName} is top-notch.`, `Fast service and very friendly staff at ${bizName}.`, `Best place for ${bizCat} in the locality.`, `Clean, hygienic and professional ${bizCat} services.`],
-            closing: ["5 Stars!", "Will definitely visit again.", "Worth every penny.", "Great job!"]
-        }
-    };
-
-    function generateSmartAI() {
+    async function generateWithGroq() {
         const lang = document.getElementById('lang').value;
         const loader = document.getElementById('loader');
         const container = document.getElementById('container');
         const btn = document.getElementById('genBtn');
-        const copyBtn = document.getElementById('copyBtn');
 
         loader.style.display = "block";
         container.innerHTML = "";
-        copyBtn.style.display = "none";
         btn.disabled = true;
 
-        setTimeout(() => {
-            loader.style.display = "none";
-            btn.disabled = false;
-            const brain = aiBrain[lang];
+        const prompt = `Write 3 unique, short, highly positive Google reviews for "${bizName}" (${bizCat}) in ${lang}. 
+        Keep them natural and human-like. Separate each review with a # symbol only. Do not use numbers or bullet points.`;
 
-            // AI Logic: वाक्ये दरवेळी Randomly मिक्स करणे जेणेकरून रिव्ह्यू वेगळा दिसेल
-            for(let i=0; i<3; i++) {
-                let start = brain.opening[Math.floor(Math.random() * brain.opening.length)];
-                let mid = brain.middle[Math.floor(Math.random() * brain.middle.length)];
-                let end = brain.closing[Math.floor(Math.random() * brain.closing.length)];
+        try {
+            const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${GROQ_API_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: "llama3-8b-8192", // हे सर्वात वेगवान मॉडेल आहे
+                    messages: [{ role: "user", content: prompt }],
+                    temperature: 0.7
+                })
+            });
 
-                const fullReview = `${start} ${mid} ${end}`;
+            const data = await response.json();
+            
+            if (data.choices && data.choices[0].message) {
+                const aiText = data.choices[0].message.content;
+                const reviews = aiText.split('#').filter(r => r.trim().length > 5);
                 
-                const div = document.createElement('div');
-                div.className = 'review-box';
-                div.innerText = fullReview;
-                div.onclick = function() {
-                    document.querySelectorAll('.review-box').forEach(b => b.classList.remove('selected'));
-                    this.classList.add('selected');
-                    selectedText = this.innerText;
-                    copyBtn.style.display = "block";
-                };
-                container.appendChild(div);
+                loader.style.display = "none";
+                btn.disabled = false;
+
+                reviews.forEach(text => {
+                    const div = document.createElement('div');
+                    div.className = 'review-box';
+                    div.innerText = text.trim();
+                    div.onclick = () => {
+                        document.querySelectorAll('.review-box').forEach(b => b.classList.remove('selected'));
+                        div.classList.add('selected');
+                        selectedText = text.trim();
+                        document.getElementById('copyBtn').style.display = "block";
+                    };
+                    container.appendChild(div);
+                });
+            } else {
+                throw new Error("API Limit or Key Issue");
             }
-        }, 1200);
+        } catch (error) {
+            loader.innerHTML = `<span style='color:red;'><b>Error:</b> Groq API ला कनेक्ट होता येत नाहीये. कृपया तुमचा API Key तपासा.</span>`;
+            btn.disabled = false;
+        }
     }
 
     function copyGo() {
-        if(!selectedText) return;
         navigator.clipboard.writeText(selectedText).then(() => {
             alert("Review Copied!");
             window.location.href = googleLink;
