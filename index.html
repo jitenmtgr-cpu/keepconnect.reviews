@@ -7,7 +7,7 @@
     <style>
         :root {
             --primary: #0f172a; 
-            --accent: #0ea5e9;  /* Bright Blue */
+            --accent: #0ea5e9; 
             --bg: #f8fafc;
             --white: #ffffff;
         }
@@ -20,76 +20,89 @@
             max-width: 480px; margin: auto; background: var(--white);
             padding: 30px; border-radius: 28px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
-            text-align: center; border: 1px solid #e2e8f0;
+            position: relative; border: 1px solid #e2e8f0;
         }
+        .header-flex {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-bottom: 20px; text-align: left;
+        }
+        .brand-info { flex: 1; }
         .brand-header {
-            font-size: 12px; font-weight: 800; letter-spacing: 2px;
-            color: var(--accent); text-transform: uppercase; margin-bottom: 10px;
+            font-size: 11px; font-weight: 800; letter-spacing: 1px;
+            color: var(--accent); text-transform: uppercase;
         }
-        .biz-name { font-size: 32px; font-weight: 900; margin: 5px 0; color: var(--primary); letter-spacing: -1px; }
+        .biz-name { font-size: 26px; font-weight: 900; margin: 5px 0; letter-spacing: -1px; }
+        
+        /* Language Select at Top Right */
+        .lang-wrapper { position: relative; }
+        #langSelect {
+            padding: 8px 12px; border-radius: 10px; border: 1px solid #e2e8f0;
+            font-size: 13px; font-weight: 600; background: #fff; cursor: pointer;
+            outline: none; color: #64748b;
+        }
+
         .biz-cat {
-            font-size: 14px; color: var(--accent); background: #f0f9ff;
-            display: inline-block; padding: 6px 16px; border-radius: 50px;
-            margin-bottom: 30px; font-weight: 600; border: 1px solid #bae6fd;
+            font-size: 13px; color: var(--accent); background: #f0f9ff;
+            display: inline-block; padding: 5px 14px; border-radius: 50px;
+            margin-bottom: 25px; font-weight: 600; border: 1px solid #bae6fd;
         }
         .review-card {
-            background: #fff; border: 2px solid #f1f5f9; padding: 20px;
-            margin: 15px 0; border-radius: 20px; text-align: left;
-            cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 15px; line-height: 1.6; color: #334155;
+            background: #fff; border: 2px solid #f1f5f9; padding: 18px;
+            margin: 12px 0; border-radius: 18px; text-align: left;
+            cursor: pointer; transition: 0.3s; font-size: 14.5px;
+            line-height: 1.6; color: #334155;
         }
-        .review-card:hover { border-color: var(--accent); background: #fcfdfe; }
         .review-card.selected {
             border-color: var(--accent); background: #f0f9ff;
-            box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.1);
-        }
-        select, .btn-gen {
-            width: 100%; padding: 15px; border-radius: 14px;
-            font-size: 16px; font-weight: 600; margin-top: 15px;
-            border: 2px solid #e2e8f0; background: white;
         }
         .btn-gen {
-            background: #f1f5f9; color: var(--primary); border: none;
-            cursor: pointer; margin-bottom: 10px;
+            width: 100%; padding: 14px; border-radius: 14px;
+            font-size: 15px; font-weight: 600; margin-top: 10px;
+            border: none; background: #f1f5f9; color: var(--primary); cursor: pointer;
         }
-        .btn-gen:hover { background: #e2e8f0; }
         .btn-copy {
             width: 100%; padding: 18px; background: var(--accent);
             color: white; border: none; border-radius: 16px;
-            font-size: 18px; font-weight: 700; margin-top: 10px;
+            font-size: 17px; font-weight: 700; margin-top: 15px;
             display: none; cursor: pointer;
-            box-shadow: 0 20px 25px -5px rgba(14, 165, 233, 0.4);
+            box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.3);
         }
-        #loader { display: none; margin: 20px 0; font-weight: 700; color: var(--accent); }
+        #loader { display: none; margin: 20px 0; font-weight: 700; color: var(--accent); font-size: 14px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="brand-header">KeepConnect AI Reviews</div>
-    <div class="biz-name" id="displayBizName">Loading...</div>
-    <div class="biz-cat" id="displayCategory">Loading...</div>
+    <div class="header-flex">
+        <div class="brand-info">
+            <div class="brand-header">KeepConnect AI</div>
+            <div class="biz-name" id="displayBizName">Loading...</div>
+        </div>
+        <div class="lang-wrapper">
+            <select id="langSelect" onchange="generateReviews()">
+                <option value="English">English</option>
+                <option value="Marathi">मराठी</option>
+                <option value="Hindi">हिन्दी</option>
+                <option value="Gujarati">ગુજરાતી</option>
+                <option value="Tamil">தமிழ்</option>
+                <option value="Telugu">తెలుగు</option>
+                <option value="Kannada">ಕನ್ನಡ</option>
+                <option value="Malayalam">മലയാളം</option>
+                <option value="Bengali">বাংলা</option>
+                <option value="Punjabi">ਪੰਜਾਬੀ</option>
+            </select>
+        </div>
+    </div>
 
-    <div id="loader">✨ AI is crafting reviews...</div>
+    <div style="text-align: left;">
+        <div class="biz-cat" id="displayCategory">Loading...</div>
+    </div>
+
+    <div id="loader">✨ Generating unique reviews...</div>
     <div id="reviewContainer"></div>
 
     <button class="btn-gen" onclick="generateReviews()">🔄 Change Reviews</button>
-    
     <button id="copyBtn" class="btn-copy" onclick="copyAndRedirect()">Copy & Continue</button>
-
-    <label style="display:block; text-align:left; font-size:11px; font-weight:800; margin-top:25px; color:#94a3b8; letter-spacing: 1px;">PREFER ANOTHER LANGUAGE?</label>
-    <select id="langSelect" onchange="generateReviews()">
-        <option value="English">English</option>
-        <option value="Marathi">Marathi (मराठी)</option>
-        <option value="Hindi">Hindi (हिन्दी)</option>
-        <option value="Gujarati">Gujarati (ગુજરાતી)</option>
-        <option value="Tamil">Tamil (தமிழ்)</option>
-        <option value="Telugu">Telugu (తెలుగు)</option>
-        <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
-        <option value="Malayalam">Malayalam (मलयालम)</option>
-        <option value="Bengali">Bengali (বাংলা)</option>
-        <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
-    </select>
 </div>
 
 <script>
@@ -105,36 +118,55 @@
 
     const vocab = {
         English: {
-            opening: ["Absolutely wonderful experience at ", "I was truly impressed by ", "Highly recommend visiting ", "A hidden gem! "],
-            context: {
-                "Restaurant": `The food quality is exceptional and the flavors are authentic. Every dish we ordered was cooked to perfection. `,
-                "Hospital": `The medical care is top-notch and the doctors are very attentive. The facility is clean and well-managed. `,
-                "Shop": `They have an amazing collection and the pricing is very reasonable. The staff helps you find exactly what you need. `,
-                "Default": `The service is professional and they really care about customer satisfaction. Everything was handled perfectly. `
-            },
-            closing: ["The staff is very polite and the ambiance is great. Definitely coming back soon!", "If you want quality service, this is the place to be. 5 stars from my side!", "Truly a professional team and worth every penny spent here."]
+            open: ["Outstanding experience at ", "I am so happy with ", "Quality service by "],
+            mid: { "Restaurant": "The food was delicious and fresh. ", "Default": "Very professional and reliable service. " },
+            end: ["Highly recommended!", "Will definitely visit again."]
         },
         Marathi: {
-            opening: [bizName + " ला भेट देऊन खूप आनंद झाला. ", "इथला अनुभव खरोखरच अविस्मरणीय होता. ", "उत्तम सेवा आणि दर्जेदार काम! "],
-            context: {
-                "Restaurant": `जेवणाची चव अप्रतिम आहे आणि स्वच्छता सुद्धा उत्तम राखली आहे. प्रत्येक पदार्थ ताज्या स्वरूपात मिळतो. `,
-                "Hospital": `डॉक्टर आणि स्टाफ अत्यंत अनुभवी आहेत. वेळेवर उपचार आणि योग्य मार्गदर्शन येथे मिळते. `,
-                "Shop": `इथे व्हरायटी खूप छान आहे आणि किमती सुद्धा परवडणाऱ्या आहेत. ग्राहकांशी वागणूक खूप नम्र आहे. `,
-                "Default": `एकूणच इथली सिस्टिम खूप चांगली आहे. काम वेळेत पूर्ण होते आणि रिझल्ट सुद्धा उत्तम मिळतो. `
-            },
-            closing: ["५ स्टार अनुभव! मी सर्वांना इथे येण्याची शिफारस करतो.", "पुन्हा नक्की भेट देईन. खूप खूप धन्यवाद!", "अशी सर्व्हिस आजकाल मिळणे कठीण आहे. उत्तम काम!"]
+            open: [bizName + " येथील अनुभव खूप छान होता. ", "उत्तम सेवा मिळाली. "],
+            mid: { "Restaurant": "जेवण चविष्ट आणि ताजे होते. ", "Default": "अत्यंत दर्जेदार आणि खात्रीशीर सर्व्हिस. " },
+            end: ["नक्की भेट द्या!", "५ स्टार अनुभव."]
         },
         Hindi: {
-            opening: [bizName + " में मेरा अनुभव बहुत ही शानदार रहा। ", "यहाँ की सर्विस देखकर दिल खुश हो गया। ", "एक बेहतरीन जगह! "],
-            context: {
-                "Restaurant": `खाने का स्वाद लाजवाब है और यहाँ की साफ़-सफाई भी बहुत अच्छी है। हर चीज़ फ्रेश और टेस्टी है। `,
-                "Hospital": `यहाँ के डॉक्टर बहुत ही समझदार हैं और इलाज बहुत अच्छी तरह से किया जाता है। स्टाफ भी काफी मददगार है। `,
-                "Shop": `यहाँ काफी अच्छी वैरायटी उपलब्ध है और दाम भी सही हैं। खरीदारी के लिए यह सबसे अच्छी जगह है। `,
-                "Default": `यहाँ की कार्यप्रणाली बहुत ही प्रोफेशनल है। ग्राहक संतुष्टि का पूरा ध्यान रखा जाता है। `
-            },
-            closing: ["५ स्टार रेटिंग! आप भी यहाँ जरूर आएं।", "शानदार काम जारी रखें, दोबारा जरूर आऊंगा।", "इतनी अच्छी सर्विस के लिए शुक्रिया!"]
+            open: [bizName + " में सर्विस बहुत अच्छी है। ", "शानदार अनुभव रहा। "],
+            mid: { "Restaurant": "खाना बहुत स्वादिष्ट और ताज़ा था। ", "Default": "बहुत ही प्रोफेशनल सर्विस है। " },
+            end: ["जरूर आएं!", "५ स्टार रेटिंग।"]
+        },
+        Gujarati: {
+            open: [bizName + " ખાતે અનુભવ ખૂબ સરસ રહ્યો. ", "ઉત્તમ સેવા મળી. "],
+            mid: { "Restaurant": "જમવાનું ખૂબ જ સ્વાદિષ્ટ અને તાજું હતું. ", "Default": "ખૂબ જ વ્યવસાયિક સેવા છે. " },
+            end: ["ચોક્કસ મુલાકાત લો!", "૫ સ્ટાર અનુભવ."]
+        },
+        Tamil: {
+            open: [bizName + " சிறந்த அனுபவம். ", "மிகவும் மகிழ்ச்சியாக உள்ளது. "],
+            mid: { "Restaurant": "உணவு மிகவும் சுவையாகவும் புதியதாகவும் இருந்தது. ", "Default": "மிகவும் தொழில்முறை சேவை. " },
+            end: ["நிச்சயமாக மீண்டும் வருவேன்!", "5 நட்சத்திரங்கள்!"]
+        },
+        Telugu: {
+            open: [bizName + " లో అనుభవం చాలా బాగుంది. ", "మంచి సర్వీస్. "],
+            mid: { "Restaurant": "ఆహారం చాలా రుచికరంగా మరియు తాజాగా ఉంది. ", "Default": "చాలా ప్రొఫెషనల్ సర్వీస్. " },
+            end: ["తప్పకుండా మళ్ళీ వస్తాను!", "5 స్టార్!"]
+        },
+        Kannada: {
+            open: [bizName + " ನಲ್ಲಿ ಅನುಭವ ತುಂಬಾ ಚೆನ್ನಾಗಿದೆ. ", "ಉತ್ತಮ ಸೇವೆ. "],
+            mid: { "Restaurant": "ಊಟವು ತುಂಬಾ ರುಚಿಕರವಾಗಿತ್ತು. ", "Default": "ಅತ್ಯಂತ ವೃತ್ತಿಪರ ಸೇವೆ. " },
+            end: ["ಖಂಡಿತ ಮತ್ತೆ ಬರುತ್ತೇನೆ!", "5 ಸ್ಟಾರ್!"]
+        },
+        Malayalam: {
+            open: [bizName + " മികച്ച അനുഭവം. ", "നല്ല സേവനം. "],
+            mid: { "Restaurant": "ഭക്ഷണം വളരെ രുചികരമായിരുന്നു. ", "Default": "വളരെ പ്രൊഫഷണൽ സേവനം. " },
+            end: ["തീർച്ചയായും വീണ്ടും വരും!", "5 സ്റ്റാർ!"]
+        },
+        Bengali: {
+            open: [bizName + "-এ অভিজ্ঞতা দারুণ ছিল। ", "খুব ভালো সার্ভিস। "],
+            mid: { "Restaurant": "খাবার খুব সুস্বাদু এবং তাজা ছিল। ", "Default": "খুবই পেশাদার সার্ভিস। " },
+            end: ["অবশ্যই আবার আসব!", "৫ স্টার!"]
+        },
+        Punjabi: {
+            open: [bizName + " ਵਿਖੇ ਤਜ਼ਰਬਾ ਬਹੁਤ ਵਧੀਆ ਸੀ। ", "ਵਧੀਆ ਸਰਵਿਸ। "],
+            mid: { "Restaurant": "ਖਾਣਾ ਬਹੁਤ ਸਵਾਦਿਸ਼ਟ ਸੀ। ", "Default": "ਬਹੁਤ ਹੀ ਪੇਸ਼ੇਵਰ ਸੇਵਾ। " },
+            end: ["ਜ਼ਰੂਰ ਦੁਬਾਰਾ ਆਵਾਂਗੇ!", "5 ਸਟਾਰ!"]
         }
-        // ... इतर भाषांसाठी आपण असाच पॅटर्न वाढवू शकतो
     };
 
     window.onload = () => generateReviews();
@@ -143,7 +175,6 @@
         const lang = document.getElementById('langSelect').value;
         const container = document.getElementById('reviewContainer');
         const loader = document.getElementById('loader');
-        
         loader.style.display = "block";
         container.innerHTML = "";
         document.getElementById('copyBtn').style.display = "none";
@@ -151,15 +182,10 @@
         setTimeout(() => {
             loader.style.display = "none";
             const data = vocab[lang] || vocab['English'];
-            const catKey = vocab[lang]?.context[bizCat] ? bizCat : "Default";
-            const contextText = data.context[catKey];
+            const midText = data.mid[bizCat] || data.mid["Default"];
 
             for(let i=0; i<3; i++) {
-                let open = data.opening[Math.floor(Math.random()*data.opening.length)];
-                let close = data.closing[Math.floor(Math.random()*data.closing.length)];
-                
-                let text = `${open}${contextText}${close}`;
-                
+                let text = data.open[Math.floor(Math.random()*data.open.length)] + midText + data.end[Math.floor(Math.random()*data.end.length)];
                 const div = document.createElement('div');
                 div.className = 'review-card';
                 div.innerText = text;
@@ -176,8 +202,7 @@
 
     function copyAndRedirect() {
         navigator.clipboard.writeText(selectedReview).then(() => {
-            alert("Review Copied! Redirecting to Google...");
-            window.location.href = googleLink;
+            window.location.href = googleLink; // थेट रिडायरेक्ट, कोणताही पॉपअप नाही
         });
     }
 </script>
