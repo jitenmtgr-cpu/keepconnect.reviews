@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Review Assistant - AI Pro</title>
+    <title>Smart AI Review Assistant</title>
     <style>
         :root { --primary: #4285f4; --bg: #f8f9fa; --card: #ffffff; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; text-align: center; }
@@ -15,19 +15,18 @@
         .review-card.selected { border-color: var(--primary); background: #e8f0fe; }
         .hidden { display: none; }
         #loader { color: var(--primary); font-weight: bold; margin: 15px 0; display: none; }
-        label { display: block; text-align: left; font-size: 14px; font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Review Assistant</h2>
+    <h2>AI Review Assistant</h2>
     <div class="setup-info">
-        <strong>Business:</strong> <span id="displayBizName">Wait...</span><br>
-        <strong>Category:</strong> <span id="displayCategory">Wait...</span>
+        <strong>Business:</strong> <span id="displayBizName">Loading...</span><br>
+        <strong>Category:</strong> <span id="displayCategory">Loading...</span>
     </div>
 
-    <label>Select Language:</label>
+    <label style="display:block; text-align:left; font-size:14px; font-weight:bold;">Select Language:</label>
     <select id="langSelect">
         <option value="Marathi">Marathi (मराठी)</option>
         <option value="Hindi">Hindi (हिन्दी)</option>
@@ -35,53 +34,36 @@
         <option value="Gujarati">Gujarati (ગુજરાતી)</option>
         <option value="Tamil">Tamil (தமிழ்)</option>
         <option value="Bengali">Bengali (বাংলা)</option>
+        <option value="Telugu">Telugu (తెలుగు)</option>
+        <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+        <option value="Malayalam">Malayalam (മലയാളം)</option>
+        <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
     </select>
 
-    <div id="loader">Generating...</div>
+    <div id="loader">AI is writing new reviews...</div>
     <div id="reviewContainer"></div>
 
-    <button id="genBtn" onclick="generateSmartReviews()">Generate Reviews</button>
-    <button id="copyBtn" class="hidden" onclick="copyAndRedirect()">Copy & Open Google Maps</button>
+    <button id="genBtn" onclick="fetchAIReviews()">Generate AI Reviews</button>
+    <button id="copyBtn" class="hidden" onclick="copyAndRedirect()">Copy & Open Google</button>
 </div>
 
 <script>
+    // तुमचा दिलेला की
+    const API_KEY = "AIzaSyDuRVorM3LdRe0ANE94Si7Kq-cB-USK3Is"; 
+
     const urlParams = new URLSearchParams(window.location.search);
     const bizName = urlParams.get('biz_name') || "Sai Cafe";
     const bizCat = urlParams.get('category') || "Restaurant";
-    const googleLink = urlParams.get('google_url') || "https://www.google.com/maps";
+    const googleLink = urlParams.get('google_url') || "https://maps.google.com";
 
     window.onload = () => {
         document.getElementById('displayBizName').innerText = bizName;
         document.getElementById('displayCategory').innerText = bizCat;
     };
 
-    // स्मार्ट रिव्ह्यू डेटाबेस (API शिवाय चालणारा)
-    const reviewData = {
-        "Marathi": [
-            `खूप छान सर्व्हिस! ${bizName} मधील वातावरण प्रसन्न आहे. नक्की भेट द्या.`,
-            `इथली क्वालिटी आणि वागणूक दोन्ही उत्तम आहेत. ५ स्टार!`,
-            `${bizName} हे ${bizCat} साठी सर्वोत्तम ठिकाण आहे. खूप आवडले.`
-        ],
-        "Hindi": [
-            `${bizName} की सर्विस बहुत अच्छी है। यहाँ का अनुभव शानदार रहा।`,
-            `बहुत ही बढ़िया क्वालिटी और स्टाफ! ${bizName} बेस्ट है।`,
-            `${bizCat} के लिए यहाँ जरूर आएं। पैसा वसूल अनुभव।`
-        ],
-        "English": [
-            `Excellent service at ${bizName}! Highly recommended for ${bizCat}.`,
-            `The quality and behavior are top-notch. Truly a 5-star experience!`,
-            `Best place for ${bizCat} in town. Had a great time at ${bizName}.`
-        ],
-        "Gujarati": [
-            `${bizName} ની સર્વિસ ખૂબ જ સરસ છે. અહીંનો અનુભવ અદ્ભુત રહ્યો.`,
-            `${bizCat} માટે આ શ્રેષ્ઠ જગ્યા છે. ચોક્કસ મુલાકાત લો.`,
-            `ખૂબ જ સરસ ક્વોલિટી અને સ્ટાફ! મજા આવી ગઈ.`
-        ]
-    };
-
     let selectedReview = "";
 
-    function generateSmartReviews() {
+    async function fetchAIReviews() {
         const lang = document.getElementById('langSelect').value;
         const loader = document.getElementById('loader');
         const container = document.getElementById('reviewContainer');
@@ -91,24 +73,44 @@
         container.innerHTML = "";
         copyBtn.classList.add('hidden');
 
-        // AI इंजिन सारखा फील देण्यासाठी छोटा डिले
-        setTimeout(() => {
-            loader.style.display = "none";
-            const reviews = reviewData[lang] || reviewData["English"];
+        const promptText = `Write 3 unique, short, very positive Google reviews for "${bizName}" (${bizCat}) in ${lang}. Separate each review with a # symbol. Don't use numbers.`;
 
-            reviews.forEach((revText) => {
-                const div = document.createElement('div');
-                div.className = 'review-card';
-                div.innerText = revText;
-                div.onclick = function() {
-                    document.querySelectorAll('.review-card').forEach(c => c.classList.remove('selected'));
-                    this.classList.add('selected');
-                    selectedReview = this.innerText;
-                    copyBtn.classList.remove('hidden');
-                };
-                container.appendChild(div);
+        try {
+            // "gemini-1.5-flash" ऐवजी फक्त "gemini-pro" वापरून पाहूया जो सर्वात जास्त सपोर्टेड आहे
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: promptText }] }]
+                })
             });
-        }, 800);
+
+            const data = await response.json();
+
+            if (data.candidates && data.candidates[0].content) {
+                const text = data.candidates[0].content.parts[0].text;
+                const reviews = text.split('#').filter(r => r.trim().length > 5);
+
+                loader.style.display = "none";
+                reviews.forEach((revText) => {
+                    const div = document.createElement('div');
+                    div.className = 'review-card';
+                    div.innerText = revText.trim();
+                    div.onclick = function() {
+                        document.querySelectorAll('.review-card').forEach(c => c.classList.remove('selected'));
+                        this.classList.add('selected');
+                        selectedReview = this.innerText;
+                        copyBtn.classList.remove('hidden');
+                    };
+                    container.appendChild(div);
+                });
+            } else {
+                throw new Error("AI Busy");
+            }
+        } catch (error) {
+            loader.innerText = "Error: AI not responding. Check API in Google Console.";
+            console.error(error);
+        }
     }
 
     function copyAndRedirect() {
