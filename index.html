@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>100% Automated AI Reviews</title>
+    <title>Real-Time AI Generator</title>
     <style>
         :root { --p: #4285f4; --bg: #f8f9fa; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; text-align: center; }
@@ -11,8 +11,7 @@
         .setup-info { background: #e8f0fe; padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: left; font-size: 14px; }
         select, button { width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; }
         button { background: var(--p); color: white; border: none; font-weight: bold; cursor: pointer; }
-        .review-box { border: 2px solid #eee; padding: 12px; margin: 10px 0; border-radius: 10px; cursor: pointer; text-align: left; background: #fff; animation: slideIn 0.3s; }
-        @keyframes slideIn { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .review-box { border: 2px solid #eee; padding: 12px; margin: 10px 0; border-radius: 10px; cursor: pointer; text-align: left; background: #fff; }
         .selected { border-color: var(--p); background: #e8f0fe; }
         #loader { margin: 15px; color: var(--p); display: none; font-weight: bold; }
     </style>
@@ -20,94 +19,88 @@
 <body>
 
 <div class="card">
-    <h2>Review Assistant AI</h2>
+    <h2>Real-Time AI Assistant</h2>
     <div class="setup-info">
         <strong>🏢 Business:</strong> <span id="bName">Loading...</span><br>
         <strong>📂 Category:</strong> <span id="bCat">Loading...</span>
     </div>
 
-    <label style="display:block; text-align:left; font-size:14px; font-weight:bold;">Choose Language:</label>
     <select id="lang">
         <option value="Marathi">Marathi (मराठी)</option>
         <option value="Hindi">Hindi (हिन्दी)</option>
         <option value="English">English</option>
-        <option value="Gujarati">Gujarati (ગુજરાતી)</option>
     </select>
 
-    <div id="loader">AI is generating unique reviews...</div>
+    <div id="loader">AI is thinking and writing unique reviews...</div>
     <div id="container"></div>
 
-    <button id="genBtn" onclick="generateRealAI()">Generate AI Reviews</button>
+    <button id="genBtn" onclick="generateTrulyAI()">Generate Truly AI Reviews</button>
     <button id="copyBtn" style="display:none; margin-top:10px; background:#34a853;" onclick="copyGo()">Copy & Review</button>
 </div>
 
 <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const bizName = urlParams.get('biz_name') || "Sai Cafe";
-    const bizCat = urlParams.get('category') || "Restaurant";
-    const googleLink = urlParams.get('google_url') || "https://google.com";
+    const API_KEY = "AIzaSyDuRVorM3LdRe0ANE94Si7Kq-cB-USK3Is"; 
 
-    document.getElementById('bName').innerText = bizName;
-    document.getElementById('bCat').innerText = bizCat;
+    const urlParams = new URLSearchParams(window.location.search);
+    const bName = urlParams.get('biz_name') || "Sai Cafe";
+    const bCat = urlParams.get('category') || "Restaurant";
+    const gUrl = urlParams.get('google_url') || "https://google.com";
+
+    document.getElementById('bName').innerText = bName;
+    document.getElementById('bCat').innerText = bCat;
 
     let selectedText = "";
 
-    // ही सिस्टिम Google API शिवाय चालते, यात 'DeepAI' लॉजिक वापरले आहे
-    async function generateRealAI() {
+    async function generateTrulyAI() {
         const lang = document.getElementById('lang').value;
         const loader = document.getElementById('loader');
         const container = document.getElementById('container');
-        const genBtn = document.getElementById('genBtn');
         
         loader.style.display = "block";
         container.innerHTML = "";
-        genBtn.disabled = true;
 
-        // रिव्ह्यू जनरेट करण्यासाठी आपण 'Prompt Engineering' वापरून हाय-क्वालिटी डेटाबेस तयार केला आहे
-        // जो खऱ्या AI प्रमाणेच रिझल्ट देतो पण फेल होत नाही.
-        const templates = {
-            Marathi: [
-                `${bizName} मधील अनुभव खूपच छान होता. इथली ${bizCat} सर्व्हिस आणि क्वालिटी एकदम उत्तम आहे.`,
-                `जर तुम्ही चांगल्या ${bizCat} च्या शोधात असाल, तर ${bizName} ला नक्की भेट द्या. खूप आवडले!`,
-                `${bizName} मध्ये आज गेलो होतो, तिथली स्वच्छता आणि स्टाफची वागणूक पाहून खूप समाधान वाटले.`
-            ],
-            Hindi: [
-                `${bizName} में ${bizCat} का अनुभव बहुत ही शानदार रहा। सर्विस और क्वालिटी लाजवाब है।`,
-                `${bizCat} के लिए ${bizName} सबसे बेहतरीन जगह है। यहाँ का माहौल बहुत अच्छा है।`,
-                `${bizName} की सर्विस से मैं बहुत खुश हूँ। ५ स्टार रेटिंग!`
-            ],
-            English: [
-                `Had an amazing experience at ${bizName}. The ${bizCat} services are top-notch and highly recommended.`,
-                `If you are looking for a quality ${bizCat}, ${bizName} is the place to go. Great hospitality!`,
-                `The staff at ${bizName} is very professional. Truly a 5-star experience for ${bizCat}.`
-            ]
-        };
+        // हा प्रॉम्प्ट AI ला खऱ्या अर्थाने विचार करायला लावतो
+        const prompt = `Write 3 highly creative, natural-sounding, positive Google reviews for "${bName}" (${bCat}) in ${lang}. Each review should be unique. Separate them only with #. Do not use numbers or bullet points.`;
 
-        // खऱ्या AI सारखं 'Thinking' फील येण्यासाठी छोटा डिले
-        setTimeout(() => {
-            const list = templates[lang] || templates.English;
-            loader.style.display = "none";
-            genBtn.disabled = false;
-
-            list.forEach(text => {
-                const div = document.createElement('div');
-                div.className = 'review-box';
-                div.innerText = text;
-                div.onclick = () => {
-                    document.querySelectorAll('.review-box').forEach(b => b.classList.remove('selected'));
-                    div.classList.add('selected');
-                    selectedText = text;
-                    document.getElementById('copyBtn').style.display = "block";
-                };
-                container.appendChild(div);
+        try {
+            // १. पहिले 'v1' मॉडेल ट्राय करणे
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
             });
-        }, 1500);
+
+            const data = await response.json();
+
+            if (data.candidates && data.candidates[0].content) {
+                const aiText = data.candidates[0].content.parts[0].text;
+                const reviews = aiText.split('#').filter(r => r.trim().length > 5);
+                
+                loader.style.display = "none";
+                reviews.forEach(text => {
+                    const div = document.createElement('div');
+                    div.className = 'review-box';
+                    div.innerText = text.trim();
+                    div.onclick = () => {
+                        document.querySelectorAll('.review-box').forEach(b => b.classList.remove('selected'));
+                        div.classList.add('selected');
+                        selectedText = text.trim();
+                        document.getElementById('copyBtn').style.display = "block";
+                    };
+                    container.appendChild(div);
+                });
+            } else {
+                throw new Error("AI Key Configuration Issue");
+            }
+        } catch (error) {
+            loader.innerHTML = `<span style='color:red;'><b>AI Connection Error:</b> तुमच्या Google Cloud मध्ये 'Gemini Pro' मॉडेलला परवानगी नाहीये. कृपया नवीन API Key वापरून पहा किंवा 'Authorize' बटन चेक करा.</span>`;
+        }
     }
 
     function copyGo() {
         navigator.clipboard.writeText(selectedText).then(() => {
-            alert("Review Copied!");
-            window.location.href = googleLink;
+            alert("Copied!");
+            window.location.href = gUrl;
         });
     }
 </script>
