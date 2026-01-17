@@ -68,16 +68,20 @@
 
 <script>
     // Configuration
-    const API_KEY = "AIzaSyBMCpQmRLtsGcaqVSO2Czvc_gEvWLrhLdk"; 
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    // Dynamic Business Data from URL
-    const bizName = urlParams.get('biz_name') || "This Business";
-    const bizCat = urlParams.get('category') || "Services";
-    const googleLink = urlParams.get('google_url') || "https://maps.google.com";
+    // --- हा नवीन अपडेटेड कोड पेस्ट करा ---
+const API_KEY = "AIzaSyBMCpQmRLtsGcaqVSO2Czvc_gEvWLrhLdk"; 
 
+const urlParams = new URLSearchParams(window.location.search);
+const bizName = urlParams.get('biz_name') || "Business Name";
+const bizCat = urlParams.get('category') || "General Category";
+const googleLink = urlParams.get('google_url') || "https://maps.google.com";
+
+// हा भाग "Loading..." चा प्रॉब्लेम सॉल्व्ह करेल
+window.onload = function() {
     document.getElementById('displayBizName').innerText = bizName;
     document.getElementById('displayCategory').innerText = bizCat;
+};
+// ------------------------------------
 
     let selectedReview = "";
 
