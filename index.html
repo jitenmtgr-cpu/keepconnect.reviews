@@ -27,6 +27,7 @@
         <div>
             <div class="brand-header">KeepConnect AI</div>
             <div class="biz-name" id="displayBizName">Loading...</div>
+            <div id="displayLoc" style="font-size: 14px; color: #64748b; margin-top: 5px;"></div>
         </div>
         <select id="langSelect" onchange="generateReviews()">
             <option value="English">English</option>
@@ -53,143 +54,83 @@
     const bizName = params.get('biz_name') || "Business Name";
     const bizCat = params.get('category') || "Services";
     const googleLink = params.get('google_url') || "https://google.com";
+    
+    // १. लोकेशचे नाव इकडे डिफाइन केले आहे जेणेकरून रिव्ह्यूमध्ये एरर येणार नाही
+    const locationName = params.get('location') || "";
 
     document.getElementById('displayBizName').innerText = bizName;
     document.getElementById('displayCategory').innerText = bizCat;
+    if(locationName) document.getElementById('displayLoc').innerText = "📍 " + locationName;
 
     const seoData = {
-    // 1. Food, Hospitality & FMCG
-    "Restaurant": { kw: "delicious food, top dining experience, authentic taste, best family restaurant", em: "🍴🍕🍔" },
-    "Hotel": { kw: "comfortable stay, great hospitality, best luxury hotel, top-rated rooms", em: "🏨🛌✨" },
-    "Cake & Bakery": { kw: "fresh cakes, delicious pastries, best bakery shop, customized cakes", em: "🎂🍰🥯" },
-    "Dairy & Sweets": { kw: "pure dairy products, fresh sweets, best quality milk, authentic mithai", em: "🥛🍬😋" },
-    "Oil Mill / Lakhdi ghani": { kw: "pure cold pressed oil, healthy cooking oil, wooden ghani, natural oil", em: "🫗🌱" },
-    "FMCG & Grocery": { kw: "daily essentials, best grocery store, fresh products, affordable prices", em: "🛒🍏📦" },
-    "Fruits & Vegetables": { kw: "fresh farm vegetables, organic fruits, best quality produce", em: "🍎🥦🍓" },
-
-    // 2. Health, Wellness & Medical
-    "Hospital & Clinic": { kw: "excellent healthcare, experienced doctors, safe treatment, best medical care", em: "🏥🩺💊" },
-    "Laboratory Pathology": { kw: "accurate reports, fast blood testing, reliable pathology, diagnostic center", em: "🔬🧪" },
-    "Medical/Surgical Equipments": { kw: "quality medical supplies, surgical tools, healthcare equipment", em: "⚕️🩺" },
-    "GYM & YOGA": { kw: "best fitness center, expert trainer, weight loss gym, yoga classes", em: "🏋️💪🧘" },
-    "Massage Parlour, Spa Centre": { kw: "relaxing spa, professional massage, stress relief, best wellness center", em: "💆✨🧖" },
-    "Patanjali Store": { kw: "ayurvedic products, herbal medicine, pure organic health care", em: "🌿🧘" },
-    "Veterinary Doctor": { kw: "best pet care, expert vet doctor, animal healthcare, pet clinic", em: "🐾🐕🩺" },
-
-    // 3. Digital, IT & Modern Services
-    "Digital Marketing": { kw: "best social media marketing, SEO expert, top digital agency, business growth", em: "📈📱💻" },
-    "IT Services / Software": { kw: "best software development, reliable IT support, custom web design", em: "💻🌐🛠️" },
-    "CSC Centre": { kw: "fast online services, reliable government documentation, easy digital work", em: "🖥️📑✅" },
-    "Internet Broadband Service": { kw: "high speed internet, reliable fiber connection, best wifi service", em: "🌐📶🚀" },
-    "Security Surveillance (CCTV)": { kw: "best security cameras, reliable CCTV installation, 24/7 monitoring", em: "📹🛡️🏠" },
-    "Computer Hardware": { kw: "quality computer repairs, best laptop accessories, trusted hardware shop", em: "💻🖱️🔌" },
-
-    // 4. Education & Career
-    "Education": { kw: "best learning center, quality education, top school, overall development", em: "📚🎓🏫" },
-    "Tuition Academy": { kw: "expert coaching, best result classes, personal attention, top tutors", em: "📖✍️" },
-    "Career Counselling": { kw: "career guidance, expert advice, job placement support", em: "🤝💼" },
-    "Driving School": { kw: "best driving lessons, expert instructors, easy license process", em: "🚗🚦🏁" },
-
-    // 5. Real Estate, Construction & Hardware
-    "Real Estate": { kw: "best property deals, reliable builders, dream home, top real estate agency", em: "🏠🏢🏗️" },
-    "Building Material": { kw: "quality construction material, cement steel supplier, reliable hardware", em: "🏗️🧱🔨" },
-    "Interior Decorator": { kw: "modern interior design, home styling, expert decorator, best home decor", em: "🏠🎨🛋️" },
-    "Architect": { kw: "professional home design, modern architecture, best building planner", em: "📐🏢✏️" },
-    "Plywood & Hardware": { kw: "durable plywood, quality hardware fittings, best furniture material", em: "🪚🔨" },
-    "Electrical": { kw: "quality electrical fittings, expert wiring, reliable electrician", em: "⚡💡🔌" },
-    "Paints": { kw: "best wall paints, colorful home decor, professional painting service", em: "🎨🖌️🏠" },
-
-    // 6. Retail, Fashion & Lifestyle
-    "Mobile Store": { kw: "latest smartphones, mobile accessories, best electronic shop", em: "📱🔌🎧" },
-    "Clothes": { kw: "latest fashion, quality fabrics, best clothing store, trendy outfits", em: "👗👕🛍️" },
-    "Jewellery": { kw: "authentic gold jewellery, beautiful diamond sets, trusted jeweler", em: "💎💍✨" },
-    "Footwear": { kw: "stylish shoes, comfortable footwear, best quality sandals", em: "👞👟👠" },
-    "Goggles & Spectacles": { kw: "stylish eyewear, best quality frames, professional eye testing", em: "👓🕶️👁️" },
-    "Toys Shops": { kw: "best kids toys, quality educational games, fun gift items", em: "🧸🎈🎮" },
-    "Watches": { kw: "luxury watches, stylish wristwear, best watch collection", em: "⌚🕒" },
-
-    // 7. Finance, Professional & Business
-    "Financial Service": { kw: "expert financial planning, tax saving, reliable investment advice", em: "💰📈" },
-    "Share Market Investment Agency": { kw: "stock market tips, portfolio management, expert trading", em: "📊📉" },
-    "Insurance Agent": { kw: "best life insurance, health insurance advisor, secure future", em: "🛡️📄" },
-    "Logistic & Courier Service": { kw: "fast delivery, reliable courier, safe shipping service", em: "🚚📦📍" },
-    "CA / Chartered Accountant": { kw: "expert tax audit, reliable GST filing, professional CA services", em: "💼📁🧾" },
-
-    // 8. Automobile & Machinery
-    "Automobile": { kw: "best car service, reliable auto parts, top vehicle dealer, expert repairs", em: "🚗🏍️🛠️" },
-    "Motor pump, Submersible pump": { kw: "heavy duty water pumps, reliable agriculture motor, quality repairs", em: "🚰💧🚜" },
-    "Road Roller, JCB, Hydra Truck": { kw: "heavy machinery rental, reliable construction equipment, JCB service", em: "🚜🏗️🚧" },
-    "Solar Business": { kw: "best solar panels, renewable energy, solar installation experts", em: "☀️🔋" },
-
-    // 9. Social, Political & Events
-    "Political Party": { kw: "dedicated leadership, public welfare, social development, trusted party", em: "🚩🗳️🤝" },
-    "Social Activist": { kw: "selfless social work, community helper, voice of people", em: "🌍🙏✊" },
-    "NGO": { kw: "social cause, helping hand, community service, impactful work", em: "🤝🌍❤️" },
-    "Photography & Videography": { kw: "best wedding photographer, professional video shoot, creative cinematography", em: "📸🎥🎬" },
-    "Events Management": { kw: "perfect event planning, best wedding planner, professional management", em: "🎊🎈📋" },
-
-    // Default - इतर सर्व कॅटेगरीसाठी
-    "Default": { kw: "outstanding service, professional team, highly recommended quality, best experience", em: "⭐✨✅" }
-};
+        "Restaurant": { kw: "delicious food, top dining experience, authentic taste", em: "🍴🍕" },
+        "Laboratory Pathology": { kw: "accurate reports, fast blood testing, reliable pathology", em: "🔬🧪" },
+        "Hospital & Clinic": { kw: "excellent healthcare, experienced doctors, safe treatment", em: "🏥🩺" },
+        "GYM & YOGA": { kw: "best fitness center, expert trainer, weight loss gym", em: "🏋️💪" },
+        "Default": { kw: "outstanding service, professional team, high quality", em: "⭐✨" }
+    };
 
     const vocab = {
-    English: {
-        o: ["Exceptional experience at " + bizName + "! 🌟 "],
-        m: (k,e) => `The ${k} for ${bizCat} ${locationName ? 'in ' + locationName : ''} is fantastic. ${e} Their professional team ${locationName ? 'at ' + locationName : ''} ensures the best quality. `,
-        c: ["Highly recommended in this area! 👏"]
-    },
-    Marathi: {
-        o: [bizName + " येथील अनुभव खूपच भारी होता! ⭐ "],
-        m: (k,e) => `${locationName ? locationName + " मधील " : ""}येथे ${bizCat} साठी मिळणारी ${k} खरोखरच कौतुकास्पद आहे. ${e} ${locationName ? locationName + " परिसरात " : ""}उत्तम सेवेसाठी हे बेस्ट ठिकाण आहे. `,
-        c: ["५ स्टार अनुभव! नक्की भेट द्या. 💯"]
-    },
-    Hindi: {
-        o: [bizName + " में मेरा अनुभव बहुत ही अद्भुत रहा! 🌟 "],
-        m: (k,e) => `${locationName ? locationName + " में " : ""}${bizCat} के लिए जो ${k} यहाँ मिलती है, वह लाजवाब है। ${e} ${locationName ? locationName + " क्षेत्र में " : ""}बेहतरीन सर्विस के लिए यहाँ जरूर आएं। `,
-        c: ["शानदार सर्विस! सबको यहाँ आने की सलाह देता हूँ। 👏"]
-    },
-    Gujarati: {
-        o: [bizName + " ખાતે અનુભવ ખૂબ સરસ રહ્યો! 🌟 "],
-        m: (k,e) => `${locationName ? locationName + " માં " : ""}${bizCat} માટે જે ${k} મળે છે તે ખરેખર ઉત્તમ છે. ${e} 🏆 `,
-        c: ["૫ સ્ટાર રેટिंग! ચોક્કસ મુલાકાત લો. 👏"]
-    },
-    Tamil: {
-        o: [bizName + " இல் சிறந்த அனுபவம்! 🌟 "],
-        m: (k,e) => `${locationName ? locationName + "-இல் " : ""}${bizCat} க்கான ${k} மிகவும் சிறப்பாக உள்ளது. ${e} 🏆 `,
-        c: ["நிச்சயமாக பரிந்துரைக்கிறேன்! 5 நட்சத்திரங்கள். 👏"]
-    },
-    Telugu: {
-        o: [bizName + " లో అనుభవం అద్భుతంగా ఉంది! 🌟 "],
-        m: (k,e) => `${locationName ? locationName + " లో " : ""}${bizCat} కోసం ఇచ్చే ${k} చాలా బాగుंदी. ${e} 🏆 `,
-        c: ["ఖచ్చితంగా మళ్ళీ వస్తాను! 5 స్టార్. 👏"]
-    },
-    Kannada: {
-        o: [bizName + " ನಲ್ಲಿ ಅನುಭವ ತುಂಬಾ ಚೆನ್ನಾಗಿದೆ! 🌟 "],
-        m: (k,e) => `${locationName ? locationName + " ನಲ್ಲಿ " : ""}${bizCat} ಗಾಗಿ ಒದಗಿಸುವ ${k} ಅತ್ಯುತ್ತಮವಾಗಿದೆ. ${e} 🏆 `,
-        c: ["ಖಂಡಿತವಾಗಿ ಶಿఫාරಸು ಮಾಡುತ್ತೇನೆ! 5 ಸ್ಟಾರ್. 👏"]
-    },
-    Malayalam: {
-        o: [bizName + " മികച്ച അനുഭവം! 🌟 "],
-        m: (k,e) => `${locationName ? locationName + "-ൽ " : ""}${bizCat} നൽകുന്ന ${k} വളരെ മികച്ചതാണ്. ${e} 🏆 `,
-        c: ["തീർച്ചയായും സന്ദർશിക്കുക! 5 സ്റ്റാർ. 👏"]
-    },
-    Bengali: {
-        o: [bizName + "-এ অভিজ্ঞতা দারুণ ছিল! 🌟 "],
-        m: (k,e) => `${locationName ? locationName + "-এর " : ""}${bizCat}-এর জন্য যে ${k} পাওয়া যায় তা সত্যিই অতুলনীয়। ${e} 🏆 `,
-        c: ["অবশ্যই আবার আসব! ৫ স্টার। 👏"]
-    },
-    Punjabi: {
-        o: [bizName + " ਵਿਖੇ ਤਜ਼ਰਬਾ ਬਹੁਤ ਵਧੀਆ ਰਿਹਾ! 🌟 "],
-        m: (k,e) => `${locationName ? locationName + " ਵਿੱਚ " : ""}${bizCat} ਲਈ ${k} ਬਹੁਤ ਹੀ ਸ਼ਾਨਦਾਰ ਹੈ। ${e} 🏆 `,
-        c: ["ਜ਼ਰੂਰ ਦੁਬਾਰਾ ਆਵਾਂਗੇ! 5 ਸਟਾਰ। 👏"]
-    }
-};
+        English: {
+            o: ["Exceptional experience at " + bizName + "! 🌟 "],
+            m: (k,e) => `The ${k} for ${bizCat} ${locationName ? 'in ' + locationName : ''} is fantastic. ${e} Their professional team ensures the best quality. `,
+            c: ["Highly recommended! 👏"]
+        },
+        Marathi: {
+            o: [bizName + " येथील अनुभव खूपच भारी होता! ⭐ "],
+            m: (k,e) => `${locationName ? locationName + " मधील " : ""}येथे ${bizCat} साठी मिळणारी ${k} खरोखरच कौतुकास्पद आहे. ${e} उत्तम सेवेसाठी हे बेस्ट ठिकाण आहे. `,
+            c: ["५ स्टार अनुभव! नक्की भेट द्या. 💯"]
+        },
+        Hindi: {
+            o: [bizName + " में मेरा अनुभव बहुत ही अद्भुत रहा! 🌟 "],
+            m: (k,e) => `${locationName ? locationName + " में " : ""}${bizCat} के लिए जो ${k} यहाँ मिलती है, वह लाजवाब है। ${e} बेहतरीन सर्विस के लिए यहाँ जरूर आएं। `,
+            c: ["शानदार सर्विस! सबको यहाँ आने की सलाह देता हूँ। 👏"]
+        },
+        Gujarati: {
+            o: [bizName + " ખાતે અનુભવ ખૂબ સરસ રહ્યો! 🌟 "],
+            m: (k,e) => `${locationName ? locationName + " માં " : ""}${bizCat} માટે જે ${k} મળે છે તે ખરેખર ઉત્તમ છે. ${e} 🏆 `,
+            c: ["૫ સ્ટાર રેટિંગ! ચોક્કસ मुलाकात लो. 👏"]
+        },
+        Tamil: {
+            o: [bizName + " இல் சிறந்த அனுபவம்! 🌟 "],
+            m: (k,e) => `${locationName ? locationName + "-இல் " : ""}${bizCat} க்கான ${k} மிகவும் சிறப்பாக உள்ளது. ${e} 🏆 `,
+            c: ["நிச்சயமாக பரிந்துரைக்கிறேன்! 👏"]
+        },
+        Telugu: {
+            o: [bizName + " లో అనుభవం అద్భుతంగా ఉంది! 🌟 "],
+            m: (k,e) => `${locationName ? locationName + " లో " : ""}${bizCat} కోసం ఇచ్చే ${k} చాలా బాగుంది. ${e} 🏆 `,
+            c: ["ఖచ్చితంగా మళ్ళీ వస్తాను! 👏"]
+        },
+        Kannada: {
+            o: [bizName + " ನಲ್ಲಿ ಅನುಭವ ತುಂಬಾ ಚೆನ್ನಾಗಿದೆ! 🌟 "],
+            m: (k,e) => `${locationName ? locationName + " ನಲ್ಲಿ " : ""}${bizCat} ಗಾಗಿ ಒದಗಿಸುವ ${k} ಅತ್ಯುತ್ತਮವಾಗಿದೆ. ${e} 🏆 `,
+            c: ["ಖಂಡಿತವಾಗಿ ಶಿಫಾರಸು ಮಾಡುತ್ತೇನೆ! 👏"]
+        },
+        Malayalam: {
+            o: [bizName + " മികച്ച അനുഭവം! 🌟 "],
+            m: (k,e) => `${locationName ? locationName + "-ൽ " : ""}${bizCat} നൽകുന്ന ${k} വളരെ മികച്ചതാണ്. ${e} 🏆 `,
+            c: ["തീർച്ചയായും സന്ദർਸ਼ിക്കുക! 👏"]
+        },
+        Bengali: {
+            o: [bizName + "-এ অভিজ্ঞতা দারুণ ছিল! 🌟 "],
+            m: (k,e) => `${locationName ? locationName + "-এর " : ""}${bizCat}-এর জন্য যে ${k} পাওয়া যায় তা সত্যিই অতুলনীয়। ${e} 🏆 `,
+            c: ["অবশ্যই আবার আসব! 👏"]
+        },
+        Punjabi: {
+            o: [bizName + " ਵਿਖੇ ਤਜ਼ਰਬਾ ਬਹੁਤ ਵਧੀਆ ਰਿਹਾ! 🌟 "],
+            m: (k,e) => `${locationName ? locationName + " ਵਿੱਚ " : ""}${bizCat} ਲਈ ${k} ਬਹੁਤ ਹੀ ਸ਼ਾਨਦਾਰ ਹੈ। ${e} 🏆 `,
+            c: ["ਜ਼ਰੂਰ ਦੁਬਾਰਾ ਆਵਾਂਗੇ! 👏"]
+        }
+    };
+
     function generateReviews() {
         const lang = document.getElementById('langSelect').value;
         const container = document.getElementById('reviewContainer');
         const loader = document.getElementById('loader');
+        
         const langData = vocab[lang] || vocab['English'];
-        const seo = seoData[bizCat] || seoData["Default"];
+        // २. जर कॅटेगरी मॅच झाली नाही तर Default वर जाण्यासाठी हे लॉजिक
+        const seo = seoData[bizCat] ? seoData[bizCat] : seoData["Default"];
         
         loader.style.display = "block";
         container.innerHTML = "";
@@ -201,6 +142,7 @@
                 let text = (langData.o[Math.floor(Math.random()*langData.o.length)] || langData.o[0]) + 
                            langData.m(seo.kw, seo.em) + 
                            (langData.c[Math.floor(Math.random()*langData.c.length)] || langData.c[0]);
+                
                 const div = document.createElement('div');
                 div.className = 'review-card';
                 div.innerText = text;
