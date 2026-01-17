@@ -58,13 +58,79 @@
     document.getElementById('displayCategory').innerText = bizCat;
 
     const seoData = {
-        "Restaurant": { kw: "delicious food, top dining experience, authentic taste", em: "🍴🍕🍔" },
-        "Gym": { kw: "best workout atmosphere, professional training, top-rated fitness center", em: "🏋️💪🔥" },
-        "Hospital": { kw: "excellent healthcare, experienced doctors, safe and clean facility", em: "🏥🩺💊" },
-        "Shop": { kw: "huge collection, affordable prices, high-quality products", em: "🛍️🏷️📦" },
-        "Salon": { kw: "best makeover, professional stylists, premium beauty service", em: "💇✨💅" },
-        "Default": { kw: "outstanding service, professional team, highly recommended quality", em: "⭐✨✅" }
-    };
+    // 1. Food, Hospitality & FMCG
+    "Restaurant": { kw: "delicious food, top dining experience, authentic taste, best family restaurant", em: "🍴🍕🍔" },
+    "Hotel": { kw: "comfortable stay, great hospitality, best luxury hotel, top-rated rooms", em: "🏨🛌✨" },
+    "Cake & Bakery": { kw: "fresh cakes, delicious pastries, best bakery shop, customized cakes", em: "🎂🍰🥯" },
+    "Dairy & Sweets": { kw: "pure dairy products, fresh sweets, best quality milk, authentic mithai", em: "🥛🍬😋" },
+    "Oil Mill / Lakhdi ghani": { kw: "pure cold pressed oil, healthy cooking oil, wooden ghani, natural oil", em: "🫗🌱" },
+    "FMCG & Grocery": { kw: "daily essentials, best grocery store, fresh products, affordable prices", em: "🛒🍏📦" },
+    "Fruits & Vegetables": { kw: "fresh farm vegetables, organic fruits, best quality produce", em: "🍎🥦🍓" },
+
+    // 2. Health, Wellness & Medical
+    "Hospital & Clinic": { kw: "excellent healthcare, experienced doctors, safe treatment, best medical care", em: "🏥🩺💊" },
+    "Laboratory Pathology": { kw: "accurate reports, fast blood testing, reliable pathology, diagnostic center", em: "🔬🧪" },
+    "Medical/Surgical Equipments": { kw: "quality medical supplies, surgical tools, healthcare equipment", em: "⚕️🩺" },
+    "GYM & YOGA": { kw: "best fitness center, expert trainer, weight loss gym, yoga classes", em: "🏋️💪🧘" },
+    "Massage Parlour, Spa Centre": { kw: "relaxing spa, professional massage, stress relief, best wellness center", em: "💆✨🧖" },
+    "Patanjali Store": { kw: "ayurvedic products, herbal medicine, pure organic health care", em: "🌿🧘" },
+    "Veterinary Doctor": { kw: "best pet care, expert vet doctor, animal healthcare, pet clinic", em: "🐾🐕🩺" },
+
+    // 3. Digital, IT & Modern Services
+    "Digital Marketing": { kw: "best social media marketing, SEO expert, top digital agency, business growth", em: "📈📱💻" },
+    "IT Services / Software": { kw: "best software development, reliable IT support, custom web design", em: "💻🌐🛠️" },
+    "CSC Centre": { kw: "fast online services, reliable government documentation, easy digital work", em: "🖥️📑✅" },
+    "Internet Broadband Service": { kw: "high speed internet, reliable fiber connection, best wifi service", em: "🌐📶🚀" },
+    "Security Surveillance (CCTV)": { kw: "best security cameras, reliable CCTV installation, 24/7 monitoring", em: "📹🛡️🏠" },
+    "Computer Hardware": { kw: "quality computer repairs, best laptop accessories, trusted hardware shop", em: "💻🖱️🔌" },
+
+    // 4. Education & Career
+    "Education": { kw: "best learning center, quality education, top school, overall development", em: "📚🎓🏫" },
+    "Tuition Academy": { kw: "expert coaching, best result classes, personal attention, top tutors", em: "📖✍️" },
+    "Career Counselling": { kw: "career guidance, expert advice, job placement support", em: "🤝💼" },
+    "Driving School": { kw: "best driving lessons, expert instructors, easy license process", em: "🚗🚦🏁" },
+
+    // 5. Real Estate, Construction & Hardware
+    "Real Estate": { kw: "best property deals, reliable builders, dream home, top real estate agency", em: "🏠🏢🏗️" },
+    "Building Material": { kw: "quality construction material, cement steel supplier, reliable hardware", em: "🏗️🧱🔨" },
+    "Interior Decorator": { kw: "modern interior design, home styling, expert decorator, best home decor", em: "🏠🎨🛋️" },
+    "Architect": { kw: "professional home design, modern architecture, best building planner", em: "📐🏢✏️" },
+    "Plywood & Hardware": { kw: "durable plywood, quality hardware fittings, best furniture material", em: "🪚🔨" },
+    "Electrical": { kw: "quality electrical fittings, expert wiring, reliable electrician", em: "⚡💡🔌" },
+    "Paints": { kw: "best wall paints, colorful home decor, professional painting service", em: "🎨🖌️🏠" },
+
+    // 6. Retail, Fashion & Lifestyle
+    "Mobile Store": { kw: "latest smartphones, mobile accessories, best electronic shop", em: "📱🔌🎧" },
+    "Clothes": { kw: "latest fashion, quality fabrics, best clothing store, trendy outfits", em: "👗👕🛍️" },
+    "Jewellery": { kw: "authentic gold jewellery, beautiful diamond sets, trusted jeweler", em: "💎💍✨" },
+    "Footwear": { kw: "stylish shoes, comfortable footwear, best quality sandals", em: "👞👟👠" },
+    "Goggles & Spectacles": { kw: "stylish eyewear, best quality frames, professional eye testing", em: "👓🕶️👁️" },
+    "Toys Shops": { kw: "best kids toys, quality educational games, fun gift items", em: "🧸🎈🎮" },
+    "Watches": { kw: "luxury watches, stylish wristwear, best watch collection", em: "⌚🕒" },
+
+    // 7. Finance, Professional & Business
+    "Financial Service": { kw: "expert financial planning, tax saving, reliable investment advice", em: "💰📈" },
+    "Share Market Investment Agency": { kw: "stock market tips, portfolio management, expert trading", em: "📊📉" },
+    "Insurance Agent": { kw: "best life insurance, health insurance advisor, secure future", em: "🛡️📄" },
+    "Logistic & Courier Service": { kw: "fast delivery, reliable courier, safe shipping service", em: "🚚📦📍" },
+    "CA / Chartered Accountant": { kw: "expert tax audit, reliable GST filing, professional CA services", em: "💼📁🧾" },
+
+    // 8. Automobile & Machinery
+    "Automobile": { kw: "best car service, reliable auto parts, top vehicle dealer, expert repairs", em: "🚗🏍️🛠️" },
+    "Motor pump, Submersible pump": { kw: "heavy duty water pumps, reliable agriculture motor, quality repairs", em: "🚰💧🚜" },
+    "Road Roller, JCB, Hydra Truck": { kw: "heavy machinery rental, reliable construction equipment, JCB service", em: "🚜🏗️🚧" },
+    "Solar Business": { kw: "best solar panels, renewable energy, solar installation experts", em: "☀️🔋" },
+
+    // 9. Social, Political & Events
+    "Political Party": { kw: "dedicated leadership, public welfare, social development, trusted party", em: "🚩🗳️🤝" },
+    "Social Activist": { kw: "selfless social work, community helper, voice of people", em: "🌍🙏✊" },
+    "NGO": { kw: "social cause, helping hand, community service, impactful work", em: "🤝🌍❤️" },
+    "Photography & Videography": { kw: "best wedding photographer, professional video shoot, creative cinematography", em: "📸🎥🎬" },
+    "Events Management": { kw: "perfect event planning, best wedding planner, professional management", em: "🎊🎈📋" },
+
+    // Default - इतर सर्व कॅटेगरीसाठी
+    "Default": { kw: "outstanding service, professional team, highly recommended quality, best experience", em: "⭐✨✅" }
+};
 
     const vocab = {
         English: {
