@@ -6,113 +6,61 @@
     <title>KeepConnect AI Reviews</title>
     <style>
         :root {
-            --primary: #0f172a; /* Deep Navy */
-            --accent: #0d9488;  /* Teal */
-            --bg: #f1f5f9;
+            --primary: #0f172a; 
+            --accent: #0ea5e9;  /* Bright Blue */
+            --bg: #f8fafc;
             --white: #ffffff;
         }
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background-color: var(--bg);
-            margin: 0;
-            padding: 20px;
-            color: var(--primary);
+            margin: 0; padding: 20px; color: var(--primary);
         }
         .container {
-            max-width: 450px;
-            margin: auto;
-            background: var(--white);
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            text-align: center;
+            max-width: 480px; margin: auto; background: var(--white);
+            padding: 30px; border-radius: 28px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            text-align: center; border: 1px solid #e2e8f0;
         }
         .brand-header {
-            font-size: 14px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-bottom: 5px;
+            font-size: 12px; font-weight: 800; letter-spacing: 2px;
+            color: var(--accent); text-transform: uppercase; margin-bottom: 10px;
         }
-        .biz-name {
-            font-size: 28px;
-            font-weight: 800;
-            margin: 5px 0;
-            color: var(--primary);
-        }
+        .biz-name { font-size: 32px; font-weight: 900; margin: 5px 0; color: var(--primary); letter-spacing: -1px; }
         .biz-cat {
-            font-size: 16px;
-            color: #64748b;
-            background: #e2e8f0;
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 50px;
-            margin-bottom: 25px;
+            font-size: 14px; color: var(--accent); background: #f0f9ff;
+            display: inline-block; padding: 6px 16px; border-radius: 50px;
+            margin-bottom: 30px; font-weight: 600; border: 1px solid #bae6fd;
         }
         .review-card {
-            background: #f8fafc;
-            border: 2px solid #e2e8f0;
-            padding: 16px;
-            margin: 12px 0;
-            border-radius: 16px;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
+            background: #fff; border: 2px solid #f1f5f9; padding: 20px;
+            margin: 15px 0; border-radius: 20px; text-align: left;
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 15px; line-height: 1.6; color: #334155;
         }
-        .review-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
+        .review-card:hover { border-color: var(--accent); background: #fcfdfe; }
         .review-card.selected {
-            border-color: var(--accent);
-            background: #f0fdfa;
-            box-shadow: 0 0 0 1px var(--accent);
-        }
-        .review-card.selected::after {
-            content: '✓';
-            position: absolute;
-            right: 15px;
-            top: 15px;
-            color: var(--accent);
-            font-weight: bold;
+            border-color: var(--accent); background: #f0f9ff;
+            box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.1);
         }
         select, .btn-gen {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 15px;
-            border: 1px solid #cbd5e1;
+            width: 100%; padding: 15px; border-radius: 14px;
+            font-size: 16px; font-weight: 600; margin-top: 15px;
+            border: 2px solid #e2e8f0; background: white;
         }
         .btn-gen {
-            background: var(--primary);
-            color: white;
-            border: none;
-            cursor: pointer;
+            background: #f1f5f9; color: var(--primary); border: none;
+            cursor: pointer; margin-bottom: 10px;
         }
+        .btn-gen:hover { background: #e2e8f0; }
         .btn-copy {
-            width: 100%;
-            padding: 16px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 700;
-            margin-top: 20px;
-            display: none;
-            cursor: pointer;
-            box-shadow: 0 10px 15px -3px rgba(13, 148, 136, 0.3);
+            width: 100%; padding: 18px; background: var(--accent);
+            color: white; border: none; border-radius: 16px;
+            font-size: 18px; font-weight: 700; margin-top: 10px;
+            display: none; cursor: pointer;
+            box-shadow: 0 20px 25px -5px rgba(14, 165, 233, 0.4);
         }
-        #loader {
-            display: none;
-            margin: 20px 0;
-            font-weight: 600;
-            color: var(--accent);
-        }
+        #loader { display: none; margin: 20px 0; font-weight: 700; color: var(--accent); }
     </style>
 </head>
 <body>
@@ -122,25 +70,26 @@
     <div class="biz-name" id="displayBizName">Loading...</div>
     <div class="biz-cat" id="displayCategory">Loading...</div>
 
-    <div id="loader">AI is thinking...</div>
+    <div id="loader">✨ AI is crafting reviews...</div>
     <div id="reviewContainer"></div>
 
-    <label style="display:block; text-align:left; font-size:12px; font-weight:700; margin-top:20px; color:#64748b;">CHANGE LANGUAGE</label>
+    <button class="btn-gen" onclick="generateReviews()">🔄 Change Reviews</button>
+    
+    <button id="copyBtn" class="btn-copy" onclick="copyAndRedirect()">Copy & Continue</button>
+
+    <label style="display:block; text-align:left; font-size:11px; font-weight:800; margin-top:25px; color:#94a3b8; letter-spacing: 1px;">PREFER ANOTHER LANGUAGE?</label>
     <select id="langSelect" onchange="generateReviews()">
-        <option value="English">English (Default)</option>
+        <option value="English">English</option>
         <option value="Marathi">Marathi (मराठी)</option>
         <option value="Hindi">Hindi (हिन्दी)</option>
         <option value="Gujarati">Gujarati (ગુજરાતી)</option>
         <option value="Tamil">Tamil (தமிழ்)</option>
         <option value="Telugu">Telugu (తెలుగు)</option>
         <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
-        <option value="Malayalam">Malayalam (മലയാളം)</option>
+        <option value="Malayalam">Malayalam (मलयालम)</option>
         <option value="Bengali">Bengali (বাংলা)</option>
         <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
     </select>
-
-    <button class="btn-gen" onclick="generateReviews()">🔄 Change Reviews</button>
-    <button id="copyBtn" class="btn-copy" onclick="copyAndRedirect()">Copy & Write Review</button>
 </div>
 
 <script>
@@ -154,29 +103,41 @@
 
     let selectedReview = "";
 
-    // १० भारतीय भाषा + English डेटा इंजिन
-    const aiDatabase = {
+    const vocab = {
         English: {
-            v: ["Amazing", "Excellent", "Highly recommend", "Top notch"],
-            s: [`the service at ${bizName} for ${bizCat} is superb.`, `best ${bizCat} experience I've had so far.`, `the atmosphere and quality here are perfect.`],
-            e: ["5 stars!", "Must visit again.", "Loved it!", "Great job!"]
+            opening: ["Absolutely wonderful experience at ", "I was truly impressed by ", "Highly recommend visiting ", "A hidden gem! "],
+            context: {
+                "Restaurant": `The food quality is exceptional and the flavors are authentic. Every dish we ordered was cooked to perfection. `,
+                "Hospital": `The medical care is top-notch and the doctors are very attentive. The facility is clean and well-managed. `,
+                "Shop": `They have an amazing collection and the pricing is very reasonable. The staff helps you find exactly what you need. `,
+                "Default": `The service is professional and they really care about customer satisfaction. Everything was handled perfectly. `
+            },
+            closing: ["The staff is very polite and the ambiance is great. Definitely coming back soon!", "If you want quality service, this is the place to be. 5 stars from my side!", "Truly a professional team and worth every penny spent here."]
         },
         Marathi: {
-            v: ["अप्रतिम", "खूप छान", "नक्की भेट द्या", "स्वच्छता उत्तम"],
-            s: [`${bizName} मध्ये ${bizCat} ची क्वालिटी बेस्ट आहे.`, `इथली सर्व्हिस खूप फास्ट आहे.`, `स्वस्त आणि मस्त अनुभव.`],
-            e: ["५ स्टार!", "पुन्हा नक्की येणार.", "खूप आवडले.", "धन्यवाद!"]
+            opening: [bizName + " ला भेट देऊन खूप आनंद झाला. ", "इथला अनुभव खरोखरच अविस्मरणीय होता. ", "उत्तम सेवा आणि दर्जेदार काम! "],
+            context: {
+                "Restaurant": `जेवणाची चव अप्रतिम आहे आणि स्वच्छता सुद्धा उत्तम राखली आहे. प्रत्येक पदार्थ ताज्या स्वरूपात मिळतो. `,
+                "Hospital": `डॉक्टर आणि स्टाफ अत्यंत अनुभवी आहेत. वेळेवर उपचार आणि योग्य मार्गदर्शन येथे मिळते. `,
+                "Shop": `इथे व्हरायटी खूप छान आहे आणि किमती सुद्धा परवडणाऱ्या आहेत. ग्राहकांशी वागणूक खूप नम्र आहे. `,
+                "Default": `एकूणच इथली सिस्टिम खूप चांगली आहे. काम वेळेत पूर्ण होते आणि रिझल्ट सुद्धा उत्तम मिळतो. `
+            },
+            closing: ["५ स्टार अनुभव! मी सर्वांना इथे येण्याची शिफारस करतो.", "पुन्हा नक्की भेट देईन. खूप खूप धन्यवाद!", "अशी सर्व्हिस आजकाल मिळणे कठीण आहे. उत्तम काम!"]
         },
         Hindi: {
-            v: ["बहुत बढ़िया", "शानदार", "बेहतरीन", "जरूर आएं"],
-            s: [`${bizName} में ${bizCat} का अनुभव लाजवाब रहा।`, `यहाँ की सर्विस और स्टाफ बहुत अच्छे हैं।`, `क्वालिटी के मामले में नंबर १।`],
-            e: ["५ स्टार रेटिंग!", "मजा आ गया।", "थैंक यू!", "सबसे अच्छा।"]
+            opening: [bizName + " में मेरा अनुभव बहुत ही शानदार रहा। ", "यहाँ की सर्विस देखकर दिल खुश हो गया। ", "एक बेहतरीन जगह! "],
+            context: {
+                "Restaurant": `खाने का स्वाद लाजवाब है और यहाँ की साफ़-सफाई भी बहुत अच्छी है। हर चीज़ फ्रेश और टेस्टी है। `,
+                "Hospital": `यहाँ के डॉक्टर बहुत ही समझदार हैं और इलाज बहुत अच्छी तरह से किया जाता है। स्टाफ भी काफी मददगार है। `,
+                "Shop": `यहाँ काफी अच्छी वैरायटी उपलब्ध है और दाम भी सही हैं। खरीदारी के लिए यह सबसे अच्छी जगह है। `,
+                "Default": `यहाँ की कार्यप्रणाली बहुत ही प्रोफेशनल है। ग्राहक संतुष्टि का पूरा ध्यान रखा जाता है। `
+            },
+            closing: ["५ स्टार रेटिंग! आप भी यहाँ जरूर आएं।", "शानदार काम जारी रखें, दोबारा जरूर आऊंगा।", "इतनी अच्छी सर्विस के लिए शुक्रिया!"]
         }
-        // ... इतर भाषांसाठी आपण असाच डेटा जोडू शकतो
+        // ... इतर भाषांसाठी आपण असाच पॅटर्न वाढवू शकतो
     };
 
-    window.onload = function() {
-        generateReviews(); // QR स्कॅन होताच ऑटो जनरेट
-    };
+    window.onload = () => generateReviews();
 
     function generateReviews() {
         const lang = document.getElementById('langSelect').value;
@@ -189,14 +150,15 @@
 
         setTimeout(() => {
             loader.style.display = "none";
-            const data = aiDatabase[lang] || aiDatabase['English'];
+            const data = vocab[lang] || vocab['English'];
+            const catKey = vocab[lang]?.context[bizCat] ? bizCat : "Default";
+            const contextText = data.context[catKey];
 
             for(let i=0; i<3; i++) {
-                let v = data.v[Math.floor(Math.random()*data.v.length)];
-                let s = data.s[Math.floor(Math.random()*data.s.length)];
-                let e = data.e[Math.floor(Math.random()*data.e.length)];
+                let open = data.opening[Math.floor(Math.random()*data.opening.length)];
+                let close = data.closing[Math.floor(Math.random()*data.closing.length)];
                 
-                let text = (lang === "English") ? `${v}! ${s} ${e}` : `${v}! ${s} ${e}`;
+                let text = `${open}${contextText}${close}`;
                 
                 const div = document.createElement('div');
                 div.className = 'review-card';
@@ -209,12 +171,12 @@
                 };
                 container.appendChild(div);
             }
-        }, 800);
+        }, 600);
     }
 
     function copyAndRedirect() {
         navigator.clipboard.writeText(selectedReview).then(() => {
-            alert("Review Copied!");
+            alert("Review Copied! Redirecting to Google...");
             window.location.href = googleLink;
         });
     }
