@@ -82,6 +82,69 @@
     let selectedReview = "";
 
     async function fetchAIReviews() {
+    const lang = document.getElementById('langSelect').value;
+    const loader = document.getElementById('loader');
+    const container = document.getElementById('reviewContainer');
+    const genBtn = document.getElementById('genBtn');
+    const copyBtn = document.getElementById('copyBtn');
+
+    loader.style.display = "block";
+    loader.innerText = "Connecting to AI...";
+    container.innerHTML = "";
+    copyBtn.style.display = "none";
+
+    // प्रॉम्प्ट अधिक स्पष्ट केला आहे
+    const promptText = `Write 3 different short, positive Google reviews for "${bizName}" (${bizCat}) in ${lang} language. Separate each review with the symbol #. Keep each review under 20 words. Do not use numbers.`;
+
+    try {
+        // योग्य URL स्ट्रक्चर (v1beta ऐवजी v1 वापरून पहा जर एरर आली तर)
+        const apiURL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+        const response = await fetch(apiURL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: promptText }] }]
+            })
+        });
+
+        const data = await response.json();
+
+        // एरर चेकिंग (जर API मध्ये काही चूक असेल तर स्क्रीनवर दिसेल)
+        if (data.error) {
+            throw new Error(data.error.message);
+        }
+
+        if (!data.candidates || !data.candidates[0].content) {
+            throw new Error("AI did not return any reviews. Try again.");
+        }
+
+        const text = data.candidates[0].content.parts[0].text;
+        const reviews = text.split('#').filter(r => r.trim().length > 2);
+
+        loader.style.display = "none";
+        
+        reviews.forEach((revText, index) => {
+            if(index < 3) {
+                const div = document.createElement('div');
+                div.className = 'review-card';
+                div.innerText = revText.trim().replace(/\n/g, ""); // नवीन ओळ काढून टाकणे
+                div.onclick = function() {
+                    document.querySelectorAll('.review-card').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedReview = this.innerText;
+                    copyBtn.style.display = "block";
+                };
+                container.appendChild(div);
+            }
+        });
+
+    } catch (error) {
+        loader.style.color = "red";
+        loader.innerText = "Error: " + error.message;
+        console.error("Detailed Error:", error);
+    }
+}
         const lang = document.getElementById('langSelect').value;
         const loader = document.getElementById('loader');
         const container = document.getElementById('reviewContainer');
