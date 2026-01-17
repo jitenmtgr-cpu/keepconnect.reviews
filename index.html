@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KeepConnect AI - SEO Reviews</title>
+    <title>KeepConnect AI - 10 Languages SEO Reviews</title>
     <style>
         :root { --primary: #0f172a; --accent: #0ea5e9; --bg: #f8fafc; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: var(--primary); }
@@ -11,12 +11,13 @@
         .header-flex { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
         .brand-header { font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
         .biz-name { font-size: 26px; font-weight: 900; margin: 5px 0; letter-spacing: -1px; }
-        #langSelect { padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 12px; font-weight: 600; color: #64748b; }
+        #langSelect { padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 12px; font-weight: 600; color: #64748b; outline: none; }
         .biz-cat { font-size: 13px; color: var(--accent); background: #f0f9ff; display: inline-block; padding: 5px 14px; border-radius: 50px; margin-bottom: 20px; font-weight: 600; border: 1px solid #bae6fd; }
         .review-card { background: #fff; border: 2px solid #f1f5f9; padding: 18px; margin: 12px 0; border-radius: 18px; text-align: left; cursor: pointer; transition: 0.3s; font-size: 14px; line-height: 1.6; color: #334155; }
         .review-card.selected { border-color: var(--accent); background: #f0f9ff; }
-        .btn-gen { width: 100%; padding: 14px; border-radius: 14px; font-size: 15px; font-weight: 600; margin-top: 10px; border: none; background: #f1f5f9; cursor: pointer; }
+        .btn-gen { width: 100%; padding: 14px; border-radius: 14px; font-size: 15px; font-weight: 600; margin-top: 10px; border: none; background: #f1f5f9; cursor: pointer; color: var(--primary); }
         .btn-copy { width: 100%; padding: 18px; background: var(--accent); color: white; border: none; border-radius: 16px; font-size: 17px; font-weight: 700; margin-top: 15px; display: none; cursor: pointer; box-shadow: 0 10px 15px rgba(14,165,233,0.3); }
+        #loader { display: none; margin: 15px 0; font-weight: 700; color: var(--accent); font-size: 14px; }
     </style>
 </head>
 <body>
@@ -31,9 +32,17 @@
             <option value="English">English</option>
             <option value="Marathi">मराठी</option>
             <option value="Hindi">हिन्दी</option>
+            <option value="Gujarati">ગુજરાતી</option>
+            <option value="Tamil">தமிழ்</option>
+            <option value="Telugu">తెలుగు</option>
+            <option value="Kannada">ಕನ್ನಡ</option>
+            <option value="Malayalam">മലയാളം</option>
+            <option value="Bengali">বাংলা</option>
+            <option value="Punjabi">ਪੰਜਾਬੀ</option>
         </select>
     </div>
     <div style="text-align: left;"><div class="biz-cat" id="displayCategory">Loading...</div></div>
+    <div id="loader">✨ AI is writing SEO reviews...</div>
     <div id="reviewContainer"></div>
     <button class="btn-gen" onclick="generateReviews()">🔄 Change Reviews</button>
     <button id="copyBtn" class="btn-copy" onclick="copyAndRedirect()">Copy & Continue</button>
@@ -41,65 +50,80 @@
 
 <script>
     const params = new URLSearchParams(window.location.search);
-    const bizName = params.get('biz_name') || "Sai Cafe";
-    const bizCat = params.get('category') || "Restaurant";
+    const bizName = params.get('biz_name') || "Business Name";
+    const bizCat = params.get('category') || "Services";
     const googleLink = params.get('google_url') || "https://google.com";
 
     document.getElementById('displayBizName').innerText = bizName;
     document.getElementById('displayCategory').innerText = bizCat;
 
     const seoData = {
-        "Restaurant": { keyword: "delicious food, best dining, authentic taste", emoji: "🍴🍕🍔" },
-        "Gym": { keyword: "best workout, fitness expert, top-rated gym", emoji: "🏋️💪🔥" },
-        "Hospital": { keyword: "best healthcare, expert doctors, safe treatment", emoji: "🏥🩺💊" },
-        "Shop": { keyword: "best collection, reasonable price, quality products", emoji: "🛍️🏷️📦" },
-        "Default": { keyword: "best service, professional team, top quality", emoji: "⭐✨✅" }
+        "Restaurant": { kw: "delicious food, top dining experience, authentic taste", em: "🍴🍕🍔" },
+        "Gym": { kw: "best workout atmosphere, professional training, top-rated fitness center", em: "🏋️💪🔥" },
+        "Hospital": { kw: "excellent healthcare, experienced doctors, safe and clean facility", em: "🏥🩺💊" },
+        "Shop": { kw: "huge collection, affordable prices, high-quality products", em: "🛍️🏷️📦" },
+        "Salon": { kw: "best makeover, professional stylists, premium beauty service", em: "💇✨💅" },
+        "Default": { kw: "outstanding service, professional team, highly recommended quality", em: "⭐✨✅" }
     };
 
     const vocab = {
-        Marathi: {
-            open: ["मी " + bizName + " ला ५ स्टार रेटिंग देतो! ⭐ ", "इथला अनुभव खरोखरच अप्रतिम होता. ✨ "],
-            mid: (kw, em) => `या ${bizCat} मधील ${kw} मुळे मला खूप आनंद झाला. ${em} इथली स्वच्छता आणि कामाची पद्धत एकदम प्रोफेशनल आहे. जे ग्राहक ${bizCat} साठी उत्तम पर्याय शोधत आहेत, त्यांच्यासाठी हे ठिकाण बेस्ट आहे. 👌 `,
-            close: ["पुन्हा नक्की भेट देणार! 💯 #HighlyRecommended", "तुमचे काम खरोखरच कौतुकास्पद आहे. उत्तम प्रगती करा! 🚀"]
-        },
         English: {
-            open: ["One of the best experiences at " + bizName + "! 🌟 ", "I am extremely satisfied with " + bizName + ". ✅ "],
-            mid: (kw, em) => `The ${kw} they provide for ${bizCat} is truly unmatched. ${em} Their team is professional and handles everything with great care. If you are looking for top-rated ${bizCat}, this is the place. 🏆 `,
-            close: ["Definitely a 5-star service! Must visit. 🙌", "I'll be recommending this to everyone I know. Great job! 👏"]
+            o: ["Exceptional experience at " + bizName + "! 🌟 ", "Highly impressed with the quality at " + bizName + ". ✅ "],
+            m: (k,e)=>`The ${k} for ${bizCat} here is absolutely fantastic. ${e} Every detail is handled with great care and professionalism. If you want the best ${bizCat} experience, this place is a must-visit. 🏆 `,
+            c: ["Solid 5-star service! 🙌", "Will definitely recommend to everyone. 👏"]
+        },
+        Marathi: {
+            o: [bizName + " येथील अनुभव खूपच भारी होता! ⭐ ", "मी " + bizName + " च्या सेवेवर पूर्णपणे समाधानी आहे. ✨ "],
+            m: (k,e)=>`येथे ${bizCat} साठी मिळणारी ${k} खरोखरच कौतुकास्पद आहे. ${e} कामाचा दर्जा आणि स्वच्छता पाहून मन प्रसन्न झाले. जे लोक ${bizCat} साठी उत्तम पर्याय शोधत आहेत, त्यांच्यासाठी ही जागा सर्वोत्तम आहे. 👌 `,
+            c: ["५ स्टार अनुभव! नक्की भेट द्या. 💯", "उत्तम काम! पुन्हा नक्की येणार. 🚀"]
         },
         Hindi: {
-            open: [bizName + " में मेरा अनुभव बहुत ही शानदार रहा! 🌟 ", "यहाँ आकर मुझे बहुत ख़ुशी हुई। ✨ "],
-            mid: (kw, em) => `यहाँ ${bizCat} की ${kw} और सर्विस वाकई लाजवाब है। ${em} स्टाफ का व्यवहार बहुत ही विनम्र और मददगार है। अगर आप अच्छी ${bizCat} की तलाश में हैं, तो यहाँ जरूर आएं। 👌 `,
-            close: ["५ स्टार अनुभव! मैं सबको यहाँ आने की सलाह देता हूँ। 💯", "शानदार सर्विस! दोबारा जरूर आऊंगा। 🚀"]
-        }
+            o: [bizName + " में मेरा अनुभव बहुत ही अद्भुत रहा! 🌟 ", "यहाँ की सर्विस देखकर दिल खुश हो गया। ✅ "],
+            m: (k,e)=>`यहाँ ${bizCat} के लिए जो ${k} दी जाती है, वह शहर में सबसे अच्छी है। ${e} स्टाफ बहुत ही प्रोफेशनल है और हर काम सफाई से करता है। अगर आप बढ़िया ${bizCat} चाहते हैं, तो यहाँ जरूर आएं। 🏆 `,
+            c: ["शानदार सर्विस! ५ स्टार रेटिंग। 🙌", "सबको यहाँ आने की सलाह देता हूँ। 👏"]
+        },
+        Gujarati: { o: [bizName + " ખાતે મારો અનુભવ ખૂબ જ સરસ રહ્યો! 🌟 "], m: (k,e)=>`અહીં ${bizCat} માટે જે ${k} મળે છે તે ખરેખર ઉત્તમ છે. ${e} કામની ગુણવત્તા અને સ્ટાફનો વ્યવહાર ખૂબ જ સારો છે. 🏆 `, c: ["૫ સ્ટાર રેટિંગ! ચોક્કસ મુલાકાત લો. 👏"] },
+        Tamil: { o: [bizName + " இல் சிறந்த அனுபவம்! 🌟 "], m: (k,e)=>`இங்கே ${bizCat} க்கான ${k} மிகவும் சிறப்பாக உள்ளது. ${e} ஊழியர்களின் அணுகுமுறை மற்றும் சேவை தரம் மிகவும் அற்புதம். 🏆 `, c: ["நிச்சயமாக பரிந்துரைக்கிறேன்! 5 நட்சத்திரங்கள். 👏"] },
+        Telugu: { o: [bizName + " లో అనుభవం అద్భుతంగా ఉంది! 🌟 "], m: (k,e)=>`ఇక్కడ ${bizCat} కోసం ఇచ్చే ${k} చాలా బాగుంది. ${e} నాణ్యత మరియు సర్వీస్ విషయంలో ఎక్కడా రాజీ పడరు. 🏆 `, c: ["ఖచ్చితంగా మళ్ళీ వస్తాను! 5 స్టార్. 👏"] },
+        Kannada: { o: [bizName + " ನಲ್ಲಿ ಅನುಭವ ತುಂಬಾ ಚೆನ್ನಾಗಿದೆ! 🌟 "], m: (k,e)=>`ಇಲ್ಲಿ ${bizCat} ಗಾಗಿ ಒದಗಿಸುವ ${k} ಅತ್ಯುತ್ತಮವಾಗಿದೆ. ${e} ವೃತ್ತಿಪರ ಸೇವೆ ಮತ್ತು ಸ್ವಚ್ಛತೆ ತುಂಬಾ ಇಷ್ಟವಾಯಿತು. 🏆 `, c: ["ಖಂಡಿತವಾಗಿ ಶಿಫಾರಸು ಮಾಡುತ್ತೇನೆ! 5 ಸ್ಟಾರ್. 👏"] },
+        Malayalam: { o: [bizName + " മികച്ച അനുഭവം! 🌟 "], m: (k,e)=>`ഇവിടെ ${bizCat} നൽകുന്ന ${k} വളരെ മികച്ചതാണ്. ${e} നല്ല പെരുമാറ്റവും മികച്ച ഗുണനിലവാരവും. 🏆 `, c: ["തീർച്ചയായും സന്ദർശിക്കുക! 5 സ്റ്റാർ. 👏"] },
+        Bengali: { o: [bizName + "-এ অভিজ্ঞতা দারুণ ছিল! 🌟 "], m: (k,e)=>`এখানে ${bizCat}-এর জন্য যে ${k} পাওয়া যায় তা সত্যিই অতুলনীয়। ${e} খুব ভালো সার্ভিস এবং স্টাফদের ব্যবহার। 🏆 `, c: ["অবশ্যই আবার আসব! ৫ স্টার। 👏"] },
+        Punjabi: { o: [bizName + " ਵਿਖੇ ਤਜ਼ਰਬਾ ਬਹੁਤ ਵਧੀਆ ਰਿਹਾ! 🌟 "], m: (k,e)=>`ਇੱਥੇ ${bizCat} ਲਈ ${k} ਬਹੁਤ ਹੀ ਸ਼ਾਨਦਾਰ ਹੈ। ${e} ਸੇਵਾ ਦੀ ਗੁਣਵત્તા ਅਤੇ ਸਟਾਫ ਦਾ ਵਿਵਹાર ਬਹੁਤ ਵਧੀਆ ਹੈ। 🏆 `, c: ["ਜ਼ਰੂਰ ਦੁਬਾਰਾ ਆਵਾਂਗੇ! 5 ਸਟਾਰ। 👏"] }
     };
 
     function generateReviews() {
         const lang = document.getElementById('langSelect').value;
         const container = document.getElementById('reviewContainer');
+        const loader = document.getElementById('loader');
         const langData = vocab[lang] || vocab['English'];
         const seo = seoData[bizCat] || seoData["Default"];
+        
+        loader.style.display = "block";
         container.innerHTML = "";
         document.getElementById('copyBtn').style.display = "none";
 
-        for(let i=0; i<3; i++) {
-            let text = langData.open[Math.floor(Math.random()*langData.open.length)] + 
-                       langData.mid(seo.keyword, seo.emoji) + 
-                       langData.close[Math.floor(Math.random()*langData.close.length)];
-            const div = document.createElement('div');
-            div.className = 'review-card';
-            div.innerText = text;
-            div.onclick = function() {
-                document.querySelectorAll('.review-card').forEach(c => c.classList.remove('selected'));
-                this.classList.add('selected');
-                window.selectedText = text;
-                document.getElementById('copyBtn').style.display = "block";
-            };
-            container.appendChild(div);
-        }
+        setTimeout(() => {
+            loader.style.display = "none";
+            for(let i=0; i<3; i++) {
+                let text = (langData.o[Math.floor(Math.random()*langData.o.length)] || langData.o[0]) + 
+                           langData.m(seo.kw, seo.em) + 
+                           (langData.c[Math.floor(Math.random()*langData.c.length)] || langData.c[0]);
+                const div = document.createElement('div');
+                div.className = 'review-card';
+                div.innerText = text;
+                div.onclick = function() {
+                    document.querySelectorAll('.review-card').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    window.selectedText = text;
+                    document.getElementById('copyBtn').style.display = "block";
+                };
+                container.appendChild(div);
+            }
+        }, 500);
     }
 
     function copyAndRedirect() {
+        if(!window.selectedText) return;
         navigator.clipboard.writeText(window.selectedText).then(() => {
             window.location.href = googleLink;
         });
