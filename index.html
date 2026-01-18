@@ -3,286 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KeepConnect AI - 10 Languages SEO Reviews</title>
+    <title>100% Automated AI Reviews</title>
     <style>
-        :root { --primary: #0f172a; --accent: #0ea5e9; --bg: #f8fafc; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: var(--primary); }
-        .container { max-width: 480px; margin: auto; background: #fff; padding: 30px; border-radius: 28px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; position: relative; }
-        .header-flex { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
-        .brand-header { font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
-        .biz-name { font-size: 26px; font-weight: 900; margin: 5px 0; letter-spacing: -1px; }
-        #langSelect { padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 12px; font-weight: 600; color: #64748b; outline: none; }
-        .biz-cat { font-size: 13px; color: var(--accent); background: #f0f9ff; display: inline-block; padding: 5px 14px; border-radius: 50px; margin-bottom: 20px; font-weight: 600; border: 1px solid #bae6fd; }
-        .review-card { background: #fff; border: 2px solid #f1f5f9; padding: 18px; margin: 12px 0; border-radius: 18px; text-align: left; cursor: pointer; transition: 0.3s; font-size: 14px; line-height: 1.6; color: #334155; }
-        .review-card.selected { border-color: var(--accent); background: #f0f9ff; }
-        .btn-gen { width: 100%; padding: 14px; border-radius: 14px; font-size: 15px; font-weight: 600; margin-top: 10px; border: none; background: #f1f5f9; cursor: pointer; color: var(--primary); }
-        .btn-copy { width: 100%; padding: 18px; background: var(--accent); color: white; border: none; border-radius: 16px; font-size: 17px; font-weight: 700; margin-top: 15px; display: none; cursor: pointer; box-shadow: 0 10px 15px rgba(14,165,233,0.3); }
-        #loader { display: none; margin: 15px 0; font-weight: 700; color: var(--accent); font-size: 14px; }
+        :root { --p: #4285f4; --bg: #f8f9fa; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; text-align: center; }
+        .card { max-width: 450px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .setup-info { background: #e8f0fe; padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: left; font-size: 14px; }
+        select, button { width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; }
+        button { background: var(--p); color: white; border: none; font-weight: bold; cursor: pointer; }
+        .review-box { border: 2px solid #eee; padding: 12px; margin: 10px 0; border-radius: 10px; cursor: pointer; text-align: left; background: #fff; animation: slideIn 0.3s; }
+        @keyframes slideIn { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .selected { border-color: var(--p); background: #e8f0fe; }
+        #loader { margin: 15px; color: var(--p); display: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header-flex">
-        <div>
-            <div class="brand-header">KeepConnect AI</div>
-            <div class="biz-name" id="displayBizName">Loading...</div>
-            <div id="displayLoc" style="font-size: 14px; color: #64748b; margin-top: 5px;"></div>
-        </div>
-        <select id="langSelect" onchange="generateReviews()">
-            <option value="English">English</option>
-            <option value="Marathi">मराठी</option>
-            <option value="Hindi">हिन्दी</option>
-            <option value="Gujarati">ગુજરાતી</option>
-            <option value="Tamil">தமிழ்</option>
-            <option value="Telugu">తెలుగు</option>
-            <option value="Kannada">ಕನ್ನಡ</option>
-            <option value="Malayalam">മലയാളം</option>
-            <option value="Bengali">বাংলা</option>
-            <option value="Punjabi">ਪੰਜਾਬੀ</option>
-        </select>
+<div class="card">
+    <h2>Review Assistant AI</h2>
+    <div class="setup-info">
+        <strong>🏢 Business:</strong> <span id="bName">Loading...</span><br>
+        <strong>📂 Category:</strong> <span id="bCat">Loading...</span>
     </div>
-    <div style="text-align: left;"><div class="biz-cat" id="displayCategory">Loading...</div></div>
-    <div id="loader">✨ AI is writing SEO reviews...</div>
-    <div id="reviewContainer"></div>
-    <button class="btn-gen" onclick="generateReviews()">🔄 Change Reviews</button>
-    <button id="copyBtn" class="btn-copy" onclick="copyAndRedirect()">Copy & Continue</button>
+
+    <label style="display:block; text-align:left; font-size:14px; font-weight:bold;">Choose Language:</label>
+    <select id="lang">
+        <option value="Marathi">Marathi (मराठी)</option>
+        <option value="Hindi">Hindi (हिन्दी)</option>
+        <option value="English">English</option>
+        <option value="Gujarati">Gujarati (ગુજરાતી)</option>
+    </select>
+
+    <div id="loader">Gemini AI is writing unique reviews...</div>
+    <div id="container"></div>
+
+    <button id="genBtn" onclick="generateRealAI()">Generate AI Reviews</button>
+    <button id="copyBtn" style="display:none; margin-top:10px; background:#34a853;" onclick="copyGo()">Copy & Review</button>
 </div>
 
 <script>
-    const params = new URLSearchParams(window.location.search);
-    const bizName = params.get('biz_name') || "Business Name";
-    const bizCat = params.get('category') || "Services";
-    const googleLink = params.get('google_url') || "https://google.com";
-    
-    // १. लोकेशचे नाव इकडे डिफाइन केले आहे जेणेकरून रिव्ह्यूमध्ये एरर येणार नाही
-    const locationName = params.get('location') || "";
+    // URL मधून डेटा मिळवणे
+    const urlParams = new URLSearchParams(window.location.search);
+    const bizName = urlParams.get('biz_name') || "Business";
+    const bizCat = urlParams.get('category') || "Service";
+    const googleLink = urlParams.get('google_url') || "https://google.com";
 
-    document.getElementById('displayBizName').innerText = bizName;
-    document.getElementById('displayCategory').innerText = bizCat;
-    if(locationName) document.getElementById('displayLoc').innerText = "📍 " + locationName;
+    document.getElementById('bName').innerText = bizName;
+    document.getElementById('bCat').innerText = bizCat;
 
-    // प्रत्येक कॅटेगरीसाठी ५-६ रँडम कीवर्ड्स (SEO Friendly)
-    const seoData = {
-        "Real Estate": { kw: ["best property deals", "trusted real estate agent", "prime location plots", "expert property guidance", "affordable housing", "seamless documentation"], em: "🏠🏢" },
-        "Electrical": { kw: ["expert electrical work", "reliable wiring service", "quality electrical fittings", "professional electrician", "safe installations", "best electrical appliances"], em: "⚡💡" },
-        "Mobile Store": { kw: ["latest smartphones", "best deals", "genuine accessories", "expert mobile repair", "quick service", "trusted mobile shop"], em: "📱🔌🛠️" },
-        "Education": { kw: ["best learning environment", "expert coaching", "quality education", "skilled instructors", "top academic results", "career-oriented courses"], em: "🎓📚" },
-        "Clothes": { kw: ["latest fashion trends", "premium quality fabric", "affordable clothing", "stylish outfits", "best ethnic wear", "trendy collection"], em: "👕👗" },
-        "FMCG & Grocery": { kw: ["fresh groceries", "best daily needs", "quality food products", "affordable prices", "wide variety", "quick home delivery"], em: "🛒🍏" },
-        "Personnel": { kw: ["expert staffing solutions", "reliable manpower", "professional recruitment", "skilled labor supply", "best HR services", "trusted placement"], em: "👥💼" },
-        "Tours and Travels": { kw: ["best travel packages", "affordable tour plans", "comfortable transport", "expert tour guide", "memorable vacations", "hassle-free booking"], em: "✈️🚗" },
-        "Restaurant, Catering, Fast Food": { kw: ["delicious food", "top dining experience", "authentic taste", "great ambiance", "friendly staff", "hygienic catering"], em: "🍴🍕🍔" },
-        "Jewellery": { kw: ["exquisite gold designs", "premium diamond jewelry", "trusted jeweler", "hallmarked ornaments", "latest jewelry collection", "beautiful craftsmanship"], em: "💎💍" },
-        "Automobile": { kw: ["expert car service", "genuine spare parts", "reliable vehicle repair", "best car maintenance", "skilled mechanics", "quick turnaround"], em: "🚗🔧" },
-        "Hospital & Clinic": { kw: ["excellent healthcare", "experienced doctors", "safe treatment", "best medical care", "caring staff", "modern facilities"], em: "🏥🩺" },
-        "Marketing & Advertising": { kw: ["creative branding", "effective digital marketing", "best ad campaigns", "expert marketing strategy", "proven business growth", "top advertising agency"], em: "📢📈" },
-        "Photography & Videography": { kw: ["professional photography", "stunning cinematic video", "expert event shooting", "best wedding photographer", "creative photo editing", "high-quality equipment"], em: "📸🎥" },
-        "Beautiparlour & Salon": { kw: ["best bridal makeup", "professional hair styling", "relaxing skin treatment", "expert beauticians", "top-notch grooming", "quality beauty products"], em: "💄💇‍♀️" },
-        "Insurance": { kw: ["best insurance plans", "reliable health coverage", "fast claim settlement", "trusted insurance advisor", "comprehensive life insurance", "affordable premiums"], em: "📄🛡️" },
-        "Agriculture": { kw: ["organic farming expert", "quality seeds and fertilizers", "modern farming tools", "best crop advice", "reliable agri services", "sustainable farming"], em: "🚜🌱" },
-        "Building Material": { kw: ["premium quality cement", "strong construction steel", "best building supplies", "reliable hardware", "durable construction material", "affordable rates"], em: "🏗️🧱" },
-        "Pharmaceutical": { kw: ["genuine medicines", "trusted pharmacy", "essential healthcare products", "quick medical supply", "quality pharma products", "reliable chemist"], em: "💊🧪" },
-        "Furniture": { kw: ["stylish home furniture", "premium wood quality", "durable office chairs", "modern interior furniture", "customized sofa designs", "best wooden work"], em: "🪑🛋️" },
-        "Home Appliances": { kw: ["latest electronic appliances", "reliable home tech", "best appliance repair", "top energy-efficient products", "affordable home gadgets", "quality electronics"], em: "📺🧺" },
-        "Computer Hardware": { kw: ["latest laptop models", "expert computer repair", "genuine hardware parts", "best IT support", "reliable system maintenance", "high-performance PC"], em: "💻🖥️" },
-        "CSC Centre": { kw: ["fast online services", "government scheme guidance", "reliable e-governance", "quick document processing", "all-in-one digital hub", "professional assistance"], em: "🖥️📑" },
-        "Hardware Showroom": { kw: ["top-quality hardware", "durable kitchen fittings", "best tools and accessories", "premium sanitary ware", "reliable building hardware", "exclusive showroom collection"], em: "🔨🚿" },
-        "Hotel": { kw: ["comfortable stay", "excellent room service", "luxury amenities", "best hotel staff", "hygienic environment", "affordable luxury"], em: "🏨🛌" },
-        "Labour, Contractor Services": { kw: ["expert civil contractor", "reliable labor team", "professional construction work", "skilled workforce", "on-time project delivery", "trusted site management"], em: "👷‍♂️🏗️" },
-        "Interior Decorator": { kw: ["modern home design", "creative interior planning", "premium home decor", "expert spatial design", "beautiful office interiors", "professional decorator"], em: "🎨🏡" },
-        "Financial Service": { kw: ["expert investment advice", "reliable tax planning", "best wealth management", "trusted loan assistance", "secure financial growth", "professional accounting"], em: "💰📊" },
-        "Solar Business": { kw: ["best solar panels", "efficient solar installation", "eco-friendly energy", "expert solar maintenance", "reliable power backup", "low-cost solar solutions"], em: "☀️🔋" },
-        "Dairy & Sweets": { kw: ["fresh dairy products", "delicious pure sweets", "hygienic milk supply", "authentic traditional taste", "best dessert shop", "quality milk products"], em: "🥛🍬" },
-        "Plywood & Hardware": { kw: ["premium durable plywood", "best laminate designs", "strong hardware fittings", "reliable wood supply", "quality carpentry material", "best rates"], em: "🪵🔨" },
-        "B.J.P": { kw: ["strong local leadership", "dedicated social service", "active public welfare", "trusted political vision", "community development", "transparent administration"], em: "🚩🪷" },
-        "Congress": { kw: ["committed public service", "experienced leadership", "inclusive growth vision", "active social reform", "community empowerment", "dedicated representation"], em: "✋🚩" },
-        "R.O. Water Solution": { kw: ["pure drinking water", "expert RO maintenance", "reliable water purifier", "best filtration service", "quick repair support", "healthy water supply"], em: "💧🚰" },
-        "Paints": { kw: ["long-lasting wall paints", "vibrant color shades", "expert painting service", "best home finishing", "premium texture paints", "weatherproof coating"], em: "🎨🖌️" },
-        "Pipes": { kw: ["strong PVC pipes", "durable plumbing solutions", "leak-proof fittings", "best industrial piping", "reliable agriculture pipes", "quality CPVC fittings"], em: "🚰🚿" },
-        "Security Surveillance (CCTV)": { kw: ["smart CCTV monitoring", "high-definition security", "expert camera installation", "24/7 safe surveillance", "best home security", "reliable tech support"], em: "🛡️📹" },
-        "Social Activist": { kw: ["dedicated community work", "voice for justice", "inspiring social change", "active public support", "charity and welfare", "empowering society"], em: "🤝📢" },
-        "Textile": { kw: ["premium fabric quality", "best bulk textile", "exclusive textile designs", "soft material clothing", "latest fabric trends", "trusted textile dealer"], em: "🧵🧶" },
-        "Ceramic": { kw: ["beautiful wall tiles", "durable ceramic flooring", "premium bath fittings", "stylish home tiles", "expert tile installation", "best ceramic collection"], em: "🧱🛁" },
-        "Events Management": { kw: ["memorable event planning", "expert wedding management", "creative stage decoration", "flawless coordination", "best corporate events", "professional organizing"], em: "🎊🎭" },
-        "Cosmetic": { kw: ["premium skincare products", "latest makeup collection", "authentic beauty brands", "best cosmetic shop", "glowing skin solutions", "trusted quality"], em: "💄💅" },
-        "Arts & Craft": { kw: ["creative handmade items", "best craft supplies", "unique artistic pieces", "inspiring hobby classes", "customized gift items", "beautiful artwork"], em: "🎨✂️" },
-        "Steel & Aluminium": { kw: ["strong steel fabrication", "durable aluminium windows", "best metal work", "premium railing designs", "expert welding service", "industrial steel supply"], em: "⛓️🏢" },
-        "Glass Hardware": { kw: ["premium glass fittings", "stylish toughened glass", "durable glass doors", "expert glass installation", "best hardware designs", "modern glass work"], em: "🪟💎" },
-        "Logistic & Courier Service": { kw: ["fast courier delivery", "secure parcel tracking", "reliable cargo shipping", "best logistics support", "on-time distribution", "affordable courier rates"], em: "📦🚚" },
-        "Agarbatti": { kw: ["soothing incense fragrance", "premium spiritual agarbatti", "long-lasting scent", "pure natural sticks", "best puja essentials", "refreshing aroma"], em: "🕯️🪔" },
-        "Chemical Pest Control": { kw: ["effective termite treatment", "safe pest eradication", "expert fumigation service", "best cockroach control", "hygienic home safety", "professional pest management"], em: "🐜🚫" },
-        "Dry Cleaners": { kw: ["professional stain removal", "delicate fabric care", "quick laundry service", "expert steam ironing", "fresh and clean clothes", "best dry cleaning shop"], em: "🧺🧼" },
-        "Packaging Service": { kw: ["secure box packaging", "best industrial packing", "reliable moving supplies", "durable carton boxes", "professional wrapping", "safe transit packing"], em: "📦🩹" },
-        "Placement Service": { kw: ["best career guidance", "top recruitment agency", "skilled job matching", "professional job search", "reliable hiring partner", "career growth support"], em: "👔💼" },
-        "Stationery": { kw: ["quality office supplies", "best school stationery", "premium art material", "wide paper variety", "essential writing tools", "trusted stationery shop"], em: "📝🖍️" },
-        "Import-Export": { kw: ["global trade solutions", "reliable import services", "efficient export logistics", "expert custom clearance", "international shipping", "business trade support"], em: "🚢🌐" },
-        "Printing Press": { kw: ["high-quality offset printing", "best business card design", "fast banner printing", "sharp digital print", "professional brochure work", "affordable bulk printing"], em: "🖨️📄" },
-        "Sport, Police Training Institute": { kw: ["expert fitness training", "disciplined sports academy", "effective police exam prep", "best physical coaching", "skilled instructors", "top recruitment success"], em: "🏃‍♂️🎖️" },
-        "Tuition Academy": { kw: ["expert personalized tutoring", "best math/science classes", "high exam scores", "skilled teaching staff", "effective learning methods", "small batch focus"], em: "🏫✍️" },
-        "GYM & YOGA": { kw: ["best fitness center", "expert trainer", "weight loss results", "great workout vibe", "modern equipment", "clean environment"], em: "🏋️💪" },
-        "VISA Consultants": { kw: ["easy visa processing", "expert immigration advice", "reliable study visa", "best travel visa support", "fast document verification", "trusted visa agency"], em: "🛂✈️" },
-        "Fruits & Vegetables": { kw: ["fresh organic produce", "best farm-fresh veggies", "quality seasonal fruits", "hygienic grocery supply", "natural farm taste", "healthy diet essentials"], em: "🍎🥦" },
-        "Artist, Musical, Orchestra, Band Party": { kw: ["stunning live performance", "talented musical band", "best wedding orchestra", "creative artistic team", "energetic stage shows", "melodious music party"], em: "🎻🥁" },
-        "DJ Sound System": { kw: ["powerful bass sound", "best party lighting", "expert DJ mixing", "crystal clear audio", "energetic event music", "top DJ equipment"], em: "🎧🔊" },
-        "Goggles & Spectacles": { kw: ["stylish eyewear frames", "premium lens quality", "best optical shop", "trendy sunglasses", "accurate eye testing", "fashionable spectacles"], em: "👓🕶️" },
-        "Astrology": { kw: ["accurate future predictions", "expert palm reading", "reliable horoscopes", "ancient astrology wisdom", "trusted vastu guidance", "spiritual life advice"], em: "🔮✨" },
-        "Fire Safety": { kw: ["reliable fire extinguishers", "expert safety training", "best fire alarms", "essential emergency gear", "professional safety audit", "trusted protection"], em: "🧯🔥" },
-        "Security Agency": { kw: ["trained security guards", "reliable home protection", "expert bouncer service", "professional security team", "safe guarding service", "trusted safety agency"], em: "💂‍♂️🛡️" },
-        "Toys Shops": { kw: ["fun educational toys", "best quality dolls/cars", "creative kids games", "safe play material", "latest toy collection", "happy childhood shop"], em: "🧸🎈" },
-        "Elevator": { kw: ["smooth lift operation", "expert elevator repair", "reliable safety lifts", "modern cabin designs", "fast service response", "best AMC plans"], em: "🛗🏢" },
-        "Laser Engraving Machine": { kw: ["precise laser marking", "best industrial engraving", "high-speed laser tech", "versatile material cutting", "expert technical support", "durable marking solutions"], em: "⚡📐" },
-        "Political Party": { kw: ["strong public leadership", "visionary community growth", "dedicated social welfare", "transparent political work", "active youth wing", "trusted representation"], em: "🚩🗳️" },
-        "Laboratory Pathology": { kw: ["accurate reports", "fast blood testing", "reliable pathology", "professional staff", "hygienic lab", "on-time reports"], em: "🔬🧪" },
-        "Footwear": { kw: ["comfortable daily shoes", "stylish party footwear", "durable sports shoes", "best quality sandals", "latest fashion footwear", "affordable shoe shop"], em: "👟👞" },
-        "Handloom": { kw: ["authentic hand-woven fabric", "best traditional designs", "eco-friendly handloom", "premium cotton textures", "artisan-made sarees", "natural dye fabric"], em: "🧶🧺" },
-        "Cake & Bakery": { kw: ["delicious fresh cakes", "best customized design", "yummy pastries and cookies", "soft oven-fresh bread", "premium bakery taste", "best birthday cakes"], em: "🎂🍰" },
-        "Insurance Agent": { kw: ["expert policy guidance", "trusted health insurance", "reliable life plans", "fast claim assistance", "best financial security", "personalized insurance advice"], em: "📝🛡️" },
-        "Gift Articles": { kw: ["unique customized gifts", "best surprise items", "beautiful home decor gifts", "creative birthday presents", "thoughtful anniversary gifts", "exclusive gift shop"], em: "🎁🎀" },
-        "Veterinary Doctor": { kw: ["expert pet care", "caring animal doctor", "reliable pet vaccination", "best pet clinic", "safe surgical treatments", "compassionate pet health"], em: "🐾🩺" },
-        "Medical/Surgical Equipments": { kw: ["premium hospital supplies", "reliable surgical tools", "best medical machinery", "high-quality nursing gear", "certified medical equipment", "advanced health tools"], em: "🏥🩹" },
-        "Motor pump, Submersible pump": { kw: ["powerful water pumps", "reliable submersible motor", "best agricultural pumps", "durable irrigation tools", "expert pump repair", "efficient water flow"], em: "🚜💧" },
-        "Bicycle": { kw: ["latest gear cycles", "best kids bikes", "durable mountain bicycles", "expert cycle service", "premium cycle accessories", "fitness cycling shop"], em: "🚲🚵" },
-        "Share Market Investment Agency": { kw: ["expert stock advice", "reliable portfolio management", "best investment strategy", "smart trading tips", "secure wealth growth", "professional market analysis"], em: "📈💰" },
-        "Plumber & Water Treatment": { kw: ["expert plumbing repair", "reliable leak fixing", "best water softening", "modern plumbing fittings", "quick service response", "clean water solutions"], em: "🔧🚰" },
-        "Doctor (Homeopathy, Naturopathy, Panchkarma)": { kw: ["natural healing therapy", "best ayurvedic treatment", "effective homeopathy care", "holistic wellness plan", "safe panchkarma service", "expert naturopath"], em: "🌿🩺" },
-        "Architect": { kw: ["modern home planning", "creative building design", "expert architectural layout", "best spatial aesthetics", "professional site supervision", "sustainable design"], em: "📐🏠" },
-        "Building Material Supplier": { kw: ["bulk construction supply", "best raw material", "reliable bricks and sand", "premium quality aggregates", "on-time site delivery", "wholesale building rates"], em: "🏗️🚜" },
-        "Patanjali Store": { kw: ["natural herbal products", "authentic ayurvedic medicines", "best organic groceries", "pure health supplements", "trusted swadeshi brand", "quality wellness items"], em: "🌿🛒" },
-        "Network Marketer / Products": { kw: ["best health products", "reliable business opportunity", "proven income strategy", "quality herbal supplements", "professional team support", "direct selling success"], em: "🤝📈" },
-        "Power tool Seller": { kw: ["durable electric drills", "best industrial grinders", "powerful cutting tools", "professional tool kits", "reliable brand seller", "heavy-duty power tools"], em: "⚙️🔨" },
-        "Road Roller, JCB, Hydra. Truck, Craine etc.": { kw: ["heavy machinery rental", "reliable earthmovers", "best construction vehicles", "expert machine operators", "strong lifting equipment", "efficient site machinery"], em: "🚜🏗️" },
-        "Pet Seller": { kw: ["healthy cute puppies", "best breed kittens", "friendly exotic birds", "trusted pet breeder", "quality pet care advice", "happy healthy pets"], em: "🐕🐈" },
-        "Internet Broadband Service Provider": { kw: ["high-speed wifi", "reliable fiber connection", "best unlimited internet", "fast technical support", "affordable broadband plans", "stable gaming internet"], em: "🌐📶" },
-        "House Keeping Service": { kw: ["professional home cleaning", "best office maintenance", "hygienic sanitization", "reliable cleaning staff", "deep cleaning experts", "trustworthy housekeeping"], em: "🧹🧼" },
-        "Day Care / Baby Care / Patient Care": { kw: ["safe baby daycare", "caring patient nursing", "reliable elderly care", "trusted nanny service", "compassionate caregiving", "secure and clean facility"], em: "👶🩺" },
-        "Paq House": { kw: ["premium dog boarding", "safe pet stay", "reliable animal shelter", "best pet hostel", "hygienic pet facility", "caring pet trainers"], em: "🏠🐕" },
-        "Packers And Movers": { kw: ["safe household shifting", "best office relocation", "reliable packing service", "scratch-free moving", "on-time delivery", "affordable moving rates"], em: "📦🚛" },
-        "Rolleyal Watch": { kw: ["premium wrist watches", "latest stylish designs", "reliable watch repair", "best brand collection", "exclusive luxury watches", "accurate timepieces"], em: "⌚🕒" },
-        "NGO": { kw: ["dedicated social help", "transparent charity work", "active community support", "noble social cause", "inspiring child welfare", "trusted non-profit"], em: "🤝💙" },
-        "Wellness": { kw: ["holistic health care", "best fitness therapy", "mental wellness coaching", "natural detox programs", "rejuvenating lifestyle", "complete body health"], em: "🧘✨" },
-        "Dance Academy": { kw: ["best dance training", "expert choreography", "fun fitness dance", "professional stage prep", "various dance styles", "skilled instructors"], em: "💃🕺" },
-        "Plant Nurseries": { kw: ["beautiful indoor plants", "fresh garden flowers", "best organic saplings", "reliable plant delivery", "quality garden soil", "expert gardening tips"], em: "🪴🌻" },
-        "Matrimonial Agencies": { kw: ["perfect match finding", "trusted marriage profiles", "reliable matrimonial service", "verified community matches", "expert relationship advice", "happy union support"], em: "💍💑" },
-        "Tailor": { kw: ["expert custom stitching", "perfect garment fitting", "best boutique designs", "skilled dressmaker", "timely alteration service", "premium quality tailoring"], em: "🧵✂️" },
-        "Scrap": { kw: ["best scrap rates", "reliable metal recycling", "quick old item pickup", "transparent weight measurement", "eco-friendly disposal", "trusted scrap dealer"], em: "♻️🚛" },
-        "Transport": { kw: ["reliable heavy transport", "best local trucking", "secure cargo delivery", "efficient goods carriage", "on-time logistics", "affordable transport rates"], em: "🚚🛣️" },
-        "Poultry Farm": { kw: ["fresh quality eggs", "best healthy chicken", "hygienic farm products", "reliable poultry supply", "organic farm taste", "quality bird feed"], em: "🐔🥚" },
-        "Fabrication Work": { kw: ["expert iron fabrication", "best grill designs", "strong gate manufacturing", "reliable metal welding", "customized steel work", "durable shed building"], em: "⛓️🔨" },
-        "Driving School": { kw: ["expert driving lessons", "safe traffic training", "best license assistance", "skilled driving tutors", "easy learning cars", "confident road skills"], em: "🚗🚦" },
-        "Utensil Shop": { kw: ["durable steel utensils", "best non-stick cookware", "premium kitchen appliances", "quality brass items", "latest kitchen tools", "reliable household shop"], em: "🥣🍳" },
-        "Fashion & Lifestyle": { kw: ["trendy fashion wear", "stylish lifestyle accessories", "best boutique collection", "modern outfit ideas", "premium brand quality", "latest fashion trends"], em: "👠🕶️" },
-        "Crackers Shop": { kw: ["safe colorful fireworks", "best festival crackers", "loud and bright rockets", "premium quality sparkles", "reliable cracker brand", "low smoke fireworks"], em: "🎆🎇" },
-        "Hostel": { kw: ["safe student stay", "comfortable paying guest", "hygienic mess food", "best budget hostel", "secure environment", "reliable accommodation"], em: "🏢🛌" },
-        "Gruh Udhyog (गृह उद्योग)": { kw: ["homemade pure snacks", "best traditional papad/pickles", "authentic local taste", "quality handcrafted items", "healthy natural products", "trusted home industry"], em: "🍪🥫" },
-        "Gaming Centre": { kw: ["high-speed gaming PC", "latest console games", "best e-sports vibe", "advanced VR experience", "pro-gaming equipment", "top gaming hub"], em: "🎮🕹️" },
-        "Massage Parlour, Spa Centre": { kw: ["relaxing body massage", "best herbal spa", "rejuvenating therapy", "expert professional staff", "calm soothing ambiance", "stress relief treatment"], em: "🧖‍♂️💆" },
-        "Disposable Items": { kw: ["bulk paper plates", "best biodegradable cups", "hygienic plastic-ware", "affordable party supplies", "quality takeaway packing", "eco-friendly disposables"], em: "🍽️🥡" },
-        "Company Secretary / CA (Chartered Accountant)": { kw: ["expert tax audit", "reliable GST filing", "best financial planning", "trusted legal compliance", "professional business advice", "secure accounting"], em: "📋⚖️" },
-        "Business Opportunities": { kw: ["profitable franchise ideas", "best startup guidance", "reliable investment plans", "proven business models", "expert industry growth", "entrepreneurship support"], em: "💼📈" },
-        "Goat farm / Fish farm / Pavan farm / Emmy Farm": { kw: ["healthy livestock breeding", "fresh organic fish", "best farming techniques", "reliable agri-farm supply", "quality farm products", "sustainable farm life"], em: "🐐🐟" },
-        "Flour Mill, Dal mill, Sevai maker, Rice mill": { kw: ["freshly ground flour", "best quality pulses", "pure hygienic processing", "authentic home taste", "reliable milling service", "premium rice variety"], em: "🌾🚜" },
-        "Battery, Inverter, UPS": { kw: ["reliable power backup", "best inverter batteries", "high-performance UPS", "expert battery service", "on-time tech support", "trusted battery brands"], em: "🔋⚡" },
-        "Career Counselling": { kw: ["best career guidance", "expert stream selection", "reliable future planning", "skilled talent analysis", "effective goal setting", "professional student coaching"], em: "🤝🎓" },
-        "कृषि उपकरण व्यापार समिति": { kw: ["best farm equipment", "reliable agri-trading", "quality modern tools", "fair trade committee", "expert farming support", "essential agri-supplies"], em: "🌾🤝" },
-        "Balloon, Floure Decorator": { kw: ["beautiful theme decoration", "best floral arrangements", "creative balloon art", "elegant party styling", "memorable event decor", "expert party planners"], em: "🎈🌸" },
-        "Oil Mill / Lakhdi ghani": { kw: ["pure cold-pressed oil", "best natural wood-pressed", "healthy chemical-free oil", "authentic traditional mill", "fresh organic oil", "quality health cooking"], em: "🫗🌱" },
-        "Default": { kw: ["outstanding service", "professional team", "high quality", "best experience", "highly recommended", "great value"], em: "⭐✨✅" }
-    };
+    let selectedText = "";
 
-    const vocab = {
-    English: {
-        o: ["Exceptional experience at " + bizName + "! 🌟 ", "Highly impressed with " + bizName + ". ✅ ", "Quality service and great staff at " + bizName + ". 👌 ", "Must visit " + bizName + " for top-notch service. ✨ ", "Truly satisfied with the work at " + bizName + ". 🏆 "],
-        m: (k,e) => `The ${k} for ${bizCat} ${locationName ? 'in ' + locationName : ''} is absolutely fantastic. ${e} Everything is handled professionally ${locationName ? 'at ' + locationName : ''}. `,
-        c: ["Solid 5-star service! 🙌", "Highly recommended in this area! 👏", "Will definitely visit again. 🚀", "Best in the business! 💯", "Keep up the great work. 👍"]
-    },
-    Marathi: {
-        o: [bizName + " येथील अनुभव खूपच भारी होता! ⭐ ", "मी " + bizName + " च्या सेवेवर पूर्णपणे समाधानी आहे. ✨ ", "उत्तम सर्व्हिस आणि सहकार्य! " + bizName + " नक्कीच बेस्ट आहे. 👌 ", "खूप छान काम! " + bizName + " ला नक्की भेट द्या. 🌟 ", "दर्जेदार सेवा आणि आपुलकीची माणसे! " + bizName + ". 🥇 "],
-        m: (k,e) => `${locationName ? locationName + " मधील " : ""}येथे ${bizCat} साठी मिळणारी ${k} खरोखरच कौतुकास्पद आहे. ${e} ${locationName ? locationName + " परिसरात " : ""}उत्तम सेवेसाठी हे बेस्ट ठिकाण आहे. `,
-        c: ["५ स्टार अनुभव! नक्की भेट द्या. 💯", "पुन्हा नक्की येणार! 🚀", "उत्तम काम, सर्वांना शिफारस करतो. ✅", "खूप छान अनुभव राहिला. 👍", "नक्कीच पुन्हा भेट देणार. 👌"]
-    },
-    Hindi: {
-        o: [bizName + " में मेरा अनुभव बहुत ही अद्भुत रहा! 🌟 ", "यहाँ की सर्विस देखकर दिल खुश हो गया। ✅ ", bizName + " की टीम बहुत ही प्रोफेशनल है। 👌 ", "शानदार अनुभव और बेहतरीन क्वालिटी! ✨ ", "मैं " + bizName + " की सर्विस से बहुत खुश हूँ। 🏆 "],
-        m: (k,e) => `${locationName ? locationName + " में " : ""}${bizCat} के लिए जो ${k} यहाँ मिलती है, वह लाजवाब है। ${e} ${locationName ? locationName + " क्षेत्र में " : ""}बेहतरीन सर्विस के लिए यहाँ जरूर आएं। `,
-        c: ["शानदार सर्विस! ५ स्टार रेटिंग। 🙌", "सबको यहाँ आने की सलाह देता हूँ। 👏", "बहुत बढ़िया काम! 🚀", "यहाँ का अनुभव लाजवाब है। 💯", "फिर से जरूर आऊंगा। 👍"]
-    },
-    Gujarati: {
-        o: [bizName + " ખાતે અનુભવ ખૂબ સરસ રહ્યો! 🌟 ", "સેવા અને ગુણવત્તામાં નંબર ૧! ✅ ", "અહીંની ટીમ ખૂબ જ મદદરૂપ છે. 👌 ", "ખૂબ જ સરસ કામકાજ! ✨ ", bizName + " ની મુલાકાત જરૂર લેવા જેવી છે. 🏆 "],
-        m: (k,e) => `${locationName ? locationName + " માં " : ""}${bizCat} માટે જે ${k} મળે છે તે ખરેખર ઉત્તમ છે. ${e} 🏆 `,
-        c: ["૫ સ્ટાર રેટિંગ! ચોક્કસ મુલાકાત લો. 👏", "ફરીથી જરૂર આવીશ. 🚀", "ખૂબ જ સારો અનુભવ. 💯", "શ્રેષ્ઠ સેવા! 👍", "આ વિસ્તારમાં બેસ્ટ છે. 👌"]
-    },
-    Tamil: {
-        o: [bizName + " இல் சிறந்த அனுபவம்! 🌟 ", "அற்புதமான சேவை மற்றும் தரம்! ✅ ", bizName + " மிகவும் நேர்த்தியான வேலை. 👌 ", "நிச்சயமாக பாராட்ட வேண்டிய சேவை! ✨ ", "மிகவும் திருப்திகரமான அனுபவம். 🏆 "],
-        m: (k,e) => `${locationName ? locationName + "-இல் " : ""}${bizCat} க்கான ${k} மிகவும் சிறப்பாக உள்ளது. ${e} 🏆 `,
-        c: ["நிச்சயமாக பரிந்துரைக்கிறேன்! 👏", "மீண்டும் வருவேன்! 🚀", "மிகவும் நன்று. 💯", "சிறந்த சேவை! 👍", "5 நட்சத்திரங்கள். ⭐"]
-    },
-    Telugu: {
-        o: [bizName + " లో అనుభవం అద్భుతంగా ఉంది! 🌟 ", "మంచి నాణ్యత మరియు సేవలు. ✅ ", "చాలా ప్రొఫెషనల్ టీం. 👌 ", "అత్యుత్తమ సేవ కోసం తప్పక సందర్శించండి! ✨ ", "నేను పూర్తిగా సంతృప్తి చెందాను. 🏆 "],
-        m: (k,e) => `${locationName ? locationName + " లో " : ""}${bizCat} కోసం ఇచ్చే ${k} చాలా బాగుంది. ${e} 🏆 `,
-        c: ["ఖచ్చితంగా మళ్ళీ వస్తాను! 👏", "అద్భుతమైన సేవ. 💯", "అందరికీ సిఫార్సు చేస్తున్నాను. ✅", "మంచి అనుభవం. 👍", "5 స్టార్ రేటింగ్. ⭐"]
-    },
-    Kannada: {
-        o: [bizName + " ನಲ್ಲಿ ಅನುಭವ ತುಂಬಾ ಚೆನ್ನಾಗಿದೆ! 🌟 ", "ಉತ್ತಮ ಗುಣಮಟ್ಟದ ಸೇವೆ. ✅ ", "ಅತ್ಯಂತ ವೃತ್ತಿಪರ ತಂಡ. 👌 ", "ಸಂಪೂರ್ಣವಾಗಿ ತೃಪ್ತಿಕರವಾಗಿದೆ. ✨ ", bizName + " ಗೆ ಖಂಡಿತ ಭೇಟಿ ನೀಡಿ. 🏆 "],
-        m: (k,e) => `${locationName ? locationName + " ನಲ್ಲಿ " : ""}${bizCat} ಗಾಗಿ ಒದಗಿಸುವ ${k} ಅತ್ಯುತ್ತಮವಾಗಿದೆ. ${e} 🏆 `,
-        c: ["ಖಂಡಿತವಾಗಿ ಶಿಫಾರಸು ಮಾಡುತ್ತೇನೆ! 👏", "ಉತ್ತಮ ಕೆಲಸ. 💯", "ಮತ್ತೊಮ್ಮೆ ಭೇಟಿ ನೀಡುತ್ತೇನೆ. 🚀", "ತುಂಬಾ ಒಳ್ಳೆಯ ಅನುಭವ. 👍", "5 ಸ್ಟಾರ್. ⭐"]
-    },
-    Malayalam: {
-        o: [bizName + " മികച്ച അനുഭവം! 🌟 ", "വളരെ നല്ല സേവനം. ✅ ", "വിദഗ്ദ്ധരായ തൊഴിലാളികൾ. 👌 ", "പൂർണ്ണ സംതൃപ്തി നൽകുന്നു. ✨ ", bizName + " തീർച്ചയായും സന്ദർശിക്കണം. 🏆 "],
-        m: (k,e) => `${locationName ? locationName + "-ൽ " : ""}${bizCat} നൽകുന്ന ${k} വളരെ മികച്ചതാണ്. ${e} 🏆 `,
-        c: ["തീർച്ചയായും സന്ദർശിക്കുക! 👏", "മികച്ച സേവനം. 💯", "വീണ്ടും വരും! 🚀", "5 സ്റ്റാർ. ⭐", "നല്ല അനുഭവം. 👍"]
-    },
-    Bengali: {
-        o: [bizName + "-এ অভিজ্ঞতা দারুণ ছিল! 🌟 ", "খুবই ভালো পরিষেবা। ✅ ", "পেশাদার এবং দক্ষ টিম। 👌 ", "আমি খুবই সন্তুষ্ট। ✨ ", bizName + "-এ অবশ্যই যান। 🏆 "],
-        m: (k,e) => `${locationName ? locationName + "-এর " : ""}${bizCat}-এর জন্য যে ${k} পাওয়া যায় তা সত্যিই অতুলনীয়। ${e} 🏆 `,
-        c: ["অবশ্যই আবার আসব! 👏", "৫ স্টার রেটিং। ⭐", "খুবই ভালো কাজ। 💯", "দারুণ অভিজ্ঞতা। 👍", "সবাইকে আসার পরামর্শ দেব। ✅"]
-    },
-    Punjabi: {
-        o: [bizName + " ਵਿਖੇ ਤਜ਼ਰਬਾ ਬਹੁਤ ਵਧੀਆ ਰਿਹਾ! 🌟 ", "ਵਧੀਆ ਸੇਵਾ ਅਤੇ ਗੁਣਵੱਤਾ। ✅ ", "ਬਹੁਤ ਪੇਸ਼ੇਵਰ ਟੀਮ। 👌 ", "ਪੂਰੀ ਤਰ੍ਹਾਂ ਸੰਤੁਸ਼ਟ ਹਾਂ। ✨ ", bizName + " ਜ਼ਰੂਰ ਜਾਓ। 🏆 "],
-        m: (k,e) => `${locationName ? locationName + " ਵਿੱਚ " : ""}${bizCat} ਲਈ ${k} ਬਹੁਤ ਹੀ ਸ਼ਾਨਦਾਰ ਹੈ। ${e} 🏆 `,
-        c: ["ਜ਼ਰੂਰ ਦੁਬਾਰਾ ਆਵਾਂਗੇ! 👏", "ਬਹੁਤ ਵਧੀਆ ਸੇਵਾ। 💯", "5 ਸਟਾਰ। ⭐", "ਸ਼ਾਨਦਾਰ ਅਨੁਭਵ। 👍", "ਹਰ ਕਿਸੇ ਨੂੰ ਸਿਫਾਰਸ਼ ਕਰਦਾ ਹਾਂ। ✅"]
-    }
-};
-    function generateReviews() {
-        const lang = document.getElementById('langSelect').value;
-        const container = document.getElementById('reviewContainer');
+    async function generateRealAI() {
+        const lang = document.getElementById('lang').value;
         const loader = document.getElementById('loader');
-        
-        const langData = vocab[lang] || vocab['English'];
-        // २. जर कॅटेगरी मॅच झाली नाही तर Default वर जाण्यासाठी हे लॉजिक
-        const seo = seoData[bizCat] ? seoData[bizCat] : seoData["Default"];
+        const container = document.getElementById('container');
+        const genBtn = document.getElementById('genBtn');
         
         loader.style.display = "block";
         container.innerHTML = "";
-        document.getElementById('copyBtn').style.display = "none";
+        genBtn.disabled = true;
 
-        setTimeout(() => {
-            loader.style.display = "none";
-            for(let i=0; i<3; i++) {
-                let text = (langData.o[Math.floor(Math.random()*langData.o.length)] || langData.o[0]) + 
-                           langData.m(seo.kw, seo.em) + 
-                           (langData.c[Math.floor(Math.random()*langData.c.length)] || langData.c[0]);
-                
-                const div = document.createElement('div');
-                div.className = 'review-card';
-                div.innerText = text;
-                div.onclick = function() {
-                    document.querySelectorAll('.review-card').forEach(c => c.classList.remove('selected'));
-                    this.classList.add('selected');
-                    window.selectedText = text;
-                    document.getElementById('copyBtn').style.display = "block";
-                };
-                container.appendChild(div);
-            }
-        }, 500);
+        // AI साठी सूचना (Prompt)
+        const promptText = `Write 3 different, very short and natural positive reviews for "${bizName}" in the "${bizCat}" category. The language must be ${lang}. Start each review with a star emoji ⭐. Keep it realistic.`;
+
+        // Apps Script मधील 'callGeminiAI' फंक्शनला कॉल करणे
+        google.script.run
+            .withSuccessHandler(function(response) {
+                loader.style.display = "none";
+                genBtn.disabled = false;
+
+                // रिव्ह्यूज ओळीनुसार वेगळे करणे
+                const list = response.split('\n').filter(r => r.trim() !== '');
+
+                list.forEach(text => {
+                    const div = document.createElement('div');
+                    div.className = 'review-box';
+                    div.innerText = text;
+                    div.onclick = () => {
+                        document.querySelectorAll('.review-box').forEach(b => b.classList.remove('selected'));
+                        div.classList.add('selected');
+                        selectedText = text;
+                        document.getElementById('copyBtn').style.display = "block";
+                    };
+                    container.appendChild(div);
+                });
+            })
+            .withFailureHandler(function(err) {
+                loader.innerText = "Error: " + err.message;
+                genBtn.disabled = false;
+            })
+            .callGeminiAI(promptText); // हा फंक्शन कॉल महत्त्वाचा आहे
     }
 
-    function copyAndRedirect() {
-        if(!window.selectedText) return;
-        navigator.clipboard.writeText(window.selectedText).then(() => {
+    function copyGo() {
+        if (!selectedText) return;
+        navigator.clipboard.writeText(selectedText).then(() => {
+            alert("Review Copied!");
             window.location.href = googleLink;
         });
     }
-    window.onload = generateReviews;
 </script>
+
 </body>
 </html>
