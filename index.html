@@ -3,114 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Review Assistant - Test Mode</title>
+    <title>AI Review Assistant | Boost Your Business</title>
     <style>
-        :root { --p: #4285f4; --bg: #f8f9fa; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; text-align: center; }
-        .card { max-width: 450px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .setup-info { background: #e8f0fe; padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: left; font-size: 14px; }
-        .test-badge { background: #ff9800; color: white; padding: 2px 8px; border-radius: 5px; font-size: 10px; float: right; }
-        select, button { width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; }
-        button { background: var(--p); color: white; border: none; font-weight: bold; cursor: pointer; }
-        .review-box { border: 2px solid #eee; padding: 12px; margin: 10px 0; border-radius: 10px; cursor: pointer; text-align: left; background: #fff; animation: slideIn 0.3s; }
-        @keyframes slideIn { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .selected { border-color: var(--p); background: #e8f0fe; }
-        #loader { margin: 15px; color: var(--p); display: none; font-weight: bold; }
+        :root { --primary: #4285f4; --bg: #f8f9fa; --card: #ffffff; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 500px; margin: auto; background: var(--card); padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { color: var(--primary); margin-bottom: 5px; }
+        p.subtitle { color: #666; margin-bottom: 25px; font-size: 14px; }
+        
+        .setup-info { background: #e8f0fe; padding: 10px; border-radius: 10px; margin-bottom: 20px; font-size: 13px; text-align: left; }
+        
+        label { display: block; text-align: left; font-weight: bold; margin: 15px 0 5px; font-size: 14px; }
+        select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; background: white; }
+        
+        .review-card { border: 2px solid #eee; padding: 15px; margin: 15px 0; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; text-align: left; position: relative; }
+        .review-card:hover { border-color: var(--primary); background: #f0f7ff; }
+        .review-card.selected { border-color: var(--primary); background: #e8f0fe; font-weight: 500; }
+        .review-card.selected::after { content: '✓ Selected'; position: absolute; top: 10px; right: 10px; font-size: 10px; color: var(--primary); font-weight: bold; }
+
+        .btn-container { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        button { padding: 15px; border-radius: 10px; border: none; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-generate { background: #34a853; color: white; }
+        .btn-copy { background: var(--primary); color: white; display: none; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        
+        #loader { display: none; color: var(--primary); font-weight: bold; margin: 10px 0; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <span class="test-badge">TEST MODE ON</span>
-    <h2>Review Assistant AI</h2>
-    <div class="setup-info">
-        <strong>🏢 Business:</strong> <span id="bName">Loading...</span><br>
-        <strong>📂 Category:</strong> <span id="bCat">Loading...</span><br>
-        <strong>📍 Location:</strong> <span id="bLoc">Loading...</span>
+<div class="container">
+    <div id="initView">
+        <h2>Review Assistant</h2>
+        <p class="subtitle">AI-powered suggestions for your feedback</p>
+        
+        <div class="setup-info">
+            <strong>Business:</strong> <span id="displayBizName">Loading...</span><br>
+            <strong>Category:</strong> <span id="displayCategory">Loading...</span>
+        </div>
+
+        <label for="langSelect">Step 1: Select Language</label>
+        <select id="langSelect">
+            <option value="English">English</option>
+            <option value="Marathi">Marathi (मराठी)</option>
+            <option value="Hindi">Hindi (हिन्दी)</option>
+            <option value="Gujarati">Gujarati (ગુજરાતી)</option>
+            <option value="Tamil">Tamil (தமிழ்)</option>
+            <option value="Telugu">Telugu (తెలుగు)</option>
+            <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+            <option value="Bengali">Bengali (বাংলা)</option>
+            <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+            <option value="Malayalam">Malayalam (മലയാളം)</option>
+        </select>
+
+        <div id="loader">Generating AI Reviews...</div>
+        <div id="reviewContainer"></div>
+
+        <div class="btn-container">
+            <button class="btn-generate" id="genBtn" onclick="fetchAIReviews()">Generate Reviews</button>
+            <button class="btn-copy" id="copyBtn" onclick="copyAndRedirect()">Copy & Continue to Google</button>
+        </div>
     </div>
-
-    <label style="display:block; text-align:left; font-size:14px; font-weight:bold;">Choose Language:</label>
-    <select id="lang">
-        <option value="Marathi">Marathi (मराठी)</option>
-        <option value="Hindi">Hindi (हिन्दी)</option>
-        <option value="English">English</option>
-    </select>
-
-    <div id="loader">AI is thinking... 🧠</div>
-    <div id="container"></div>
-
-    <button id="genBtn" onclick="generateRealAI()">Generate AI Reviews</button>
-    <button id="copyBtn" style="display:none; margin-top:10px; background:#34a853;" onclick="copyGo()">Copy & Review</button>
 </div>
 
 <script>
-    // --- TESTING DATA (DUMMY) ---
+    // Configuration
+    const API_KEY = "AIzaSyDjsiGGhcZcTo1NbqpmHK8m843H_OSl0BA"; 
     const urlParams = new URLSearchParams(window.location.search);
     
-    // जर लिंकमध्ये डेटा नसेल, तर खालील डमी डेटा वापरला जाईल
-    const bizName = urlParams.get('biz_name') || "Sai Refreshment"; 
-    const bizCat = urlParams.get('category') || "Pure Veg Restaurant";
-    const bizLoc = urlParams.get('location') || "Pune, Maharashtra";
-    const googleLink = urlParams.get('google_url') || "https://www.google.com/search?q=sai+refreshment+pune#lrd=0x0:0x0,3";
+    // Dynamic Business Data from URL
+    const bizName = urlParams.get('biz_name') || "This Business";
+    const bizCat = urlParams.get('category') || "Services";
+    const googleLink = urlParams.get('google_url') || "https://maps.google.com";
 
-    document.getElementById('bName').innerText = bizName;
-    document.getElementById('bCat').innerText = bizCat;
-    document.getElementById('bLoc').innerText = bizLoc;
+    document.getElementById('displayBizName').innerText = bizName;
+    document.getElementById('displayCategory').innerText = bizCat;
 
-    let selectedText = "";
+    let selectedReview = "";
 
-    async function generateRealAI() {
-        const lang = document.getElementById('lang').value;
+    async function fetchAIReviews() {
+        const lang = document.getElementById('langSelect').value;
         const loader = document.getElementById('loader');
-        const container = document.getElementById('container');
+        const container = document.getElementById('reviewContainer');
         const genBtn = document.getElementById('genBtn');
-        
+        const copyBtn = document.getElementById('copyBtn');
+
         loader.style.display = "block";
         container.innerHTML = "";
-        genBtn.disabled = true;
+        copyBtn.style.display = "none";
+        genBtn.innerText = "Regenerate Reviews";
 
-        const promptText = `Write 3 short, high-quality positive Google reviews for "${bizName}" (Category: ${bizCat}) in ${bizLoc}. Language: ${lang}. Use local slang and emojis.`;
+        const prompt = `Act as a happy customer of "${bizName}", which is a "${bizCat}". Write 3 different short, positive Google reviews (max 20 words each) in ${lang} language. Separate them with a symbol #. Do not include numbers or titles.`;
 
-        // Apps Script कडील API ला कॉल करणे
-        if (typeof google !== 'undefined') {
-            google.script.run
-                .withSuccessHandler(function(response) {
-                    loader.style.display = "none";
-                    genBtn.disabled = false;
-                    displayReviews(response);
-                })
-                .callGeminiAI(promptText);
-        } else {
-            // जर तुम्ही फक्त ब्राउझरमध्ये टेस्ट करत असाल (Apps Script शिवाय)
-            setTimeout(() => {
-                loader.style.display = "none";
-                genBtn.disabled = false;
-                const dummyResponse = "⭐ उत्तम जेवण आणि सर्व्हिस! नक्की भेट द्या.\n⭐ Best ${bizCat} in ${bizLoc}. Highly recommended!\n⭐ स्टाफ खूप चांगला आहे, वातावरण प्रसन्न आहे.";
-                displayReviews(dummyResponse);
-            }, 2000);
+        try {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            });
+
+            const data = await response.json();
+            const text = data.candidates[0].content.parts[0].text;
+            const reviews = text.split('#').filter(r => r.trim().length > 5);
+
+            loader.style.display = "none";
+            
+            reviews.forEach((revText, index) => {
+                if(index < 3) {
+                    const div = document.createElement('div');
+                    div.className = 'review-card';
+                    div.innerText = revText.trim();
+                    div.onclick = function() {
+                        document.querySelectorAll('.review-card').forEach(c => c.classList.remove('selected'));
+                        this.classList.add('selected');
+                        selectedReview = revText.trim();
+                        copyBtn.style.display = "block";
+                    };
+                    container.appendChild(div);
+                }
+            });
+        } catch (error) {
+            loader.innerText = "Error generating reviews. Please check API Key.";
+            console.error(error);
         }
     }
 
-    function displayReviews(response) {
-        const container = document.getElementById('container');
-        const list = response.split('\n').filter(r => r.trim() !== '');
-        list.forEach(text => {
-            const div = document.createElement('div');
-            div.className = 'review-box';
-            div.innerText = text;
-            div.onclick = () => {
-                document.querySelectorAll('.review-box').forEach(b => b.classList.remove('selected'));
-                div.classList.add('selected');
-                selectedText = text;
-                document.getElementById('copyBtn').style.display = "block";
-            };
-            container.appendChild(div);
-        });
-    }
-
-    function copyGo() {
-        navigator.clipboard.writeText(selectedText).then(() => {
-            alert("Review Copied! Opening Google...");
+    function copyAndRedirect() {
+        if (!selectedReview) return;
+        
+        navigator.clipboard.writeText(selectedReview).then(() => {
+            alert("Review Copied! Paste it on the next page.");
             window.location.href = googleLink;
         });
     }
