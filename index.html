@@ -2844,13 +2844,15 @@ function newReview(reset) {
 
 function copyGo() {
   navigator.clipboard.writeText(lastText).then(() => {
-    alert("✅ Review copied to clipboard! Redirecting...");
-    setTimeout(() => {
-      window.open(gUrl, '_blank');
-    }, 500);
+    // Open in new tab without popup
+    const newTab = window.open(gUrl, '_blank');
+    if (!newTab) {
+      // If popup blocked, redirect in current tab
+      window.location.href = gUrl;
+    }
+    
   }).catch(err => {
     console.error('Copy failed:', err);
-    alert("❌ Please copy manually: " + lastText);
   });
 }
 
