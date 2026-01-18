@@ -6,90 +6,301 @@
 <title>KeepConnect AI Reviews</title>
 
 <style>
-:root{
- --primary:#0f172a;
- --accent:#0ea5e9;
- --bg:#f8fafc;
+:root {
+  --primary: #0f172a;
+  --secondary: #475569;
+  --accent: #0ea5e9;
+  --accent-hover: #0284c7;
+  --bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --card-bg: linear-gradient(to bottom right, #ffffff, #f8fafc);
+  --shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  --radius: 24px;
 }
-body{
- margin:0;
- padding:20px;
- font-family:Inter,system-ui,sans-serif;
- background:var(--bg);
- color:var(--primary);
+
+* {
+  box-sizing: border-box;
 }
-.container{
- max-width:480px;
- margin:auto;
- background:#fff;
- padding:28px;
- border-radius:26px;
- box-shadow:0 25px 50px -12px rgba(0,0,0,.12);
+
+body {
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.header{
- display:flex;
- justify-content:space-between;
+
+.container {
+  width: 100%;
+  max-width: 520px;
+  background: var(--card-bg);
+  padding: 32px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
-.brand{
- font-size:11px;
- font-weight:800;
- color:var(--accent);
- letter-spacing:1px;
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f1f5f9;
 }
-.biz-name{
- font-size:26px;
- font-weight:900;
- margin:4px 0;
+
+.brand {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  background: rgba(14, 165, 233, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: inline-block;
 }
-.loc{
- font-size:14px;
- color:#64748b;
+
+.biz-name {
+  font-size: 28px;
+  font-weight: 900;
+  margin: 8px 0 4px;
+  background: linear-gradient(90deg, var(--accent), #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
 }
-select{
- padding:8px;
- border-radius:10px;
- border:1px solid #e2e8f0;
- font-weight:600;
+
+.loc {
+  font-size: 14px;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
-.cat{
- margin-top:12px;
- display:inline-block;
- background:#f0f9ff;
- color:var(--accent);
- padding:6px 14px;
- border-radius:999px;
- font-weight:600;
- border:1px solid #bae6fd;
+
+.loc::before {
+  content: "📍";
+  font-size: 12px;
 }
-.review{
- margin-top:18px;
- padding:18px;
- border-radius:18px;
- border:2px solid #f1f5f9;
- background:#f8fafc;
- font-size:15px;
- line-height:1.6;
+
+.category-badge {
+  margin: 12px 0 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  color: var(--accent);
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 14px;
+  border: 2px solid #bae6fd;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
 }
-.btn{
- width:100%;
- margin-top:14px;
- padding:14px;
- border-radius:14px;
- border:none;
- font-weight:700;
- cursor:pointer;
+
+.category-badge::before {
+  content: "🏷️";
 }
-.copy{
- background:var(--accent);
- color:#fff;
- display:none;
- box-shadow:0 10px 18px rgba(14,165,233,.35);
+
+select {
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  font-weight: 600;
+  font-size: 14px;
+  background: white;
+  color: var(--primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
 }
-.footer{
- text-align:center;
- margin-top:18px;
- font-size:12px;
- color:#94a3b8;
+
+select:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+}
+
+.review-card {
+  margin: 24px 0;
+  padding: 24px;
+  border-radius: 20px;
+  border: 2px solid #f1f5f9;
+  background: linear-gradient(135deg, #ffffff, #f8fafc);
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.review-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), #3b82f6);
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+}
+
+.review-content {
+  width: 100%;
+  text-align: center;
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.rating {
+  font-size: 22px;
+  color: #f59e0b;
+  margin-bottom: 15px;
+  letter-spacing: 3px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.btn {
+  padding: 16px;
+  border-radius: 14px;
+  border: none;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), #3b82f6);
+  color: white;
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--accent-hover), #2563eb);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(14, 165, 233, 0.4);
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--primary);
+  border: 2px solid #e2e8f0;
+}
+
+.btn-secondary:hover {
+  background: #e2e8f0;
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.footer {
+  text-align: center;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+  font-size: 13px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.footer strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.footer::before {
+  content: "⚡";
+  font-size: 14px;
+}
+
+.word-count {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  font-size: 12px;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .container {
+    padding: 24px;
+    margin: 15px;
+  }
+  
+  .header {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  select {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .actions {
+    grid-template-columns: 1fr;
+  }
+  
+  .biz-name {
+    font-size: 24px;
+  }
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.review-card {
+  animation: fadeIn 0.5s ease;
 }
 </style>
 </head>
@@ -98,196 +309,1166 @@ select{
 <div class="container">
 
 <div class="header">
- <div>
-  <div class="brand">KEEPCONNECT AI</div>
-  <div class="biz-name" id="biz"></div>
-  <div class="loc" id="loc"></div>
- </div>
-
- <select id="lang" onchange="newReview(true)">
-  <option>English</option>
-  <option>मराठी</option>
-  <option>हिंदी</option>
-  <option>ગુજરાતી</option>
-  <option>தமிழ்</option>
-  <option>తెలుగు</option>
-  <option>ಕನ್ನಡ</option>
-  <option>മലയാളം</option>
-  <option>বাংলা</option>
-  <option>ਪੰਜਾਬੀ</option>
- </select>
+  <div style="flex: 1;">
+    <div class="brand">KEEPCONNECT AI</div>
+    <div class="biz-name" id="biz"></div>
+    <div class="loc" id="loc"></div>
+  </div>
+  
+  <select id="lang" onchange="newReview(true)">
+    <option value="English">🇺🇸 English</option>
+    <option value="मराठी">🇮🇳 मराठी</option>
+    <option value="हिंदी">🇮🇳 हिंदी</option>
+    <option value="ગુજરાતી">🇮🇳 ગુજરાતી</option>
+    <option value="தமிழ்">🇮🇳 தமிழ்</option>
+    <option value="తెలుగు">🇮🇳 తెలుగు</option>
+    <option value="ಕನ್ನಡ">🇮🇳 ಕನ್ನಡ</option>
+    <option value="മലയാളം">🇮🇳 മലയാളം</option>
+    <option value="বাংলা">🇧🇩 বাংলা</option>
+    <option value="ਪੰਜਾਬੀ">🇮🇳 ਪੰਜਾਬੀ</option>
+  </select>
 </div>
 
-<div class="cat" id="cat"></div>
+<div class="category-badge" id="cat"></div>
 
-<div class="review" id="reviewBox"></div>
+<div class="review-card">
+  <div class="review-content">
+    <div class="rating">⭐⭐⭐⭐⭐</div>
+    <div id="reviewBox">Loading review...</div>
+  </div>
+  <div class="word-count" id="wordCount">0 words</div>
+</div>
 
-<button class="btn" onclick="newReview()">🔁 Change Review</button>
-<button class="btn copy" id="copyBtn" onclick="copyGo()">📋 Copy & Continue</button>
+<div class="actions">
+  <button class="btn btn-secondary" onclick="newReview()">
+    <span>🔄</span> Change Review
+  </button>
+  <button class="btn btn-primary" id="copyBtn" onclick="copyGo()">
+    <span>📋</span> Copy & Continue
+  </button>
+</div>
 
 <div class="footer">
-Powered by <strong>KeepConnect App</strong>
+  Powered by <strong>KeepConnect App</strong> - Generate SEO Friendly Reviews
 </div>
 
 </div>
 
 <script>
-const q=new URLSearchParams(location.search);
-const biz=q.get("biz_name")||"Business Name";
-const cat=q.get("category")||"Services";
-const loc=q.get("location")||"";
-const gUrl=q.get("google_url")||"https://google.com";
+const q = new URLSearchParams(location.search);
+const biz = q.get("biz_name") || "Example Business";
+const cat = q.get("category") || "Services";
+const loc = q.get("location") || "City Name";
+const gUrl = q.get("google_url") || "https://google.com";
 
-bizName=biz;
+document.getElementById("biz").innerText = biz;
+document.getElementById("cat").innerText = cat;
+document.getElementById("loc").innerText = loc;
 
-document.getElementById("biz").innerText=biz;
-document.getElementById("cat").innerText=cat;
-document.getElementById("loc").innerText=loc? "📍 "+loc:"";
+const seoKeywords = {
+  // Food & Restaurants (20 categories)
+  "Restaurant": [
+    "delicious food and authentic taste", "great ambience and cozy atmosphere", 
+    "friendly staff with excellent service", "hygienic kitchen and clean environment",
+    "fresh ingredients with traditional recipes", "prompt service and quick delivery",
+    "tasty dishes with modern presentation", "value for money with reasonable prices",
+    "family-friendly environment with comfort", "excellent culinary experience overall"
+  ],
+  "Cafe": [
+    "quality coffee and beverages", "cozy atmosphere for relaxation",
+    "comfortable seating arrangements", "free WiFi and workspace facilities",
+    "freshly baked pastries and snacks", "perfect spot for meetings and work",
+    "friendly baristas and service", "variety of tea and coffee options",
+    "relaxing music and ambiance", "great place for studying or working"
+  ],
+  "Fast Food": [
+    "quick service and fast delivery", "tasty snacks and meals",
+    "affordable prices for everyone", "consistent quality and taste",
+    "hygienic preparation methods", "variety of fast food options",
+    "convenient location and timing", "family-friendly fast food",
+    "special offers and combos", "clean and organized outlet"
+  ],
+  "Catering": [
+    "professional catering services", "delicious food for events",
+    "timely delivery and setup", "variety of menu options",
+    "experienced catering team", "hygienic food preparation",
+    "customizable packages", "excellent presentation",
+    "affordable catering solutions", "reliable event catering"
+  ],
+  "Bakery": [
+    "freshly baked breads", "quality cakes and pastries",
+    "traditional baking methods", "hygienic bakery products",
+    "variety of baked goods", "custom cakes for occasions",
+    "reasonable bakery prices", "fresh ingredients daily",
+    "skilled bakers", "delicious bakery items"
+  ],
+  "Ice Cream Parlor": [
+    "premium quality ice creams", "variety of flavors available",
+    "hygienic preparation standards", "fresh ingredients used",
+    "family-friendly environment", "affordable ice cream prices",
+    "special sundae creations", "clean and inviting parlor",
+    "friendly service staff", "perfect desserts"
+  ],
+  "Pizza Shop": [
+    "delicious pizzas with fresh toppings", "quick delivery service",
+    "variety of pizza options", "crispy and tasty crusts",
+    "affordable pizza deals", "hygienic kitchen standards",
+    "family pizza combos", "online ordering available",
+    "consistent pizza quality", "friendly pizza chefs"
+  ],
+  "Sweet Shop": [
+    "traditional Indian sweets", "hygienic sweet preparation",
+    "fresh sweets daily", "variety of mithai options",
+    "reasonable sweet prices", "special occasion sweets",
+    "quality ingredients used", "expert sweet makers",
+    "clean sweet shop", "delicious dessert options"
+  ],
+  "Juice Center": [
+    "fresh fruit juices", "hygienic juice preparation",
+    "variety of juice options", "healthy beverage choices",
+    "affordable juice prices", "quick service",
+    "fresh fruits used", "clean juice center",
+    "refreshing drinks", "quality juice service"
+  ],
+  "Dairy & Sweets": [
+    "fresh dairy products", "quality milk and curd",
+    "traditional sweet recipes", "hygienic production",
+    "daily fresh supplies", "reasonable prices",
+    "variety of dairy items", "trusted dairy brand",
+    "fresh sweets", "quality assurance"
+  ],
 
-const seo={
- Default:["excellent service","professional team","great quality","trusted business","value for money"],
- Restaurant:["delicious food","great ambience","friendly staff","authentic taste","hygienic service"],
- RealEstate:["trusted property dealer","best property deals","transparent process","prime location","expert guidance"]
+  // Retail & Shopping (25 categories)
+  "Clothes Store": [
+    "quality clothing materials", "latest fashion trends",
+    "variety of sizes available", "reasonable clothing prices",
+    "comfortable fitting rooms", "knowledgeable sales staff",
+    "seasonal collections", "good return policy",
+    "clean and organized store", "excellent customer service"
+  ],
+  "Mobile Store": [
+    "genuine mobile phones", "latest smartphone models",
+    "expert technical guidance", "reasonable mobile prices",
+    "variety of brands available", "good after-sales service",
+    "mobile accessories", "trusted mobile retailer",
+    "warranty facilities", "knowledgeable staff"
+  ],
+  "Jewellery": [
+    "certified gold jewellery", "latest jewellery designs",
+    "trusted jewellery quality", "reasonable making charges",
+    "variety of jewellery options", "expert jewellery guidance",
+    "traditional and modern designs", "quality assurance",
+    "clean jewellery store", "professional service"
+  ],
+  "FMCG & Grocery": [
+    "fresh grocery products", "daily essential items",
+    "competitive grocery prices", "clean grocery store",
+    "variety of products", "convenient shopping",
+    "quality FMCG products", "organized store layout",
+    "friendly staff", "fresh produce"
+  ],
+  "Furniture": [
+    "quality furniture materials", "durable furniture products",
+    "modern furniture designs", "reasonable furniture prices",
+    "custom furniture options", "expert furniture guidance",
+    "timely delivery", "assembly services",
+    "variety of furniture", "quality craftsmanship"
+  ],
+  "Home Appliances": [
+    "genuine home appliances", "latest appliance models",
+    "expert appliance guidance", "reasonable appliance prices",
+    "installation services", "after-sales support",
+    "energy efficient appliances", "warranty facilities",
+    "variety of brands", "knowledgeable staff"
+  ],
+  "Footwear": [
+    "quality footwear materials", "comfortable shoe designs",
+    "variety of sizes available", "reasonable footwear prices",
+    "durable footwear products", "latest footwear trends",
+    "comfortable fitting", "knowledgeable staff",
+    "clean footwear store", "good return policy"
+  ],
+  "Gift Articles": [
+    "unique gift items", "quality gift products",
+    "variety of gift options", "gift wrapping services",
+    "reasonable gift prices", "special occasion gifts",
+    "creative gift ideas", "clean gift store",
+    "knowledgeable staff", "perfect gifting solutions"
+  ],
+  "Stationery": [
+    "quality stationery products", "variety of stationery items",
+    "competitive stationery prices", "school and office supplies",
+    "organized stationery store", "knowledgeable staff",
+    "educational materials", "art and craft supplies",
+    "bulk order facilities", "clean stationery shop"
+  ],
+  "Toys Shops": [
+    "safe and quality toys", "educational toy options",
+    "variety of toys available", "reasonable toy prices",
+    "age-appropriate toys", "clean toy store",
+    "knowledgeable staff", "latest toy collections",
+    "durable toys", "child-friendly environment"
+  ],
+
+  // Automotive (15 categories)
+  "Automobile": [
+    "genuine automobile parts", "expert automobile services",
+    "quality vehicle repairs", "reasonable service charges",
+    "skilled automobile technicians", "timely service completion",
+    "modern workshop equipment", "transparent pricing",
+    "warranty on services", "knowledgeable staff"
+  ],
+  "Bicycle Shop": [
+    "quality bicycles", "variety of bicycle models",
+    "expert bicycle guidance", "reasonable bicycle prices",
+    "bicycle repair services", "genuine bicycle parts",
+    "knowledgeable staff", "clean bicycle shop",
+    "test ride facilities", "after-sales service"
+  ],
+  "Motor pump, Submersible pump": [
+    "quality pumps", "expert pump installation",
+    "reliable pump performance", "reasonable pump prices",
+    "pump repair services", "genuine pump parts",
+    "technical guidance", "timely service",
+    "warranty facilities", "skilled technicians"
+  ],
+  "Battery, Inverter, UPS": [
+    "quality battery products", "reliable power solutions",
+    "expert technical guidance", "reasonable product prices",
+    "installation services", "maintenance support",
+    "warranty facilities", "skilled technicians",
+    "genuine products", "after-sales service"
+  ],
+  "Car Wash": [
+    "professional car washing", "thorough cleaning services",
+    "quality cleaning products", "reasonable service charges",
+    "interior cleaning", "polishing services",
+    "quick service", "skilled staff",
+    "clean facility", "customer satisfaction"
+  ],
+
+  // Healthcare (20 categories)
+  "Hospital & Clinic": [
+    "expert medical care", "modern medical facilities",
+    "experienced doctors", "hygienic hospital environment",
+    "timely medical attention", "affordable treatment",
+    "professional nursing staff", "advanced medical equipment",
+    "emergency services", "quality healthcare"
+  ],
+  "Pharmaceutical": [
+    "genuine medicines", "quality pharmaceutical products",
+    "knowledgeable pharmacists", "reasonable medicine prices",
+    "prescription guidance", "clean pharmacy",
+    "variety of medicines", "timely availability",
+    "professional service", "trusted pharmacy"
+  ],
+  "Doctor (Homeopathy, Naturopathy, Panchkarma)": [
+    "experienced doctors", "holistic treatment approach",
+    "natural healing methods", "personalized treatment plans",
+    "patient-centered care", "affordable consultation",
+    "traditional medicine expertise", "clean clinic environment",
+    "compassionate care", "effective treatments"
+  ],
+  "Laboratory Pathology": [
+    "accurate test results", "modern laboratory equipment",
+    "hygienic lab facilities", "timely report delivery",
+    "skilled technicians", "affordable testing packages",
+    "home collection services", "professional lab staff",
+    "quality assurance", "reliable pathology services"
+  ],
+  "Medical/Surgical Equipments": [
+    "quality medical equipment", "genuine surgical instruments",
+    "expert equipment guidance", "reasonable equipment prices",
+    "installation services", "maintenance support",
+    "warranty facilities", "knowledgeable staff",
+    "hospital-grade equipment", "professional service"
+  ],
+  "Veterinary Doctor": [
+    "experienced veterinary care", "compassionate animal treatment",
+    "modern veterinary facilities", "affordable veterinary services",
+    "emergency animal care", "skilled veterinarians",
+    "clean clinic environment", "pet-friendly approach",
+    "quality medication", "animal health expertise"
+  ],
+  "Wellness Center": [
+    "holistic wellness programs", "experienced wellness experts",
+    "modern wellness facilities", "personalized wellness plans",
+    "relaxing environment", "affordable wellness packages",
+    "skilled therapists", "clean wellness center",
+    "health and fitness guidance", "quality wellness services"
+  ],
+  "Dental Clinic": [
+    "expert dental care", "modern dental equipment",
+    "pain-free dental treatments", "affordable dental services",
+    "hygienic dental clinic", "experienced dentists",
+    "emergency dental care", "quality dental materials",
+    "friendly dental staff", "comprehensive dental solutions"
+  ],
+
+  // Education & Training (20 categories)
+  "Education": [
+    "quality education services", "experienced teaching faculty",
+    "modern teaching methods", "personalized learning approach",
+    "good academic results", "affordable education fees",
+    "clean educational environment", "comprehensive curriculum",
+    "student-centered teaching", "excellent educational facilities"
+  ],
+  "Tuition Academy": [
+    "experienced tutors", "personalized teaching methods",
+    "small batch sizes", "regular progress reports",
+    "affordable tuition fees", "subject expert teachers",
+    "clean tuition center", "conducive learning environment",
+    "regular tests and assessments", "academic improvement focus"
+  ],
+  "GYM & YOGA": [
+    "modern gym equipment", "certified fitness trainers",
+    "hygienic gym environment", "affordable membership plans",
+    "variety of fitness programs", "experienced yoga instructors",
+    "clean changing rooms", "personalized fitness plans",
+    "group exercise classes", "quality fitness services"
+  ],
+  "Dance Academy": [
+    "experienced dance instructors", "variety of dance forms",
+    "professional dance training", "affordable dance classes",
+    "clean dance studio", "regular stage performances",
+    "certified dance programs", "friendly teaching approach",
+    "modern dance facilities", "quality dance education"
+  ],
+  "Driving School": [
+    "experienced driving instructors", "modern training vehicles",
+    "comprehensive driving lessons", "affordable driving courses",
+    "clean training vehicles", "patient teaching approach",
+    "theoretical and practical training", "flexible timing options",
+    "RTO test preparation", "quality driving education"
+  ],
+  "Career Counselling": [
+    "experienced career counselors", "personalized career guidance",
+    "comprehensive career assessment", "affordable counseling fees",
+    "professional career advice", "latest career information",
+    "educational guidance", "job market insights",
+    "skill development suggestions", "quality counseling services"
+  ],
+  "Sports Academy": [
+    "experienced sports coaches", "modern sports facilities",
+    "comprehensive sports training", "affordable training fees",
+    "clean sports complex", "professional training methods",
+    "regular competitions", "skill development focus",
+    "safety measures", "quality sports education"
+  ],
+
+  // Professional Services (30 categories)
+  "Electrical": [
+    "licensed electricians", "quality electrical work",
+    "timely electrical services", "reasonable service charges",
+    "modern electrical solutions", "safety-focused approach",
+    "emergency electrical services", "skilled technicians",
+    "transparent pricing", "reliable electrical services"
+  ],
+  "Marketing & Advertising": [
+    "creative marketing solutions", "experienced marketing team",
+    "effective advertising strategies", "reasonable marketing packages",
+    "digital marketing expertise", "traditional marketing methods",
+    "brand building services", "marketing campaign management",
+    "measurable results", "professional marketing services"
+  ],
+  "Photography & Videography": [
+    "creative photography services", "professional photography equipment",
+    "quality photo and video work", "reasonable photography packages",
+    "experienced photographers", "timely delivery",
+    "creative editing services", "professional approach",
+    "variety of photography styles", "excellent customer service"
+  ],
+  "Beautiparlour & Salon": [
+    "skilled beauty professionals", "quality beauty products",
+    "hygienic salon environment", "reasonable service charges",
+    "variety of beauty services", "modern beauty techniques",
+    "clean salon facilities", "friendly staff",
+    "professional beauty treatments", "excellent customer care"
+  ],
+  "Insurance": [
+    "licensed insurance agents", "comprehensive insurance solutions",
+    "expert insurance guidance", "reasonable insurance premiums",
+    "variety of insurance plans", "timely claim settlement",
+    "professional insurance advice", "transparent policy details",
+    "customer-focused approach", "reliable insurance services"
+  ],
+  "Architect": [
+    "experienced architects", "creative architectural designs",
+    "professional architectural services", "reasonable design fees",
+    "modern architectural concepts", "detailed architectural plans",
+    "3D visualization services", "project management expertise",
+    "quality assurance", "timely project completion"
+  ],
+  "Interior Decorator": [
+    "creative interior designs", "quality interior materials",
+    "professional interior services", "reasonable decoration charges",
+    "modern interior concepts", "space optimization expertise",
+    "timely completion", "skilled decorators",
+    "variety of design styles", "excellent finishing work"
+  ],
+  "Financial Service": [
+    "licensed financial advisors", "comprehensive financial planning",
+    "expert financial guidance", "reasonable service charges",
+    "investment planning services", "tax planning expertise",
+    "retirement planning", "financial goal setting",
+    "professional advice", "reliable financial services"
+  ],
+  "VISA Consultants": [
+    "experienced visa consultants", "comprehensive visa services",
+    "expert immigration guidance", "reasonable consultation fees",
+    "documentation assistance", "timely application processing",
+    "professional visa advice", "transparent process",
+    "high success rate", "quality visa services"
+  ],
+  "Packers And Movers": [
+    "professional packing services", "safe transportation facilities",
+    "experienced moving team", "reasonable moving charges",
+    "timely relocation services", "careful handling of goods",
+    "insurance facilities", "transparent pricing",
+    "skilled packers", "reliable moving services"
+  ],
+  "Security Agency": [
+    "trained security personnel", "professional security services",
+    "reliable security solutions", "reasonable security charges",
+    "24/7 security monitoring", "experienced security team",
+    "modern security equipment", "timely security services",
+    "customized security plans", "quality security services"
+  ],
+  "Plumber & Water Treatment": [
+    "licensed plumbers", "quality plumbing work",
+    "timely plumbing services", "reasonable service charges",
+    "water treatment solutions", "modern plumbing techniques",
+    "emergency plumbing services", "skilled technicians",
+    "transparent pricing", "reliable plumbing services"
+  ],
+  "Dry Cleaners": [
+    "professional dry cleaning", "quality cleaning results",
+    "timely cleaning services", "reasonable cleaning charges",
+    "careful fabric handling", "modern cleaning equipment",
+    "stain removal expertise", "clean facility",
+    "friendly service", "reliable dry cleaning"
+  ],
+  "Tailor": [
+    "skilled tailoring work", "perfect clothing fitting",
+    "timely tailoring services", "reasonable tailoring charges",
+    "quality stitching work", "modern tailoring techniques",
+    "custom clothing designs", "attention to detail",
+    "variety of fabrics", "professional tailoring services"
+  ],
+  "Massage Parlour, Spa Centre": [
+    "trained massage therapists", "professional spa services",
+    "relaxing spa environment", "reasonable service charges",
+    "hygienic spa facilities", "variety of spa treatments",
+    "quality spa products", "skilled therapists",
+    "clean spa center", "excellent relaxation services"
+  ],
+
+  // Industrial & Construction (25 categories)
+  "Building Material": [
+    "quality building materials", "variety of construction supplies",
+    "genuine building products", "reasonable material prices",
+    "bulk order facilities", "timely material delivery",
+    "expert material guidance", "trusted material supplier",
+    "durable construction materials", "reliable building supplies"
+  ],
+  "Steel & Aluminium": [
+    "quality steel products", "genuine aluminium materials",
+    "variety of metal products", "reasonable metal prices",
+    "expert metal guidance", "bulk supply facilities",
+    "timely delivery", "durable metal products",
+    "quality assurance", "reliable metal supplier"
+  ],
+  "Plywood & Hardware": [
+    "quality plywood products", "genuine hardware items",
+    "variety of wood products", "reasonable hardware prices",
+    "expert hardware guidance", "timely supplies",
+    "durable materials", "bulk order facilities",
+    "quality wood products", "reliable hardware supplier"
+  ],
+  "Paints": [
+    "quality paint products", "variety of paint colors",
+    "genuine paint materials", "reasonable paint prices",
+    "expert color guidance", "durable paint finish",
+    "bulk paint supplies", "timely delivery",
+    "quality painting products", "reliable paint supplier"
+  ],
+  "Pipes": [
+    "quality pipe materials", "variety of pipe types",
+    "genuine pipe products", "reasonable pipe prices",
+    "expert pipe guidance", "durable pipe solutions",
+    "bulk pipe supplies", "timely delivery",
+    "quality plumbing pipes", "reliable pipe supplier"
+  ],
+  "Cement": [
+    "quality cement products", "genuine construction cement",
+    "consistent cement quality", "reasonable cement prices",
+    "bulk cement supplies", "timely cement delivery",
+    "durable cement materials", "expert cement guidance",
+    "trusted cement brand", "reliable cement supplier"
+  ],
+  "Fabrication Work": [
+    "skilled fabrication work", "quality fabrication materials",
+    "custom fabrication designs", "reasonable fabrication charges",
+    "modern fabrication techniques", "timely fabrication completion",
+    "durable fabrication products", "skilled fabricators",
+    "precision fabrication work", "professional fabrication services"
+  ],
+  "Glass Hardware": [
+    "quality glass products", "genuine glass hardware",
+    "variety of glass types", "reasonable glass prices",
+    "expert glass guidance", "custom glass solutions",
+    "timely glass supplies", "durable glass products",
+    "quality glass materials", "reliable glass supplier"
+  ],
+  "Ceramic": [
+    "quality ceramic tiles", "variety of ceramic designs",
+    "genuine ceramic products", "reasonable ceramic prices",
+    "expert tile guidance", "durable ceramic materials",
+    "bulk ceramic supplies", "timely delivery",
+    "quality ceramic finishes", "reliable ceramic supplier"
+  ],
+  "Elevator": [
+    "quality elevator systems", "professional elevator installation",
+    "reliable elevator performance", "reasonable elevator prices",
+    "timely elevator services", "skilled elevator technicians",
+    "safety certified elevators", "maintenance services",
+    "modern elevator technology", "reliable elevator solutions"
+  ],
+  "Fire Safety": [
+    "quality fire safety equipment", "professional fire safety services",
+    "comprehensive fire safety solutions", "reasonable safety charges",
+    "fire safety training", "timely safety services",
+    "skilled safety technicians", "modern safety equipment",
+    "safety compliance services", "reliable fire safety solutions"
+  ],
+
+  // Technology & IT (20 categories)
+  "Computer Hardware": [
+    "genuine computer components", "latest hardware products",
+    "expert hardware guidance", "reasonable hardware prices",
+    "computer assembly services", "hardware repair facilities",
+    "warranty on products", "knowledgeable technical staff",
+    "quality computer parts", "reliable hardware supplier"
+  ],
+  "CSC Centre": [
+    "government service facilitation", "comprehensive CSC services",
+    "expert service guidance", "reasonable service charges",
+    "timely service delivery", "digital service expertise",
+    "citizen service support", "knowledgeable CSC operators",
+    "quality service delivery", "reliable CSC services"
+  ],
+  "Internet Broadband Service Provider": [
+    "high-speed internet services", "reliable broadband connection",
+    "affordable internet plans", "24/7 technical support",
+    "uninterrupted internet service", "expert installation services",
+    "flexible internet packages", "quality customer service",
+    "stable internet connection", "reliable broadband provider"
+  ],
+  "Security Surveillance (CCTV)": [
+    "quality CCTV systems", "professional surveillance installation",
+    "reliable security monitoring", "reasonable surveillance charges",
+    "modern surveillance technology", "skilled installation technicians",
+    "remote monitoring facilities", "maintenance services",
+    "comprehensive security solutions", "reliable surveillance services"
+  ],
+  "Printing Press": [
+    "quality printing services", "modern printing equipment",
+    "timely printing delivery", "reasonable printing charges",
+    "variety of printing options", "creative printing solutions",
+    "bulk printing facilities", "skilled printing technicians",
+    "excellent print quality", "professional printing services"
+  ],
+  "Laser Engraving Machine": [
+    "precision laser engraving", "modern engraving equipment",
+    "quality engraving work", "reasonable engraving charges",
+    "custom engraving designs", "timely engraving services",
+    "variety of engraving materials", "skilled engraving technicians",
+    "detailed engraving work", "professional engraving services"
+  ],
+  "Power tool Seller": [
+    "quality power tools", "genuine tool products",
+    "variety of power tools", "reasonable tool prices",
+    "expert tool guidance", "tool demonstration facilities",
+    "warranty on tools", "knowledgeable staff",
+    "durable power tools", "reliable tool supplier"
+  ],
+  "Software Development": [
+    "expert software developers", "custom software solutions",
+    "quality software development", "reasonable development charges",
+    "modern software technology", "timely project delivery",
+    "comprehensive testing services", "skilled development team",
+    "user-friendly software", "professional development services"
+  ],
+
+  // Agriculture & Farming (15 categories)
+  "Agriculture": [
+    "modern farming techniques", "quality agricultural products",
+    "expert farming guidance", "reasonable agricultural supplies",
+    "sustainable farming methods", "agricultural equipment services",
+    "crop advisory services", "skilled agricultural experts",
+    "quality seeds and fertilizers", "reliable agricultural services"
+  ],
+  "कृषि उपकरण व्यापार समिति": [
+    "quality agricultural equipment", "genuine farming tools",
+    "expert equipment guidance", "reasonable equipment prices",
+    "variety of farming tools", "timely equipment supplies",
+    "agricultural machinery services", "skilled equipment technicians",
+    "durable farming equipment", "reliable agricultural supplier"
+  ],
+  "Flour Mill, Dal mill, Sevai maker, Rice mill": [
+    "quality milling services", "modern milling equipment",
+    "hygienic milling process", "reasonable milling charges",
+    "variety of milling options", "timely milling services",
+    "skilled milling technicians", "clean milling facility",
+    "freshly milled products", "reliable milling services"
+  ],
+  "Oil Mill / Lakhdi ghani": [
+    "traditional oil extraction", "quality oil products",
+    "hygienic oil production", "reasonable oil prices",
+    "pure and natural oils", "traditional ghani methods",
+    "fresh oil extraction", "skilled oil makers",
+    "clean oil mill", "reliable oil products"
+  ],
+  "Plant Nurseries": [
+    "healthy plants and saplings", "variety of plant species",
+    "expert gardening guidance", "reasonable plant prices",
+    "quality gardening supplies", "seasonal plant availability",
+    "knowledgeable nursery staff", "clean nursery environment",
+    "gardening tools available", "reliable plant nursery"
+  ],
+  "Poultry Farm": [
+    "healthy poultry products", "hygienic farm environment",
+    "quality chicken and eggs", "reasonable poultry prices",
+    "modern poultry farming", "expert poultry care",
+    "fresh poultry supplies", "clean farm facilities",
+    "sustainable poultry farming", "reliable poultry farm"
+  ],
+  "Goat farm / Fish farm / Pavan farm / Emmy Farm": [
+    "healthy farm animals", "modern farming techniques",
+    "quality animal products", "reasonable farm prices",
+    "expert animal care", "hygienic farm environment",
+    "sustainable farming methods", "skilled farm management",
+    "fresh farm products", "reliable farm services"
+  ],
+
+  // Travel & Tourism (15 categories)
+  "Tours and Travels": [
+    "expert travel planning", "comprehensive travel packages",
+    "reliable travel services", "reasonable travel prices",
+    "experienced travel agents", "customized tour packages",
+    "timely travel arrangements", "quality travel accommodation",
+    "travel documentation assistance", "professional travel services"
+  ],
+  "Hotel": [
+    "comfortable accommodation", "clean hotel rooms",
+    "friendly hotel staff", "reasonable hotel prices",
+    "modern hotel facilities", "quality hotel services",
+    "convenient hotel location", "hygienic hotel environment",
+    "good hotel amenities", "excellent hospitality services"
+  ],
+  "Hostel": [
+    "affordable accommodation", "clean hostel facilities",
+    "friendly hostel staff", "reasonable hostel charges",
+    "comfortable hostel rooms", "hygienic hostel environment",
+    "convenient hostel location", "student-friendly facilities",
+    "safe hostel accommodation", "quality hostel services"
+  ],
+  "Transport": [
+    "reliable transportation services", "comfortable vehicles",
+    "experienced drivers", "reasonable transport charges",
+    "timely transportation", "safe travel facilities",
+    "variety of transport options", "clean transport vehicles",
+    "professional transport services", "quality transportation"
+  ],
+  "Travel Agency": [
+    "expert travel consultation", "comprehensive travel solutions",
+    "reliable travel booking", "reasonable agency charges",
+    "experienced travel consultants", "custom travel itineraries",
+    "timely travel services", "quality travel arrangements",
+    "travel insurance assistance", "professional travel agency"
+  ],
+
+  // Miscellaneous (30 categories)
+  "Events Management": [
+    "professional event planning", "comprehensive event services",
+    "creative event management", "reasonable event charges",
+    "experienced event managers", "timely event execution",
+    "quality event arrangements", "variety of event services",
+    "detailed event planning", "excellent event coordination"
+  ],
+  "Arts & Craft": [
+    "creative art products", "quality craft materials",
+    "skilled artisans", "reasonable art prices",
+    "variety of craft items", "traditional art forms",
+    "modern craft designs", "creative art workshops",
+    "quality craftsmanship", "professional art services"
+  ],
+  "Social Activist": [
+    "dedicated social service", "community development work",
+    "social awareness programs", "non-profit initiatives",
+    "community welfare activities", "social change advocacy",
+    "public service commitment", "social justice work",
+    "community empowerment", "social service dedication"
+  ],
+  "NGO": [
+    "dedicated social work", "non-profit organization",
+    "community development", "social welfare programs",
+    "humanitarian services", "social awareness initiatives",
+    "charitable activities", "public service commitment",
+    "social change work", "community service dedication"
+  ],
+  "Matrimonial Agencies": [
+    "professional matchmaking services", "confidential matrimonial services",
+    "experienced matchmakers", "reasonable agency charges",
+    "verified profiles", "personalized matchmaking",
+    "traditional and modern approaches", "reliable matrimonial services",
+    "family consultation", "quality matchmaking services"
+  ],
+  "Astrology": [
+    "experienced astrologers", "accurate astrological predictions",
+    "traditional astrology methods", "reasonable consultation charges",
+    "personalized horoscope analysis", "expert astrological guidance",
+    "remedial solutions", "confidential consultations",
+    "ancient astrological wisdom", "professional astrology services"
+  ],
+  "DJ Sound System": [
+    "professional DJ services", "quality sound equipment",
+    "variety of music options", "reasonable DJ charges",
+    "experienced DJs", "modern sound systems",
+    "event music management", "skilled sound technicians",
+    "quality sound output", "reliable DJ services"
+  ],
+  "Artist, Musical, Orchestra, Band Party": [
+    "talented artists", "quality musical performances",
+    "experienced musicians", "reasonable performance charges",
+    "variety of music genres", "professional stage shows",
+    "skilled orchestra", "modern musical arrangements",
+    "excellent entertainment", "professional artist services"
+  ],
+  "Balloon,Floure Decorator": [
+    "creative decoration designs", "quality decoration materials",
+    "skilled decorators", "reasonable decoration charges",
+    "variety of decoration styles", "timely decoration services",
+    "modern decoration techniques", "event decoration expertise",
+    "beautiful decoration work", "professional decoration services"
+  ],
+  "Disposable Items": [
+    "quality disposable products", "hygienic disposable items",
+    "variety of disposable options", "reasonable product prices",
+    "bulk supply facilities", "timely product delivery",
+    "eco-friendly disposables", "clean disposable products",
+    "convenient disposable solutions", "reliable disposable supplier"
+  ],
+  "Scrap": [
+    "professional scrap collection", "reasonable scrap prices",
+    "timely scrap pickup", "clean scrap handling",
+    "variety of scrap materials", "reliable scrap services",
+    "environmentally responsible", "skilled scrap management",
+    "organized scrap collection", "quality scrap services"
+  ],
+  "Chemical Pest Control": [
+    "professional pest control", "effective pest elimination",
+    "safe pest control methods", "reasonable service charges",
+    "experienced pest controllers", "timely pest control services",
+    "comprehensive pest solutions", "skilled technicians",
+    "hygienic pest control", "reliable pest management"
+  ],
+  "Packaging Service": [
+    "professional packaging solutions", "quality packaging materials",
+    "custom packaging designs", "reasonable packaging charges",
+    "timely packaging services", "variety of packaging options",
+    "skilled packaging staff", "modern packaging techniques",
+    "secure packaging work", "reliable packaging services"
+  ],
+  "Placement Service": [
+    "professional placement services", "experienced placement consultants",
+    "comprehensive job assistance", "reasonable service charges",
+    "variety of job opportunities", "timely placement services",
+    "skilled placement team", "quality job placements",
+    "career guidance support", "reliable placement services"
+  ],
+  "Import-Export": [
+    "professional import-export services", "experienced trade consultants",
+    "comprehensive trade solutions", "reasonable service charges",
+    "timely import-export processing", "skilled trade management",
+    "quality trade services", "customs clearance assistance",
+    "international trade expertise", "reliable import-export services"
+  ],
+  "Logistic & Courier Service": [
+    "reliable courier services", "timely delivery facilities",
+    "professional logistics management", "reasonable courier charges",
+    "experienced courier staff", "safe package handling",
+    "nationwide delivery network", "tracking facilities",
+    "quality courier services", "reliable logistics solutions"
+  ],
+  "House Keeping Service": [
+    "professional housekeeping services", "thorough cleaning work",
+    "experienced cleaning staff", "reasonable service charges",
+    "timely cleaning services", "quality cleaning products",
+    "skilled housekeepers", "comprehensive cleaning solutions",
+    "hygienic cleaning standards", "reliable housekeeping services"
+  ],
+  "Day Care / Baby Care / Patient Care": [
+    "professional care services", "experienced caregivers",
+    "safe care environment", "reasonable care charges",
+    "timely care services", "compassionate care approach",
+    "skilled care staff", "quality care facilities",
+    "personalized care plans", "reliable care services"
+  ],
+  "Gaming Centre": [
+    "modern gaming equipment", "variety of gaming options",
+    "clean gaming environment", "reasonable gaming charges",
+    "skilled gaming staff", "comfortable gaming facilities",
+    "latest gaming technology", "friendly gaming atmosphere",
+    "quality gaming experience", "reliable gaming centre"
+  ],
+  "Business Opportunities": [
+    "genuine business opportunities", "experienced business consultants",
+    "comprehensive business guidance", "reasonable consultation charges",
+    "timely business advice", "skilled business mentoring",
+    "quality business solutions", "entrepreneurship support",
+    "business development expertise", "reliable business services"
+  ],
+
+  // Default category (for any unspecified category)
+  "Services": [
+    "professional team with expertise", "excellent service quality and reliability",
+    "great quality work with precision", "trusted business with good reputation",
+    "value for money with competitive pricing", "timely delivery and completion",
+    "expert guidance and consultation", "premium quality with attention to detail",
+    "innovative approach and modern methods", "dedicated service and customer focus"
+  ]
 };
 
 const vocab = {
   English: {
     o: [
-      `Amazing experience at ${biz}! ⭐`, `Highly satisfied with ${biz}. 👍`, `Great service by ${biz}. 🌟`,
-      `Outstanding performance from ${biz}!`, `${biz} exceeded my expectations!`, `Top-notch service at ${biz}`,
-      `Exceptional quality from ${biz}`, `Professional and reliable service`, `${biz} truly delivers excellence`,
-      `Outstanding customer service experience`, `Worth every penny - ${biz}`, `Highly impressed with their work`,
-      `Best decision to choose ${biz}`, `Quality service that stands out`, `Reliable and trustworthy service`,
-      `Superb attention to detail`, `Excellent value for money`, `Consistently great results`,
-      `Friendly and efficient team`, `Prompt and professional service`, `Game changing experience with ${biz}`
+      `Amazing experience at ${biz}! Their commitment to quality and customer satisfaction is truly remarkable.`, 
+      `Highly satisfied with the exceptional services provided by ${biz}. The attention to detail and professional approach sets them apart.`,
+      `Great service by the dedicated team at ${biz}. Their expertise and commitment to excellence is evident in every aspect.`,
+      `Outstanding performance from ${biz}! They consistently deliver beyond expectations with their quality work and timely service.`,
+      `${biz} exceeded all our expectations with their professional approach and excellent results. Truly a reliable service provider.`,
+      `Top-notch quality service at ${biz}! Their commitment to customer satisfaction and quality work is highly commendable.`,
+      `Exceptional service from ${biz} that truly stands out in the market. Their expertise and dedication is clearly visible.`,
+      `Professional and reliable service from ${biz}! They have set new standards in quality and customer care in their field.`,
+      `${biz} truly delivers excellence in every project. Their attention to detail and commitment to quality is impressive.`,
+      `Worth every penny spent at ${biz}! Their combination of quality service and reasonable pricing is unbeatable in the market.`
     ],
-    m: (k) => `${loc ? "In " + loc + ", " : ""}the ${k} for ${cat} is truly impressive.`,
+    m: (k) => `Located in ${loc}, their ${k} for ${cat} services makes them a preferred choice in the area.`,
     c: [
-      "Highly recommended!", "5-star service!", "Will visit again!", "Extremely satisfied!",
-      "Will refer to others!", "Excellent experience!", "Top recommendation!", "Couldn't be happier!",
-      "Exceeded all expectations!", "Perfect in every way!", "Simply outstanding!", "Best in the business!",
-      "Will be a regular customer!", "Absolutely brilliant!", "Worth recommending!", "Customer for life!",
-      "Service par excellence!", "Setting new standards!", "Beyond perfection!", "Truly remarkable!"
+      "Highly recommended to everyone looking for quality service and reliable solutions in this category.",
+      "5-star service experience that deserves all the appreciation and positive reviews from customers.",
+      "Will definitely visit again for future requirements and recommend to friends and family without hesitation.",
+      "Extremely satisfied customer who appreciates their professional approach and excellent work quality.",
+      "Will refer to friends and family because of their consistent quality service and customer-friendly approach.",
+      "Excellent overall experience that combines quality, reliability, and value for money perfectly.",
+      "Best service in the area with proven track record and numerous satisfied customers over the years.",
+      "Customer for life because of their consistent quality, reliable service, and excellent customer support.",
+      "Service par excellence that stands out in the competitive market with unique offerings and quality.",
+      "Setting new standards in the industry with innovative approaches and customer-centric service models."
     ]
   },
 
   मराठी: {
     o: [
-      `${biz} येथे खूप छान अनुभव आला! ⭐`, `सेवा खूपच उत्तम – ${biz}. 👍`, `पूर्ण समाधान मिळाले.`,
-      `${biz} ची सेवा अभिमानास्पद आहे! 🌟`, `खरोखरच उत्कृष्ट कामगिरी – ${biz}`, `${biz} ने आमची अपेक्षा पार केली!`,
-      `अत्यंत व्यावसायिक सेवा पध्दत`, `गुणवत्ता आणि विश्वासार्हता एकत्र`, `${biz} ने सर्व अपेक्षा ओलांडल्या`,
-      `उत्कृष्ट ग्राहक सेवा अनुभव`, `पैसे चांगले उपयोगी पडले`, `त्यांच्या कामाने प्रभावित झालो`,
-      `${biz} निवडणे हा योग्य निर्णय`, `वेगळं दिसणारी सेवा`, `विश्वासार्ह आणि खात्रीलायक सेवा`,
-      `सुपीरियर कामगिरी`, `पैशाच्या मोबदल्यात उत्तम मूल्य`, `सातत्याने चांगले परिणाम`,
-      `मैत्रीपूर्ण आणि कार्यक्षम संघ`, `त्वरित आणि व्यावसायिक सेवा`, `खूप समाधानी आहोत`
+      `${biz} येथे अप्रतिम अनुभव! त्यांची गुणवत्ता आणि ग्राहक संतुष्टीकडे असलेली वचनबद्धता खरोखरच कौतुकास्पद आहे.`,
+      `${biz} द्वारे प्रदान केलेल्या विशेष सेवांनी अत्यंत समाधानी वाटत आहे. तपशीलाकडे लक्ष आणि व्यावसायिक दृष्टीकोन त्यांना वेगळे करतो.`,
+      `${biz} येथील समर्पित संघाची उत्तम सेवा! त्यांचे कौशल्य आणि उत्कृष्टतेकडे असलेली वचनबद्धता प्रत्येक बाबतीत दिसून येते.`,
+      `${biz} कडून अभूतपूर्व कामगिरी! गुणवत्तापूर्ण काम आणि वेळेवर सेवा देऊन ते सतत अपेक्षांपेक्षा अधिक देऊन ठेवतात.`,
+      `${biz} ने त्यांच्या व्यावसायिक दृष्टिकोन आणि उत्कृष्ट परिणामांसह सर्व अपेक्षा ओलांडल्या. खरोखरच विश्वासार्ह सेवा प्रदाता.`,
+      `${biz} कडून शीर्षस्तरीय दर्जाची सेवा! ग्राहक संतुष्टी आणि गुणवत्तापूर्ण कामाकडे असलेली त्यांची वचनबद्धता अत्यंत श्लाघ्य आहे.`,
+      `${biz} कडून असाधारण सेवा जी बाजारपेठेत खरोखर वेगळी दिसते. त्यांचे कौशल्य आणि समर्पण स्पष्टपणे दिसून येते.`,
+      `${biz} कडून व्यावसायिक आणि विश्वासार्ह सेवा! त्यांनी त्यांच्या क्षेत्रात गुणवत्ता आणि ग्राहक सेवेत नवीन मानके निर्माण केली आहेत.`,
+      `${biz} प्रत्येक प्रकल्पात खरोखरच उत्कृष्टता पुरवते. तपशीलाकडे लक्ष आणि गुणवत्तेकडे असलेली त्यांची वचनबद्धता प्रभावी आहे.`,
+      `${biz} वर खर्च केलेला प्रत्येक पैसा योग्य! गुणवत्तापूर्ण सेवा आणि वाजवी किंमतीचे त्यांचे संयोजन बाजारात अजिंक्य आहे.`
     ],
-    m: (k) => `${loc ? loc + " मध्ये " : ""}${cat} साठी ${k} सेवा मिळते.`,
+    m: (k) => `${loc} येथील स्थान, त्यांची ${k} ही ${cat} सेवांसाठी त्यांना या भागात प्राधान्याची निवड बनवते.`,
     c: [
-      "नक्कीच शिफारस!", "५ स्टार सेवा!", "पुन्हा येईन.", "अत्यंत संतुष्ट!",
-      "इतरांनाही सुचवेन.", "उत्कृष्ट अनुभव!", "सर्वोत्तम शिफारस!", "याहून चांगलं नाही होऊ शकत!",
-      "सर्व अपेक्षा ओलांडल्या!", "प्रत्येक बाबतीत परिपूर्ण!", "फक्त उत्कृष्ट!", "या व्यवसायात सर्वोत्तम!",
-      "नियमित ग्राहक राहीन!", "नक्कीच पैसे वाचले!", "शिफारस करण्यासारखं!", "आयुष्यभर ग्राहक!",
-      "सेवा हीच विशेषता!", "नवीन मानकं घालून!", "परिपूर्णतेहून पुढे!", "खरोखरच अप्रतिम!"
+      "गुणवत्तापूर्ण सेवा आणि विश्वासार्ह उपाय शोधणाऱ्या प्रत्येकाला उच्च शिफारस करतो.",
+      "५ स्टार सेवा अनुभव जो सर्व कौतुक आणि ग्राहकांच्या सकारात्मक पुनरावलोकनांस पात्र आहे.",
+      "भविष्यातील गरजांसाठी नक्कीच पुन्हा भेट देईन आणि मित्र-नातेवाईकांना कोणत्याही शंकाशिवाय सुचवेन.",
+      "अत्यंत समाधानी ग्राहक जो त्यांच्या व्यावसायिक दृष्टिकोन आणि उत्कृष्ट कामगिरीचे कौतुक करतो.",
+      "मित्र-नातेवाईकांना सुचवेन कारण त्यांची सातत्यपूर्ण गुणवत्ता सेवा आणि ग्राहक-मैत्रीपूर्ण दृष्टिकोन.",
+      "उत्कृष्ट संपूर्ण अनुभव जो गुणवत्ता, विश्वासार्हता आणि पैशाचे मूल्य परिपूर्णतेने एकत्र करतो.",
+      "या भागातील सर्वोत्तम सेवा ज्याचा सिद्ध इतिहास आहे आणि वर्षानुवर्षे असंख्य समाधानी ग्राहक आहेत.",
+      "आयुष्यभराचा ग्राहक कारण त्यांची सातत्यपूर्ण गुणवत्ता, विश्वासार्ह सेवा आणि उत्कृष्ट ग्राहक आधार.",
+      "सेवा हीच विशेषता जी अद्वितीय ऑफरिंग आणि गुणवत्तेसह स्पर्धात्मक बाजारपेठेत वेगळी उठते.",
+      "नवीन दृष्टीकोन आणि ग्राहक-केंद्रित सेवा मॉडेलसह उद्योगात नवीन मानके निर्माण करत आहेत."
     ]
   },
 
   हिंदी: {
     o: [
-      `${biz} का बहुत अच्छा अनुभव! ⭐`, `${biz} की सेवा बहुत उत्कृष्ट 👍`, `पूरी तरह से संतुष्टि मिली`,
-      `${biz} की सेवा शानदार है! 🌟`, `वास्तव में उत्कृष्ट प्रदर्शन – ${biz}`, `${biz} ने हमारी उम्मीदों से भी बेहतर किया!`,
-      `अत्यंत पेशेवर सेवा प्रणाली`, `गुणवत्ता और विश्वसनीयता साथ में`, `${biz} ने सभी अपेक्षाओं को पार किया`,
-      `उत्कृष्ट ग्राहक सेवा अनुभव`, `हर पैसे का सही मूल्य मिला`, `उनके काम से बहुत प्रभावित हुए`,
-      `${biz} को चुनना सही फैसला`, `अलग दिखने वाली सेवा`, `विश्वसनीय और भरोसेमंद सेवा`,
-      `शानदार कार्य प्रदर्शन`, `पैसे के मूल्य में उत्कृष्ट`, `लगातार अच्छे परिणाम`,
-      `मित्रवत और कुशल टीम`, `त्वरित और पेशेवर सेवा`, `बहुत संतुष्ट हूं`
+      `${biz} पर अद्भुत अनुभव! गुणवत्ता और ग्राहक संतुष्टि के प्रति उनकी प्रतिबद्धता वास्तव में उल्लेखनीय है।`,
+      `${biz} द्वारा प्रदान की गई असाधारण सेवाओं से अत्यधिक संतुष्ट। विस्तार पर ध्यान और पेशेवर दृष्टिकोण उन्हें अलग करता है।`,
+      `${biz} की समर्पित टीम द्वारा उत्कृष्ट सेवा! उनकी विशेषज्ञता और उत्कृष्टता के प्रति प्रतिबद्धता हर पहलू में स्पष्ट है।`,
+      `${biz} से शानदार प्रदर्शन! वे अपनी गुणवत्तापूर्ण कार्य और समय पर सेवा के साथ लगातार उम्मीदों से आगे निकलते हैं।`,
+      `${biz} ने अपने पेशेवर दृष्टिकोण और उत्कृष्ट परिणामों के साथ सभी उम्मीदों को पार कर लिया। वास्तव में एक विश्वसनीय सेवा प्रदाता।`,
+      `${biz} पर शीर्ष स्तर की गुणवत्ता सेवा! ग्राहक संतुष्टि और गुणवत्तापूर्ण कार्य के प्रति उनकी प्रतिबद्धता अत्यधिक प्रशंसनीय है।`,
+      `${biz} से असाधारण सेवा जो बाजार में वास्तव में अलग दिखती है। उनकी विशेषज्ञता और समर्पण स्पष्ट रूप से दिखाई देता है।`,
+      `${biz} से पेशेवर और विश्वसनीय सेवा! उन्होंने अपने क्षेत्र में गुणवत्ता और ग्राहक देखभाल में नए मानक स्थापित किए हैं।`,
+      `${biz} वास्तव में हर परियोजना में उत्कृष्टता प्रदान करता है। विस्तार पर ध्यान और गुणवत्ता के प्रति उनकी प्रतिबद्धता प्रभावशाली है।`,
+      `${biz} पर खर्च किया हर पैसा सार्थक! गुणवत्तापूर्ण सेवा और उचित मूल्य निर्धारण का उनका संयोजन बाजार में अजेय है।`
     ],
-    m: (k) => `${loc ? loc + " में " : ""}${cat} के लिए ${k} सेवा मिलती है.`,
+    m: (k) => `${loc} में स्थित, ${cat} सेवाओं के लिए उनकी ${k} उन्हें इस क्षेत्र में एक पसंदीदा विकल्प बनाती है।`,
     c: [
-      "जरूर सलाह देंगे!", "5 स्टार सेवा!", "फिर से आएंगे!", "बहुत संतुष्ट!",
-      "दूसरों को भी बताएंगे!", "शानदार अनुभव!", "सर्वोत्तम सिफारिश!", "इससे बेहतर नहीं हो सकता!",
-      "सभी अपेक्षाओं से परे!", "हर तरह से परफेक्ट!", "बस शानदार!", "इस व्यवसाय में सर्वश्रेष्ठ!",
-      "नियमित ग्राहक बनूंगा!", "पैसे की बचत हुई!", "सिफारिश के लायक!", "जीवन भर का ग्राहक!",
-      "सेवा ही विशेषता है!", "नए मानक स्थापित करते!", "परफेक्शन से भी आगे!", "वास्तव में अद्भुत!"
+      "इस श्रेणी में गुणवत्तापूर्ण सेवा और विश्वसनीय समाधान खोज रहे हर किसी को अत्यधिक सिफारिश करता हूं।",
+      "5 स्टार सेवा अनुभव जो ग्राहकों से सभी सराहना और सकारात्मक समीक्षाओं का पात्र है।",
+      "भविष्य की आवश्यकताओं के लिए निश्चित रूप से फिर से आऊंगा और बिना किसी संकोच के दोस्तों और परिवार को सिफारिश करूंगा।",
+      "अत्यंत संतुष्ट ग्राहक जो उनके पेशेवर दृष्टिकोण और उत्कृष्ट कार्य गुणवत्ता की सराहना करते हैं।",
+      "दोस्तों और परिवार को रेफर करूंगा क्योंकि उनकी लगातार गुणवत्ता सेवा और ग्राहक-अनुकूल दृष्टिकोण है।",
+      "उत्कृष्ट समग्र अनुभव जो गुणवत्ता, विश्वसनीयता और पैसे के मूल्य को पूरी तरह से जोड़ता है।",
+      "इस क्षेत्र में सर्वश्रेष्ठ सेवा जिसका सिद्ध ट्रैक रिकॉर्ड है और वर्षों से कई संतुष्ट ग्राहक हैं।",
+      "जीवन भर का ग्राहक क्योंकि उनकी लगातार गुणवत्ता, विश्वसनीय सेवा और उत्कृष्ट ग्राहक सहायता है।",
+      "सर्वोत्तम सेवा जो अद्वितीय प्रस्तावों और गुणवत्ता के साथ प्रतिस्पर्धी बाजार में बाहर खड़ी है।",
+      "अभिनव दृष्टिकोण और ग्राहक-केंद्रित सेवा मॉडल के साथ उद्योग में नए मानक स्थापित कर रहे हैं।"
     ]
   },
-
-  // Other languages follow similar pattern with 20+ sentences each
-  // To save space, I'll show the pattern for remaining languages:
 
   ગુજરાતી: {
     o: [
-      `${biz} એ ખુબ જ સરસ અનુભવ આપ્યો! ⭐`, `ખુબ જ ઉત્તમ સેવા – ${biz}. 👍`, `સંપૂર્ણ સંતોષ મળ્યો.`,
-      `${biz} ની સેવા અભિમાનયોગ્ય છે! 🌟`, `ખરેખર ઉત્કૃષ્ટ કામગીરી – ${biz}`, `${biz} એ અમારી અપેક્ષાઓને પાર કરી!`,
-      `અત્યંત વ્યવસાયિક સેવા પધ્ધતિ`, `ગુણવત્તા અને વિશ્વસનીયતા સાથે`, `${biz} એ તમામ અપેક્ષાઓ ઓળંગી`,
-      `ઉત્કૃષ્ટ ગ્રાહક સેવા અનુભવ`, `દરેક પૈસાનું સારું મૂલ્ય મળ્યું`, `તેમના કામથી પ્રભાવિત થયા`,
-      `${biz} પસંદ કરવું સાચો નિર્ણય`, `અલગ દેખાતી સેવા`, `વિશ્વસનીય અને ભરોસાપાત્ર સેવા`,
-      `શાનદાર કામગીરી`, `પૈસાના મૂલ્યમાં ઉત્તમ`, `સતત સારા પરિણામો`,
-      `મૈત્રીપૂર્ણ અને કાર્યક્ષમ ટીમ`, `ઝડપી અને વ્યવસાયિક સેવા`, `ખુબ જ સંતુષ્ટ છું`
+      `${biz} પર અદ્ભુત અનુભવ! ગુણવત્તા અને ગ્રાહક સંતોષ તરફની તેમની પ્રતિબદ્ધતા ખરેખર નોંધપાત્ર છે.`,
+      `${biz} દ્વારા પ્રદાન કરવામાં આવતી અસાધારણ સેવાઓથી અત્યંત સંતુષ્ટ. વિગતો પર ધ્યાન અને વ્યવસાયિક અભિગમ તેમને અલગ પાડે છે.`,
+      `${biz} ની સમર્પિત ટીમ દ્વારા ઉત્તમ સેવા! તેમની નિપુણતા અને ઉત્કૃષ્ટતા તરફની પ્રતિબદ્ધતા દરેક પાસામાં સ્પષ્ટ છે.`,
+      `${biz} તરફથી અદ્ભુત કામગીરી! તેઓ તેમની ગુણવત્તાપૂર્ણ કામગીરી અને સમયસર સેવા સાથે સતત અપેક્ષાઓથી આગળ રહે છે.`,
+      `${biz} એ તેમના વ્યવસાયિક અભિગમ અને ઉત્કૃષ્ટ પરિણામો સાથે બધી અપેક્ષાઓને પાર કરી. ખરેખર એક વિશ્વસનીય સેવા પ્રદાતા.`,
+      `${biz} પર ટોચની ગુણવત્તાની સેવા! ગ્રાહક સંતોષ અને ગુણવત્તાપૂર્ણ કામ તરફની તેમની પ્રતિબદ્ધતા અત્યંત પ્રશંસનીય છે.`,
+      `${biz} તરફથી અસાધારણ સેવા જે બજારમાં ખરેખર અલગ દેખાય છે. તેમની નિપુણતા અને સમર્પણ સ્પષ્ટ રીતે દેખાય છે.`,
+      `${biz} તરફથી વ્યવસાયિક અને વિશ્વસનીય સેવા! તેઓએ તેમના ક્ષેત્રમાં ગુણવત્તા અને ગ્રાહક સંભાળમાં નવા ધોરણો સ્થાપિત કર્યા છે.`,
+      `${biz} ખરેખર દરેક પ્રોજેક્ટમાં ઉત્કૃષ્ટતા પૂરી પાડે છે. વિગતો પર ધ્યાન અને ગુણવત્તા તરફની પ્રતિબદ્ધતા પ્રભાવશાળી છે.`,
+      `${biz} પર ખર્ચાયેલ દરેક પૈસો યોગ્ય! ગુણવત્તાપૂર્ણ સેવા અને વાજબી કિંમતોનું તેમનું સંયોજન બજારમાં અજેય છે.`
     ],
-    m: (k) => `${loc ? loc + " માં " : ""}${cat} માટે ${k} સેવા મળે છે.`,
+    m: (k) => `${loc} માં સ્થિત, ${cat} સેવાઓ માટે તેમની ${k} તેમને આ વિસ્તારમાં પ્રાધાન્યકર્તા પસંદગી બનાવે છે.`,
     c: [
-      "જરૂર ભલામણ કરીશ!", "5 સ્ટાર સેવા!", "ફરીથી આવીશ!", "એકદમ સંતુષ્ટ!",
-      "બીજાને પણ કહીશ!", "ઉત્તમ અનુભવ!", "શ્રેષ્ઠ ભલામણ!", "આથી સારું ન થાય!",
-      "તમામ અપેક્ષાઓથી આગળ!", "દરેક રીતે પરફેક્ટ!", "ફક્ત શાનદાર!", "આ વ્યવસાયમાં શ્રેષ્ઠ!",
-      "નિયમિત ગ્રાહક બનીશ!", "પૈસાની બચત થઈ!", "ભલામણ કરવા લાયક!", "જીવનભરનો ગ્રાહક!",
-      "સેવા જ વિશેષતા છે!", "નવા ધોરણો સ્થાપિત કરે!", "પરફેક્શનથી પણ આગળ!", "ખરેખર અદ્ભુત!"
+      "ગુણવત્તાપૂર્ણ સેવા અને વિશ્વસનીય ઉકેલો શોધતા દરેકને ખૂબ ભલામણ કરું છું.",
+      "5 સ્ટાર સેવા અનુભવ જે ગ્રાહકો તરફથી તમામ પ્રશંસા અને સકારાત્મક સમીક્ષાઓને પાત્ર છે.",
+      "ભવિષ્યની જરૂરિયાતો માટે ચોક્કસ ફરીથી આવીશ અને મિત્રો અને પરિવારને કોઈ સંકોચ વગર ભલામણ કરીશ.",
+      "અત્યંત સંતુષ્ટ ગ્રાહક જે તેમના વ્યવસાયિક અભિગમ અને ઉત્કૃષ્ટ કાર્ય ગુણવત્તાની પ્રશંસા કરે છે.",
+      "મિત્રો અને પરિવારને ભલામણ કરીશ કારણ કે તેમની સતત ગુણવત્તા સેવા અને ગ્રાહક-મૈત્રીપૂર્ણ અભિગમ છે.",
+      "ઉત્તમ સમગ્ર અનુભવ જે ગુણવત્તા, વિશ્વસનીયતા અને પૈસાનું મૂલ્ય સંપૂર્ણ રીતે જોડે છે.",
+      "આ વિસ્તારમાં શ્રેષ્ઠ સેવા જેનો સાબિત ઇતિહાસ છે અને વર્ષોથી અસંખ્ય સંતુષ્ટ ગ્રાહકો છે.",
+      "જીવનભરનો ગ્રાહક કારણ કે તેમની સતત ગુણવત્તા, વિશ્વસનીય સેવા અને ઉત્કૃષ્ટ ગ્રાહક સપોર્ટ છે.",
+      "સેવા જ વિશેષતા છે જે અનન્ય ઑફરિંગ્સ અને ગુણવત્તા સાથે સ્પર્ધાત્મક બજારમાં અલગ ઉભી રહે છે.",
+      "નવીન અભિગમો અને ગ્રાહક-કેન્દ્રિત સેવા મોડલ્સ સાથે ઉદ્યોગમાં નવા ધોરણો સ્થાપિત કરી રહ્યા છે."
     ]
   },
 
-  // Similarly for other languages - தமிழ், తెలుగు, ಕನ್ನಡ, മലയാളം, বাংলা, ਪੰਜਾਬੀ
-  // Each with 20 opening sentences and 20 closing sentences
+  தமிழ்: {
+    o: [
+      `${biz} இல் அற்புதமான அனுபவம்! தரம் மற்றும் வாடிக்கையாளர் திருப்திக்கான அவர்களின் உறுதிப்பாடு உண்மையில் குறிப்பிடத்தக்கது.`,
+      `${biz} வழங்கும் அசாதாரண சேவைகளில் மிகவும் திருப்தி அடைந்தேன். விவரங்களுக்கான கவனம் மற்றும் தொழில்முறை அணுகுமுறை அவர்களை வேறுபடுத்துகிறது.`,
+      `${biz} இல் அர்ப்பணித்த குழுவின் சிறந்த சேவை! ஒவ்வொரு அம்சத்திலும் அவர்களின் நிபுணத்துவம் மற்றும் சிறந்த தன்மைக்கான உறுதிப்பாடு தெரிகிறது.`,
+      `${biz} இலிருந்து அற்புதமான செயல்திறன்! அவர்கள் தரமான வேலை மற்றும் சரியான நேர சேவையுடன் தொடர்ந்து எதிர்பார்ப்புகளை மீறுகிறார்கள்.`,
+      `${biz} அவர்களின் தொழில்முறை அணுகுமுறை மற்றும் சிறந்த முடிவுகளுடன் எல்லா எதிர்பார்ப்புகளையும் மீறியது. உண்மையில் ஒரு நம்பகமான சேவை வழங்குநர்.`,
+      `${biz} இல் சிறந்த தர சேவை! வாடிக்கையாளர் திருப்தி மற்றும் தரமான வேலைக்கான அவர்களின் உறுதிப்பாடு மிகவும் பாராட்டத்தக்கது.`,
+      `${biz} இலிருந்து அசாதாரண சேவை இது சந்தையில் உண்மையில் தனித்து நிற்கிறது. அவர்களின் நிபுணத்துவம் மற்றும் அர்ப்பணிப்பு தெளிவாகத் தெரியும்.`,
+      `${biz} இலிருந்து தொழில்முறை மற்றும் நம்பகமான சேவை! தங்கள் துறையில் தரம் மற்றும் வாடிக்கையாளர் பராமரிப்பில் புதிய தரநிலைகளை நிறுவியுள்ளனர்.`,
+      `${biz} ஒவ்வொரு திட்டத்திலும் உண்மையில் சிறந்து விளங்குகிறது. விவரங்களுக்கான கவனம் மற்றும் தரத்திற்கான உறுதிப்பாடு ஈர்க்கக்கூடியது.`,
+      `${biz} இல் செலவழித்த ஒவ்வொரு பணமும் மதிப்புள்ளது! தரமான சேவை மற்றும் நியாயமான விலை நிர்ணயத்தின் அவர்களின் கலவை சந்தையில் தோற்கடிக்க முடியாதது.`
+    ],
+    m: (k) => `${loc} இல் அமைந்துள்ளது, ${cat} சேவைகளுக்கான அவர்களின் ${k} அவர்களை இந்த பகுதியில் ஒரு விருப்பமான தேர்வாக ஆக்குகிறது.`,
+    c: [
+      "இந்த வகையில் தரமான சேவை மற்றும் நம்பகமான தீர்வுகளைத் தேடும் அனைவருக்கும் மிகவும் பரிந்துரைக்கிறேன்.",
+      "5 நட்சத்திர சேவை அனுபவம் இது வாடிக்கையாளர்களிடமிருந்து அனைத்து பாராட்டு மற்றும் நேர்மறையான மதிப்புரைகளுக்கு தகுதியானது.",
+      "எதிர்காலத் தேவைகளுக்காக நிச்சயமாக மீண்டும் வருவேன் மற்றும் நண்பர்கள் மற்றும் குடும்பத்தினருக்கு எந்த சந்தேகமும் இல்லாமல் பரிந்துரைக்கிறேன்.",
+      "அவர்களின் தொழில்முறை அணுகுமுறை மற்றும் சிறந்த வேலை தரத்தை பாராட்டும் மிகவும் திருப்தி அடைந்த வாடிக்கையாளர்.",
+      "நண்பர்கள் மற்றும் குடும்பத்தினருக்கு பரிந்துரைக்கிறேன் ஏனெனில் அவர்களின் தொடர்ச்சியான தர சேவை மற்றும் வாடிக்கையாளர் நட்பு அணுகுமுறை.",
+      "சிறந்த ஒட்டுமொத்த அனுபவம் இது தரம், நம்பகத்தன்மை மற்றும் பணத்தின் மதிப்பைச் சரியாக இணைக்கிறது.",
+      "இந்த பகுதியில் சிறந்த சேவை இதன் நிரூபித்த பாதை பதிவு உள்ளது மற்றும் பல ஆண்டுகளாக பல திருப்தி அடைந்த வாடிக்கையாளர்கள் உள்ளனர்.",
+      "வாழ்நாள் வாடிக்கையாளர் ஏனெனில் அவர்களின் தொடர்ச்சியான தரம், நம்பகமான சேவை மற்றும் சிறந்த வாடிக்கையாளர் ஆதரவு.",
+      "சேவையே சிறப்பம்சம் இது தனித்துவமான சேவைகள் மற்றும் தரத்துடன் போட்டி சந்தையில் தனித்து நிற்கிறது.",
+      "புதுமையான அணுகுமுறைகள் மற்றும் வாடிக்கையாளர்-மைய சேவை மாதிரிகளுடன் தொழில்துறையில் புதிய தரநிலைகளை நிறுவுகிறது."
+    ]
+  },
+
+  తెలుగు: {
+    o: [
+      `${biz} వద్ద అద్భుతమైన అనుభవం! నాణ్యత మరియు కస్టమర్ సంతృప్తి పట్ల వారి నిబద్ధత నిజంగా గుర్తించదగినది.`,
+      `${biz} అందించే అసాధారణ సేవలతో చాలా సంతృప్తి చెందాను. వివరాలపై శ్రద్ధ మరియు ప్రొఫెషనల్ విధానం వారిని వేరు చేస్తుంది.`,
+      `${biz} లో నివేదిత బృందం యొక్క గొప్ప సేవ! ప్రతి అంశంలో వారి నైపుణ్యం మరియు శ్రేష్ఠత పట్ల నిబద్ధత స్పష్టంగా కనిపిస్తుంది.`,
+      `${biz} నుండి అద్భుతమైన పనితీరు! నాణ్యత పని మరియు సమయానికి సేవతో వారు నిరంతరం ఆశించిన దానికంటే మించి ఇస్తారు.`,
+      `${biz} వారి ప్రొఫెషనల్ విధానం మరియు అద్భుత ఫలితాలతో అన్ని అంచనాలను మించిపోయింది. నిజంగా విశ్వసనీయ సేవా ప్రదాత.`,
+      `${biz} వద్ద టాప్-నాచ్ నాణ్యత సేవ! కస్టమర్ సంతృప్తి మరియు నాణ్యత పని పట్ల వారి నిబద్ధత చాలా ప్రశంసనీయం.`,
+      `${biz} నుండి అసాధారణ సేవ ఇది మార్కెట్లో నిజంగా వేరుగా కనిపిస్తుంది. వారి నైపుణ్యం మరియు నివేదితత్వం స్పష్టంగా కనిపిస్తుంది.`,
+      `${biz} నుండి ప్రొఫెషనల్ మరియు విశ్వసనీయ సేవ! వారి రంగంలో నాణ్యత మరియు కస్టమర్ కేర్ లో కొత్త ప్రమాణాలను స్థాపించారు.`,
+      `${biz} నిజంగా ప్రతి ప్రాజెక్టులో శ్రేష్ఠతను అందిస్తుంది. వివరాలపై శ్రద్ధ మరియు నాణ్యత పట్ల నిబద్ధత ఆకట్టుకునేలా ఉంది.`,
+      `${biz} వద్ద ఖర్చు చేసిన ప్రతి పైసా విలువైనది! నాణ్యత సేవ మరియు సముచిత ధర వారి కలయిక మార్కెట్లో అజేయం.`
+    ],
+    m: (k) => `${loc} లో స్థితి, ${cat} సేవల కోసం వారి ${k} వారిని ఈ ప్రాంతంలో ఒక ప్రాధాన్య ఎంపికగా చేస్తుంది.`,
+    c: [
+      "ఈ వర్గంలో నాణ్యత సేవ మరియు విశ్వసనీయ పరిష్కారాలు కోసం చూస్తున్న ప్రతి ఒక్కరికి చాలా సిఫారసు చేస్తాను.",
+      "5 స్టార్ సేవా అనుభవం ఇది కస్టమర్ల నుండి అన్ని ప్రశంసలు మరియు సానుకూల సమీక్షలకు అర్హమైనది.",
+      "భవిష్యత్ అవసరాల కోసం ఖచ్చితంగా మళ్లీ వస్తాను మరియు స్నేహితులు మరియు కుటుంబ సభ్యులకు ఏ సందేహం లేకుండా సిఫారసు చేస్తాను.",
+      "వారి ప్రొఫెషనల్ విధానం మరియు అద్భుత పని నాణ్యతను అభినందించే చాలా సంతృప్తి చెందిన కస్టమర్.",
+      "స్నేహితులు మరియు కుటుంబ సభ్యులకు సిఫారసు చేస్తాను ఎందుకంటే వారి స్థిరమైన నాణ్యత సేవ మరియు కస్టమర్-ఫ్రెండ్లీ విధానం.",
+      "అద్భుతమైన మొత్తం అనుభవం ఇది నాణ్యత, విశ్వసనీయత మరియు డబ్బు విలువను సంపూర్ణంగా కలుపుతుంది.",
+      "ఈ ప్రాంతంలో ఉత్తమ సేవ దీని నిరూపిత ట్రాక్ రికార్డ్ ఉంది మరియు చాలా సంవత్సరాలుగా అనేక సంతృప్తి చెందిన కస్టమర్లు ఉన్నారు.",
+      "జీవితకాలం కస్టమర్ ఎందుకంటే వారి స్థిరమైన నాణ్యత, విశ్వసనీయ సేవ మరియు అద్భుత కస్టమర్ సపోర్ట్.",
+      "సేవే ప్రత్యేకత ఇది ప్రత్యేకమైన అందుబాటులు మరియు నాణ్యతతో పోటీ మార్కెట్లో వేరుగా నిలుస్తుంది.",
+      "ఆవిష్కరణ విధానాలు మరియు కస్టమర్-కేంద్రీకృత సేవా మోడల్లతో పరిశ్రమలో కొత్త ప్రమాణాలను స్థాపిస్తున్నారు."
+    ]
+  },
+
+  ಕನ್ನಡ: {
+    o: [
+      `${biz} ನಲ್ಲಿ ಅದ್ಭುತ ಅನುಭವ! ಗುಣಮಟ್ಟ ಮತ್ತು ಗ್ರಾಹಕ ತೃಪ್ತಿಯ ಕಡೆಗೆ ಅವರ ಬದ್ಧತೆ ನಿಜವಾಗಿಯೂ ಗಮನಾರ್ಹವಾಗಿದೆ.`,
+      `${biz} ನೀಡುವ ಅಸಾಧಾರಣ ಸೇವೆಗಳಿಂದ ಅತ್ಯಂತ ತೃಪ್ತಿ ಹೊಂದಿದ್ದೇನೆ. ವಿವರಗಳ ಮೇಲೆ ಗಮನ ಮತ್ತು ವೃತ್ತಿಪರ ವಿಧಾನ ಅವರನ್ನು ಪ್ರತ್ಯೇಕಿಸುತ್ತದೆ.`,
+      `${biz} ನಲ್ಲಿ ನಿವೇದಿತ ತಂಡದ ಉತ್ತಮ ಸೇವೆ! ಪ್ರತಿ ಅಂಶದಲ್ಲೂ ಅವರ ತಜ್ಞತೆ ಮತ್ತು ಉತ್ಕೃಷ್ಟತೆಯ ಕಡೆಗಿನ ಬದ್ಧತೆ ಸ್ಪಷ್ಟವಾಗಿ ಕಾಣುತ್ತದೆ.`,
+      `${biz} ನಿಂದ ಅದ್ಭುತ ಕಾರ್ಯಕ್ಷಮತೆ! ಅವರು ತಮ್ಮ ಗುಣಮಟ್ಟದ ಕೆಲಸ ಮತ್ತು ಸಮಯೋಚಿತ ಸೇವೆಯೊಂದಿಗೆ ನಿರಂತರವಾಗಿ ನಿರೀಕ್ಷೆಗಳನ್ನು ಮೀರುತ್ತಾರೆ.`,
+      `${biz} ಅವರ ವೃತ್ತಿಪರ ವಿಧಾನ ಮತ್ತು ಉತ್ತಮ ಫಲಿತಾಂಶಗಳೊಂದಿಗೆ ಎಲ್ಲಾ ನಿರೀಕ್ಷೆಗಳನ್ನು ಮೀರಿದೆ. ನಿಜವಾಗಿಯೂ ವಿಶ್ವಾಸಾರ್ಹ ಸೇವಾ ಪ್ರದಾತ.`,
+      `${biz} ನಲ್ಲಿ ಉನ್ನತ ಮಟ್ಟದ ಗುಣಮಟ್ಟದ ಸೇವೆ! ಗ್ರಾಹಕ ತೃಪ್ತಿ ಮತ್ತು ಗುಣಮಟ್ಟದ ಕೆಲಸದ ಕಡೆಗೆ ಅವರ ಬದ್ಧತೆ ಹೆಚ್ಚು ಶ್ಲಾಘನೀಯವಾಗಿದೆ.`,
+      `${biz} ನಿಂದ ಅಸಾಧಾರಣ ಸೇವೆ ಇದು ಮಾರುಕಟ್ಟೆಯಲ್ಲಿ ನಿಜವಾಗಿಯೂ ಪ್ರತ್ಯೇಕವಾಗಿ ಕಾಣುತ್ತದೆ. ಅವರ ತಜ್ಞತೆ ಮತ್ತು ನಿವೇದನೆ ಸ್ಪಷ್ಟವಾಗಿ ಗೋಚರಿಸುತ್ತದೆ.`,
+      `${biz} ನಿಂದ ವೃತ್ತಿಪರ ಮತ್ತು ವಿಶ್ವಾಸಾರ್ಹ ಸೇವೆ! ತಮ್ಮ ಕ್ಷೇತ್ರದಲ್ಲಿ ಗುಣಮಟ್ಟ ಮತ್ತು ಗ್ರಾಹಕ ಕಾಳಜಿಯಲ್ಲಿ ಹೊಸ ಮಾನದಂಡಗಳನ್ನು ಸ್ಥಾಪಿಸಿದ್ದಾರೆ.`,
+      `${biz} ನಿಜವಾಗಿಯೂ ಪ್ರತಿ ಯೋಜನೆಯಲ್ಲಿ ಉತ್ಕೃಷ್ಟತೆಯನ್ನು ನೀಡುತ್ತದೆ. ವಿವರಗಳ ಮೇಲೆ ಗಮನ ಮತ್ತು ಗುಣಮಟ್ಟದ ಕಡೆಗಿನ ಬದ್ಧತೆ ಪ್ರಭಾವಶಾಲಿಯಾಗಿದೆ.`,
+      `${biz} ನಲ್ಲಿ ಖರ್ಚು ಮಾಡಿದ ಪ್ರತಿ ಪೈಸಾ ಮೌಲ್ಯಯುತವಾಗಿದೆ! ಗುಣಮಟ್ಟದ ಸೇವೆ ಮತ್ತು ಸಮಂಜಸವಾದ ಬೆಲೆ ನಿಗದಿಯ ಅವರ ಸಂಯೋಜನೆ ಮಾರುಕಟ್ಟೆಯಲ್ಲಿ ಅಜೇಯವಾಗಿದೆ.`
+    ],
+    m: (k) => `${loc} ನಲ್ಲಿ ಸ್ಥಾಪಿತ, ${cat} ಸೇವೆಗಳಿಗಾಗಿ ಅವರ ${k} ಅವರನ್ನು ಈ ಪ್ರದೇಶದಲ್ಲಿ ಆದ್ಯತೆಯ ಆಯ್ಕೆಯಾಗಿ ಮಾಡುತ್ತದೆ.`,
+    c: [
+      "ಈ ವರ್ಗದಲ್ಲಿ ಗುಣಮಟ್ಟದ ಸೇವೆ ಮತ್ತು ವಿಶ್ವಾಸಾರ್ಹ ಪರಿಹಾರಗಳನ್ನು ಹುಡುಕುವ ಪ್ರತಿಯೊಬ್ಬರಿಗೂ ಹೆಚ್ಚು ಶಿಫಾರಸು ಮಾಡುತ್ತೇನೆ.",
+      "5 ಸ್ಟಾರ್ ಸೇವಾ ಅನುಭವ ಇದು ಗ್ರಾಹಕರಿಂದ ಎಲ್ಲಾ ಮೆಚ್ಚುಗೆ ಮತ್ತು ಸಕಾರಾತ್ಮಕ ವಿಮರ್ಶೆಗಳಿಗೆ ಅರ್ಹವಾಗಿದೆ.",
+      "ಭವಿಷ್ಯದ ಅವಶ್ಯಕತೆಗಳಿಗಾಗಿ ಖಂಡಿತವಾಗಿ ಮತ್ತೆ ಬರುತ್ತೇನೆ ಮತ್ತು ಸ್ನೇಹಿತರು ಮತ್ತು ಕುಟುಂಬಕ್ಕೆ ಯಾವುದೇ ಸಂದೇಹವಿಲ್ಲದೆ ಶಿಫಾರಸು ಮಾಡುತ್ತೇನೆ.",
+      "ಅವರ ವೃತ್ತಿಪರ ವಿಧಾನ ಮತ್ತು ಉತ್ತಮ ಕಾರ್ಯ ಗುಣಮಟ್ಟವನ್ನು ಮೆಚ್ಚುವ ಅತ್ಯಂತ ತೃಪ್ತಿ ಹೊಂದಿದ ಗ್ರಾಹಕ.",
+      "ಸ್ನೇಹಿತರು ಮತ್ತು ಕುಟುಂಬಕ್ಕೆ ಶಿಫಾರಸು ಮಾಡುತ್ತೇನೆ ಏಕೆಂದರೆ ಅವರ ಸತತ ಗುಣಮಟ್ಟದ ಸೇವೆ ಮತ್ತು ಗ್ರಾಹಕ-ಸ್ನೇಹಿ ವಿಧಾನ.",
+      "ಅತ್ಯುತ್ತಮ ಒಟ್ಟಾರೆ ಅನುಭವ ಇದು ಗುಣಮಟ್ಟ, ವಿಶ್ವಾಸಾರ್ಹತೆ ಮತ್ತು ಹಣದ ಮೌಲ್ಯವನ್ನು ಪರಿಪೂರ್ಣವಾಗಿ ಸಂಯೋಜಿಸುತ್ತದೆ.",
+      "ಈ ಪ್ರದೇಶದಲ್ಲಿ ಅತ್ಯುತ್ತಮ ಸೇವೆ ಇದರ ಸಾಬೀತಾದ ಟ್ರ್ಯಾಕ್ ರೆಕಾರ್ಡ್ ಇದೆ ಮತ್ತು ಹಲವು ವರ್ಷಗಳಿಂದ ಅನೇಕ ತೃಪ್ತಿ ಹೊಂದಿದ ಗ್ರಾಹಕರಿದ್ದಾರೆ.",
+      "ಜೀವನದ ಗ್ರಾಹಕ ಏಕೆಂದರೆ ಅವರ ಸತತ ಗುಣಮಟ್ಟ, ವಿಶ್ವಾಸಾರ್ಹ ಸೇವೆ ಮತ್ತು ಉತ್ತಮ ಗ್ರಾಹಕ ಬೆಂಬಲ.",
+      "ಸೇವೆಯೇ ವಿಶೇಷತೆ ಇದು ಅನನ್ಯ ವಿನಂತಿಗಳು ಮತ್ತು ಗುಣಮಟ್ಟದೊಂದಿಗೆ ಸ್ಪರ್ಧಾತ್ಮಕ ಮಾರುಕಟ್ಟೆಯಲ್ಲಿ ಪ್ರತ್ಯೇಕವಾಗಿ ನಿಲ್ಲುತ್ತದೆ.",
+      "ನಾವೀನ್ಯಾತ್ಮಕ ವಿಧಾನಗಳು ಮತ್ತು ಗ್ರಾಹಕ-ಕೇಂದ್ರಿತ ಸೇವಾ ಮಾದರಿಗಳೊಂದಿಗೆ ಉದ್ಯಮದಲ್ಲಿ ಹೊಸ ಮಾನದಂಡಗಳನ್ನು ಸ್ಥಾಪಿಸುತ್ತಿದ್ದಾರೆ."
+    ]
+  },
+
+  മലയാളം: {
+    o: [
+      `${biz} ൽ അത്ഭുതകരമായ അനുഭവം! ഗുണനിലവാരവും ഉപഭോക്തൃ തൃപ്തിയും നേരെ അവരുടെ പ്രതിബദ്ധത ശരിക്കും ശ്രദ്ധേയമാണ്.`,
+      `${biz} നൽകുന്ന അസാധാരണ സേവനങ്ങളിൽ വളരെ തൃപ്തിയുണ്ട്. വിശദാംശങ്ങളിലേക്കുള്ള ശ്രദ്ധയും പ്രൊഫഷണൽ സമീപനവും അവരെ വ്യത്യസ്തരാക്കുന്നു.`,
+      `${biz} ലെ നിവേദിത ടീമിന്റെ മികച്ച സേവനം! എല്ലാ വശത്തും അവരുടെ വൈദഗ്ദ്ധ്യവും ശ്രേഷ്ഠതയോടുള്ള പ്രതിബദ്ധതയും വ്യക്തമാണ്.`,
+      `${biz} ലെ അത്ഭുതകരമായ പ്രകടനം! ഗുണനിലവാരമുള്ള ജോലിയും സമയത്ത സേവനവും ഉപയോഗിച്ച് അവർ തുടർച്ചയായി പ്രതീക്ഷകൾ കവിയുന്നു.`,
+      `${biz} അവരുടെ പ്രൊഫഷണൽ സമീപനവും മികച്ച ഫലങ്ങളും ഉപയോഗിച്ച് എല്ലാ പ്രതീക്ഷകളും കവിഞ്ഞു. ശരിക്കും ഒരു വിശ്വസനീയമായ സേവന ദാതാവ്.`,
+      `${biz} ലെ ടോപ്പ്-നോച്ച് ഗുണനിലവാര സേവനം! ഉപഭോക്തൃ തൃപ്തിയും ഗുണനിലവാര ജോലിയും നേരെ അവരുടെ പ്രതിബദ്ധത വളരെ പ്രശംസനീയമാണ്.`,
+      `${biz} ലെ അസാധാരണ സേവനം ഇത് മാർക്കറ്റിൽ ശരിക്കും വ്യത്യസ്തമായി കാണപ്പെടുന്നു. അവരുടെ വൈദഗ്ദ്ധ്യവും നിവേദനവും വ്യക്തമായി കാണാം.`,
+      `${biz} ലെ പ്രൊഫഷണൽ, വിശ്വസനീയമായ സേവനം! അവരുടെ ഫീൽഡിൽ ഗുണനിലവാരത്തിലും ഉപഭോക്തൃ പരിപാലനത്തിലും പുതിയ നിലവാരങ്ങൾ സ്ഥാപിച്ചിട്ടുണ്ട്.`,
+      `${biz} ശരിക്കും ഓരോ പ്രോജക്റ്റിലും ശ്രേഷ്ഠത നൽകുന്നു. വിശദാംശങ്ങളിലേക്കുള്ള ശ്രദ്ധയും ഗുണനിലവാരത്തിലേക്കുള്ള പ്രതിബദ്ധതയും ആകർഷകമാണ്.`,
+      `${biz} ലെ ചെലവഴിച്ച ഓരോ പൈസയും മൂല്യവത്താണ്! ഗുണനിലവാര സേവനവും യുക്തിസഹമായ വിലനിർണ്ണയവും അവരുടെ സംയോജനം മാർക്കറ്റിൽ അജേയമാണ്.`
+    ],
+    m: (k) => `${loc} ൽ സ്ഥിതി ചെയ്യുന്ന, ${cat} സേവനങ്ങൾക്കായി അവരുടെ ${k} അവരെ ഈ പ്രദേശത്തെ ഒരു ആദ്യിക തിരഞ്ഞെടുപ്പാക്കി മാറ്റുന്നു.`,
+    c: [
+      "ഈ വിഭാഗത്തിൽ ഗുണനിലവാര സേവനവും വിശ്വസനീയമായ പരിഹാരങ്ങളും തിരയുന്ന എല്ലാവർക്കും വളരെ ശുപാർശ ചെയ്യുന്നു.",
+      "5 സ്റ്റാർ സേവന അനുഭവം ഇത് ഉപഭോക്താക്കളിൽ നിന്നുള്ള എല്ലാ അഭിനന്ദനങ്ങൾക്കും പോസിറ്റീവ് അവലോകനങ്ങൾക്കും അർഹമാണ്.",
+      "ഭാവി ആവശ്യങ്ങൾക്ക് തീർച്ചയായും വീണ്ടും വരും, സുഹൃത്തുക്കൾക്കും കുടുംബാംഗങ്ങൾക്കും ഒരു സംശയവുമില്ലാതെ ശുപാർശ ചെയ്യും.",
+      "അവരുടെ പ്രൊഫഷണൽ സമീപനവും മികച്ച ജോലി ഗുണനിലവാരവും അഭിനന്ദിക്കുന്ന വളരെ തൃപ്തിപ്പെട്ട ഉപഭോക്താവ്.",
+      "സുഹൃത്തുക്കൾക്കും കുടുംബാംഗങ്ങൾക്കും ശുപാർശ ചെയ്യും കാരണം അവരുടെ സ്ഥിരമായ ഗുണനിലവാര സേവനവും ഉപഭോക്തൃ-സൗഹൃദ സമീപനവും.",
+      "മികച്ച ആകെ അനുഭവം ഇത് ഗുണനിലവാരം, വിശ്വാസ്യത, പണത്തിന്റെ മൂല്യം തികച്ചും സംയോജിപ്പിക്കുന്നു.",
+      "ഈ പ്രദേശത്തെ മികച്ച സേവനം ഇതിന്റെ തെളിയിക്കപ്പെട്ട ട്രാക്ക് റെക്കോർഡ് ഉണ്ട്, നിരവധി വർഷങ്ങളായി നിരവധി തൃപ്തിപ്പെട്ട ഉപഭോക്താക്കൾ ഉണ്ട്.",
+      "ജീവിതകാല ഉപഭോക്താവ് കാരണം അവരുടെ സ്ഥിരമായ ഗുണനിലവാരം, വിശ്വസനീയമായ സേവനം, മികച്ച ഉപഭോക്തൃ പിന്തുണ.",
+      "സേവനമാണ് പ്രത്യേകത ഇത് അദ്വിതീയമായ ഓഫറിംഗുകളും ഗുണനിലവാരവും ഉപയോഗിച്ച് മത്സരാർത്ഥമായ മാർക്കറ്റിൽ വ്യത്യസ്തമായി നിൽക്കുന്നു.",
+      "നൂതന സമീപനങ്ങളും ഉപഭോക്തൃ-കേന്ദ്രീകൃത സേവാ മോഡലുകളും ഉപയോഗിച്ച് വ്യവസായത്തിൽ പുതിയ നിലവാരങ്ങൾ സ്ഥാപിക്കുന്നു."
+    ]
+  },
+
+  বাংলা: {
+    o: [
+      `${biz} এ অসাধারণ অভিজ্ঞতা! গুণমান এবং গ্রাহক সন্তুষ্টির প্রতি তাদের প্রতিশ্রুতি সত্যিই লক্ষণীয়।`,
+      `${biz} প্রদত্ত অসাধারণ সেবায় অত্যন্ত সন্তুষ্ট। বিবরণে মনোযোগ এবং পেশাদারী দৃষ্টিভঙ্গি তাদের আলাদা করে।`,
+      `${biz} এর নিবেদিত দলের দুর্দান্ত সেবা! প্রতিটি দিকেই তাদের দক্ষতা এবং উৎকর্ষতার প্রতি প্রতিশ্রুতি স্পষ্ট।`,
+      `${biz} থেকে অসাধারণ পারফরম্যান্স! তারা তাদের মানসম্মত কাজ এবং সময়োচিত সেবার সাথে ক্রমাগত প্রত্যাশা ছাড়িয়ে যায়।`,
+      `${biz} তাদের পেশাদারী দৃষ্টিভঙ্গি এবং উৎকৃষ্ট ফলাফলের সাথে সমস্ত প্রত্যাশা অতিক্রম করেছে। সত্যিই একটি বিশ্বস্ত সেবা প্রদানকারী।`,
+      `${biz} এ শীর্ষ স্তরের মানসম্মত সেবা! গ্রাহক সন্তুষ্টি এবং মানসম্মত কাজের প্রতি তাদের প্রতিশ্রুতি অত্যন্ত প্রশংসনীয়।`,
+      `${biz} থেকে অসাধারণ সেবা যা বাজারে সত্যিই আলাদা দেখা যায়। তাদের দক্ষতা এবং নিবেদন স্পষ্টভাবে দৃশ্যমান।`,
+      `${biz} থেকে পেশাদারী এবং বিশ্বস্ত সেবা! তারা তাদের ক্ষেত্রে গুণমান এবং গ্রাহক সেবায় নতুন মানদণ্ড স্থাপন করেছে।`,
+      `${biz} সত্যিই প্রতিটি প্রকল্পে উৎকর্ষতা প্রদান করে। বিবরণে মনোযোগ এবং গুণমানের প্রতি প্রতিশ্রুতি চিত্তাকর্ষক।`,
+      `${biz} এ ব্যয় করা প্রতিটি পয়সা মূল্যবান! মানসম্মত সেবা এবং যুক্তিসঙ্গত মূল্যের তাদের সমন্বয় বাজারে অজেয়।`
+    ],
+    m: (k) => `${loc} এ অবস্থিত, ${cat} সেবার জন্য তাদের ${k} তাদের এই এলাকায় একটি পছন্দের পছন্দ করে তোলে।`,
+    c: [
+      "এই বিভাগে মানসম্মত সেবা এবং বিশ্বস্ত সমাধান খুঁজছেন এমন প্রত্যেকের জন্য অত্যন্ত সুপারিশ করি।",
+      "5 স্টার সেবা অভিজ্ঞতা যা গ্রাহকদের কাছ থেকে সকল প্রশংসা এবং ইতিবাচক পর্যালোচনার যোগ্য।",
+      "ভবিষ্যতের প্রয়োজনীয়তার জন্য অবশ্যই আবার আসব এবং বন্ধু ও পরিবারকে কোনো সন্দেহ ছাড়াই সুপারিশ করব।",
+      "অত্যন্ত সন্তুষ্ট গ্রাহক যারা তাদের পেশাদারী দৃষ্টিভঙ্গি এবং উৎকৃষ্ট কাজের গুণমানের প্রশংসা করে।",
+      "বন্ধু ও পরিবারকে রেফার করব কারণ তাদের ধারাবাহিক মানসম্মত সেবা এবং গ্রাহক-বান্ধব দৃষ্টিভঙ্গি।",
+      "চমৎকার সামগ্রিক অভিজ্ঞতা যা গুণমান, বিশ্বস্ততা এবং টাকার মান সম্পূর্ণভাবে একত্রিত করে।",
+      "এই এলাকায় সেরা সেবা যার প্রমাণিত ট্র্যাক রেকর্ড আছে এবং বছরের পর বছর অনেক সন্তুষ্ট গ্রাহক আছে।",
+      "আজীবনের গ্রাহক কারণ তাদের ধারাবাহিক গুণমান, বিশ্বস্ত সেবা এবং চমৎকার গ্রাহক সমর্থন।",
+      "সেবাই বিশেষত্ব যা অনন্য অফার এবং গুণমানের সাথে প্রতিযোগিতামূলক বাজারে আলাদা হয়ে দাঁড়ায়।",
+      "অভিনব দৃষ্টিভঙ্গি এবং গ্রাহক-কেন্দ্রিক সেবা মডেলের সাথে শিল্পে নতুন মানদণ্ড স্থাপন করছে।"
+    ]
+  },
+
+  ਪੰਜਾਬੀ: {
+    o: [
+      `${biz} 'ਤੇ ਸ਼ਾਨਦਾਰ ਤਜ਼ਰਬਾ! ਗੁਣਵੱਤਾ ਅਤੇ ਗਾਹਕ ਸੰਤੁਸ਼ਟੀ ਵੱਲ ਉਨ੍ਹਾਂ ਦੀ ਵਚਨਬੱਧਤਾ ਸੱਚਮੁੱਚ ਦਰਸ਼ਨੀਯ ਹੈ।`,
+      `${biz} ਦੁਆਰਾ ਪ੍ਰਦਾਨ ਕੀਤੀਆਂ ਗਈਆਂ ਅਸਾਧਾਰਨ ਸੇਵਾਵਾਂ ਨਾਲ ਬਹੁਤ ਸੰਤੁਸ਼ਟ। ਵੇਰਵਿਆਂ 'ਤੇ ਧਿਆਨ ਅਤੇ ਪੇਸ਼ੇਵਰ ਦ੍ਰਿਸ਼ਟੀਕੋਣ ਉਨ੍ਹਾਂ ਨੂੰ ਅਲੱਗ ਕਰਦਾ ਹੈ।`,
+      `${biz} ਦੀ ਸਮਰਪਿਤ ਟੀਮ ਦੀ ਸ਼ਾਨਦਾਰ ਸੇਵਾ! ਹਰ ਪਹਿਲੂ ਵਿੱਚ ਉਨ੍ਹਾਂ ਦੀ ਮੁਹਾਰਤ ਅਤੇ ਸ਼੍ਰੇਸ਼ਠਤਾ ਵੱਲ ਵਚਨਬੱਧਤਾ ਸਪਸ਼ਟ ਹੈ।`,
+      `${biz} ਤੋਂ ਸ਼ਾਨਦਾਰ ਪ੍ਰਦਰਸ਼ਨ! ਉਹ ਆਪਣੀ ਗੁਣਵੱਤਾ ਵਾਲੇ ਕੰਮ ਅਤੇ ਸਮੇਂ ਸਿਰ ਸੇਵਾ ਨਾਲ ਨਿਰੰਤਰ ਉਮੀਦਾਂ ਤੋਂ ਬਾਹਰ ਰਹਿੰਦੇ ਹਨ।`,
+      `${biz} ਨੇ ਆਪਣੇ ਪੇਸ਼ੇਵਰ ਦ੍ਰਿਸ਼ਟੀਕੋਣ ਅਤੇ ਸ਼ਾਨਦਾਰ ਨਤੀਜਿਆਂ ਨਾਲ ਸਾਰੀਆਂ ਉਮੀਦਾਂ ਨੂੰ ਪਾਰ ਕਰ ਲਿਆ। ਸੱਚਮੁੱਚ ਇੱਕ ਭਰੋਸੇਮੰਦ ਸੇਵਾ ਪ੍ਰਦਾਤਾ।`,
+      `${biz} 'ਤੇ ਚੋਟੀ ਦੀ ਗੁਣਵੱਤਾ ਵਾਲੀ ਸੇਵਾ! ਗਾਹਕ ਸੰਤੁਸ਼ਟੀ ਅਤੇ ਗੁਣਵੱਤਾ ਵਾਲੇ ਕੰਮ ਵੱਲ ਉਨ੍ਹਾਂ ਦੀ ਵਚਨਬੱਧਤਾ ਬਹੁਤ ਹੀ ਪ੍ਰਸ਼ੰਸਾਯੋਗ ਹੈ।`,
+      `${biz} ਤੋਂ ਅਸਾਧਾਰਨ ਸੇਵਾ ਜੋ ਮਾਰਕੀਟ ਵਿੱਚ ਸੱਚਮੁੱਚ ਅਲੱਗ ਦਿਖਾਈ ਦਿੰਦੀ ਹੈ। ਉਨ੍ਹਾਂ ਦੀ ਮੁਹਾਰਤ ਅਤੇ ਸਮਰਪਣ ਸਪਸ਼ਟ ਤੌਰ 'ਤੇ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ।`,
+      `${biz} ਤੋਂ ਪੇਸ਼ੇਵਰ ਅਤੇ ਭਰੋਸੇਮੰਦ ਸੇਵਾ! ਉਨ੍ਹਾਂ ਨੇ ਆਪਣੇ ਖੇਤਰ ਵਿੱਚ ਗੁਣਵੱਤਾ ਅਤੇ ਗਾਹਕ ਦੇਖਭਾਲ ਵਿੱਚ ਨਵੇਂ ਮਾਪਦੰਡ ਸਥਾਪਿਤ ਕੀਤੇ ਹਨ।`,
+      `${biz} ਸੱਚਮੁੱਚ ਹਰ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਸ਼੍ਰੇਸ਼ਠਤਾ ਪ੍ਰਦਾਨ ਕਰਦਾ ਹੈ। ਵੇਰਵਿਆਂ 'ਤੇ ਧਿਆਨ ਅਤੇ ਗੁਣਵੱਤਾ ਵੱਲ ਵਚਨਬੱਧਤਾ ਪ੍ਰਭਾਵਸ਼ਾਲੀ ਹੈ।`,
+      `${biz} 'ਤੇ ਖਰਚ ਹੋਇਆ ਹਰ ਪੈਸਾ ਸਹੀ! ਗੁਣਵੱਤਾ ਸੇਵਾ ਅਤੇ ਸਹੀ ਮੁੱਲ ਨਿਰਧਾਰਨ ਦਾ ਉਨ੍ਹਾਂ ਦਾ ਸੰਯੋਜਨ ਮਾਰਕੀਟ ਵਿੱਚ ਅਜੇਯ ਹੈ।`
+    ],
+    m: (k) => `${loc} ਵਿੱਚ ਸਥਿਤ, ${cat} ਸੇਵਾਵਾਂ ਲਈ ਉਨ੍ਹਾਂ ਦੀ ${k} ਉਨ੍ਹਾਂ ਨੂੰ ਇਸ ਖੇਤਰ ਵਿੱਚ ਇੱਕ ਤਰਜੀਹੀ ਚੋਣ ਬਣਾਉਂਦੀ ਹੈ।`,
+    c: [
+      "ਇਸ ਸ਼੍ਰੇਣੀ ਵਿੱਚ ਗੁਣਵੱਤਾ ਸੇਵਾ ਅਤੇ ਭਰੋਸੇਮੰਦ ਹੱਲ ਲੱਭਣ ਵਾਲੇ ਹਰ ਕਿਸੇ ਨੂੰ ਬਹੁਤ ਸਿਫਾਰਸ਼ ਕਰਦਾ ਹਾਂ।",
+      "5 ਸਟਾਰ ਸੇਵਾ ਅਨੁਭਵ ਜੋ ਗਾਹਕਾਂ ਤੋਂ ਸਾਰੀ ਪ੍ਰਸ਼ੰਸਾ ਅਤੇ ਸਕਾਰਾਤਮਕ ਸਮੀਖਿਆਵਾਂ ਦੇ ਯੋਗ ਹੈ।",
+      "ਭਵਿੱਖ ਦੀਆਂ ਲੋੜਾਂ ਲਈ ਜ਼ਰੂਰ ਦੁਬਾਰਾ ਆਵਾਂਗਾ ਅਤੇ ਦੋਸਤਾਂ ਅਤੇ ਪਰਿਵਾਰ ਨੂੰ ਬਿਨਾਂ ਕਿਸੇ ਸ਼ੱਕ ਦੇ ਸਿਫਾਰਸ਼ ਕਰਾਂਗਾ।",
+      "ਬਹੁਤ ਸੰਤੁਸ਼ਟ ਗਾਹਕ ਜੋ ਉਨ੍ਹਾਂ ਦੇ ਪੇਸ਼ੇਵਰ ਦ੍ਰਿਸ਼ਟੀਕੋਣ ਅਤੇ ਸ਼ਾਨਦਾਰ ਕੰਮ ਦੀ ਗੁਣਵੱਤਾ ਦੀ ਪ੍ਰਸ਼ੰਸਾ ਕਰਦਾ ਹੈ।",
+      "ਦੋਸਤਾਂ ਅਤੇ ਪਰਿਵਾਰ ਨੂੰ ਸਿਫਾਰਸ਼ ਕਰਾਂਗਾ ਕਿਉਂਕਿ ਉਨ੍ਹਾਂ ਦੀ ਲਗਾਤਾਰ ਗੁਣਵੱਤਾ ਸੇਵਾ ਅਤੇ ਗਾਹਕ-ਦੋਸਤਾਨਾ ਦ੍ਰਿਸ਼ਟੀਕੋਣ ਹੈ।",
+      "ਸ਼ਾਨਦਾਰ ਸਮੁੱਚਾ ਅਨੁਭਵ ਜੋ ਗੁਣਵੱਤਾ, ਭਰੋਸੇਮੰਦਤਾ ਅਤੇ ਪੈਸੇ ਦੀ ਕੀਮਤ ਨੂੰ ਪੂਰੀ ਤਰ੍ਹਾਂ ਜੋੜਦਾ ਹੈ।",
+      "ਇਸ ਖੇਤਰ ਵਿੱਚ ਸਭ ਤੋਂ ਵਧੀਆ ਸੇਵਾ ਜਿਸਦਾ ਸਾਬਤ ਟਰੈਕ ਰਿਕਾਰਡ ਹੈ ਅਤੇ ਸਾਲਾਂ ਤੋਂ ਬਹੁਤ ਸਾਰੇ ਸੰਤੁਸ਼ਟ ਗਾਹਕ ਹਨ।",
+      "ਜੀਵਨ ਭਰ ਦਾ ਗਾਹਕ ਕਿਉਂਕਿ ਉਨ੍ਹਾਂ ਦੀ ਲਗਾਤਾਰ ਗੁਣਵੱਤਾ, ਭਰੋਸੇਮੰਦ ਸੇਵਾ ਅਤੇ ਸ਼ਾਨਦਾਰ ਗਾਹਕ ਸਹਾਇਤਾ।",
+      "ਸੇਵਾ ਹੀ ਵਿਸ਼ੇਸ਼ਤਾ ਹੈ ਜੋ ਵਿਲੱਖਣ ਪੇਸ਼ਕਸ਼ਾਂ ਅਤੇ ਗੁਣਵੱਤਾ ਨਾਲ ਮੁਕਾਬਲੇ ਵਾਲੇ ਬਾਜ਼ਾਰ ਵਿੱਚ ਅਲੱਗ ਖੜ੍ਹੀ ਹੈ।",
+      "ਨਵੀਨਤਾਕਾਰੀ ਦ੍ਰਿਸ਼ਟੀਕੋਣ ਅਤੇ ਗਾਹਕ-ਕੇਂਦਰਿਤ ਸੇਵਾ ਮਾਡਲਾਂ ਨਾਲ ਉਦਯੋਗ ਵਿੱਚ ਨਵੇਂ ਮਾਪਦੰਡ ਸਥਾਪਿਤ ਕਰ ਰਹੇ ਹਨ।"
+    ]
+  }
 };
 
-// For SEO keywords - increase variety
-const seo = {
-  Default: [
-    "excellent service", "professional team", "great quality", "trusted business", "value for money",
-    "outstanding work", "customer satisfaction", "timely delivery", "expert guidance", "premium quality",
-    "attention to detail", "innovative approach", "dedicated service", "competitive pricing", "reliable support",
-    "efficient process", "modern techniques", "skilled professionals", "transparent dealings", "customer-centric"
-  ],
-  Restaurant: [
-    "delicious food", "great ambience", "friendly staff", "authentic taste", "hygienic service",
-    "mouth-watering dishes", "cozy atmosphere", "prompt service", "fresh ingredients", "reasonable prices",
-    "variety of options", "family-friendly", "clean premises", "traditional recipes", "modern presentation",
-    "generous portions", "flavorful cuisine", "warm hospitality", "comfortable seating", "quick service"
-  ],
-  RealEstate: [
-    "trusted property dealer", "best property deals", "transparent process", "prime location", "expert guidance",
-    "vast property portfolio", "legal assistance", "market knowledge", "negotiation skills", "after-sales service",
-    "verified listings", "customer support", "documentation help", "property valuation", "investment advice",
-    "rental management", "builder tie-ups", "loan assistance", "site visits", "customized solutions"
-  ]
-};
+let lastText = "";
 
-let lastText="";
+function newReview(reset) {
+  const lang = document.getElementById("lang").value;
+  const v = vocab[lang] || vocab.English;
+  const keys = seoKeywords[cat] || seoKeywords.Services;
 
-function newReview(reset){
- const lang=document.getElementById("lang").value;
- const v=vocab[lang]||vocab.English;
- const keys=seo[cat]||seo.Default;
+  let text = "";
+  let attempt = 0;
+  
+  do {
+    const k = keys[Math.floor(Math.random() * keys.length)];
+    text = 
+      v.o[Math.floor(Math.random() * v.o.length)] + " " +
+      v.m(k) + " " +
+      v.c[Math.floor(Math.random() * v.c.length)];
+    
+    attempt++;
+    if (attempt > 10) break;
+    
+  } while (text === lastText || text.split(' ').length > 50);
 
- let text="";
- do{
-  const k=keys[Math.floor(Math.random()*keys.length)];
-  text=
-   v.o[Math.floor(Math.random()*v.o.length)]+" "+
-   v.m(k)+" "+
-   v.c[Math.floor(Math.random()*v.c.length)];
- }while(text===lastText);
-
- lastText=text;
- document.getElementById("reviewBox").innerText=text;
- document.getElementById("copyBtn").style.display="block";
+  lastText = text;
+  
+  document.getElementById("reviewBox").innerText = text;
+  document.getElementById("wordCount").innerText = text.split(' ').length + " words";
+  document.getElementById("copyBtn").style.display = "flex";
 }
 
-function copyGo(){
- navigator.clipboard.writeText(lastText).then(()=>{
-  location.href=gUrl;
- });
+function copyGo() {
+  navigator.clipboard.writeText(lastText).then(() => {
+    alert("✅ Review copied to clipboard! Redirecting...");
+    setTimeout(() => {
+      window.open(gUrl, '_blank');
+    }, 500);
+  }).catch(err => {
+    console.error('Copy failed:', err);
+    alert("❌ Please copy manually: " + lastText);
+  });
 }
 
-newReview(true);
+function init() {
+  document.getElementById("cat").innerHTML = `<span>${cat}</span>`;
+  newReview(true);
+}
+
+window.onload = init;
 </script>
 </body>
 </html>
